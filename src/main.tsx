@@ -17,6 +17,9 @@ const router = createRouter({
   routeTree,
   context: {
     ...TanStackQueryProviderContext,
+    layoutConfig: {
+      isShowNavbar: true,
+    },
   },
   defaultPreload: "intent",
   scrollRestoration: true,

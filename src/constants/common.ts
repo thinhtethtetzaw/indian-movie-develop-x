@@ -1,9 +1,9 @@
 export enum AUTH_STAGES {
-  UNAUTHENTICATED = 'unauthenticated',
-  AUTHENTICATED = 'authenticated',
+  UNAUTHENTICATED = "unauthenticated",
+  AUTHENTICATED = "authenticated",
 }
 
 export enum ROLES {
-  ADMIN = 'admin',
-  AUDITOR = 'auditor',
+  ADMIN = "admin",
+  AUDITOR = "auditor",
 }

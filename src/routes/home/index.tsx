@@ -1,6 +1,6 @@
 import type { Movie } from "@/components/common/MovieCard";
 import MovieCard from "@/components/common/MovieCard";
-import SliderCarousel from "@/components/page/SliderCarousel";
+import SliderCarousel from "@/components/page/home/SliderCarousel";
 import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
@@ -50,6 +50,13 @@ const MOCK_MOVIES: Movie[] = [
 
 export const Route = createFileRoute("/home/")({
   component: RouteComponent,
+  beforeLoad: () => {
+    return {
+      layoutConfig: {
+        isShowNavbar: true,
+      },
+    };
+  },
 });
 
 function RouteComponent() {
