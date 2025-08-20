@@ -2,6 +2,7 @@ import { LanguageList } from "@/components/settings/LanguageList";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -26,19 +27,20 @@ export function LanguageDrawer() {
       onOpenChange={(v: boolean) => setOpen("language", v)}
     >
       <DrawerTrigger asChild>
-        <button className="flex w-full items-center justify-between p-4 shadow-md transition">
+        <div className="flex w-full items-center justify-between p-4 shadow-md transition">
           <div className="flex items-center gap-3">
             <Languages className="h-6 w-6 text-white" />
             <span className="text-white">Language</span>
           </div>
           <ChevronRight className="h-6 w-6 text-white" />
-        </button>
+        </div>
       </DrawerTrigger>
 
       <DrawerContent className="fixed right-0 bottom-0 left-0 mx-auto max-w-md !rounded-t-[32px] border-[#2B2B2B] bg-[#2B2B2B] [&>div:first-child]:hidden">
         <VisuallyHidden>
           <DrawerHeader>
             <DrawerTitle>Language</DrawerTitle>
+            <DrawerDescription>Change your language</DrawerDescription>
           </DrawerHeader>
         </VisuallyHidden>
 

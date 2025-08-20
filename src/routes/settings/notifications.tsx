@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/settings/notifications")({
   component: () => (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-black p-8 text-white">
+    <div className="flex flex-col items-center justify-center bg-black p-8 text-white">
       <div className="mx-auto flex max-w-sm flex-col items-center space-y-2 text-center">
         <img
           src={NotificationImage}

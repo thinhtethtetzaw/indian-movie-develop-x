@@ -10,10 +10,10 @@ export const Route = createFileRoute("/settings/")({
 function RouteComponent() {
   const navigate = useNavigate();
   return (
-    <div className="mx-auto min-h-screen bg-[#0a0a0a] p-4 text-white">
+    <div className="mx-auto bg-[#0a0a0a] p-4 text-white">
       <div className="space-y-4">
         <div className="rounded-2xl bg-white/12">
-          <button
+          <div
             onClick={() => navigate({ to: "/settings/notifications" })}
             className="flex w-full items-center justify-between p-4 shadow-md transition"
           >
@@ -28,7 +28,7 @@ function RouteComponent() {
               <span>Notifications</span>
             </div>
             <ChevronRight className="h-6 w-6 text-white" />
-          </button>
+          </div>
 
           <div className="px-4">
             <hr className="w-full border-white/4" />
