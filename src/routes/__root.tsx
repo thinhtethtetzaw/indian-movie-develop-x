@@ -15,9 +15,11 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
-      <div className="mx-auto h-dvh w-screen max-w-md bg-gray-100">
+      <div className="mx-auto h-dvh w-screen max-w-md overflow-y-auto bg-[#111015]">
         <Header />
-        <Outlet />
+        <div className="py-10">
+          <Outlet />
+        </div>
         <Footer />
       </div>
       <TanstackDevtools
