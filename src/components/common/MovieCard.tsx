@@ -96,6 +96,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
               "https://via.placeholder.com/300x450/1f2937/ffffff?text=No+Image";
           }}
         />
+        <div className="from-black-800/60 absolute inset-0 bg-gradient-to-t via-transparent to-transparent" />
+
         {renderFavoriteButton()}
         {renderRating()}
       </div>
