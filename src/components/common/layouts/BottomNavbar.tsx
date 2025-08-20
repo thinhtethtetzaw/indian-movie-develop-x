@@ -7,7 +7,7 @@ import IconSettingsInactive from "@/assets/svgs/settings-inactive.svg?react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { motion } from "motion/react";
 
-function Footer() {
+function BottomNavbar() {
   const router = useRouter();
   function checkRouteActive(path: string) {
     if (path === "/") {
@@ -22,7 +22,7 @@ function Footer() {
         inactive: IconHomeInactive,
       },
       label: "Home",
-      path: "/",
+      path: "/home",
     },
     {
       icon: {
@@ -87,4 +87,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default BottomNavbar;
