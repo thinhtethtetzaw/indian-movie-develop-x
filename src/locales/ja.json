@@ -1,0 +1,20 @@
+{
+  "common": {
+    "viewAll": "すべて表示",
+    "viewMore": "もっと見る"
+  },
+  "layout": {
+    "navbar": {
+      "home": "ホーム",
+      "bookmark": "ブックマーク",
+      "settings": "設定"
+    }
+  },
+  "pages": {
+    "home": {
+      "popularMovies": "人気の映画",
+      "popularTVSeries": "人気のテレビシリーズ",
+      "youMayLike": "おすすめ"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "common": {
+    "viewAll": "查看全部",
+    "viewMore": "查看更多"
+  },
+  "layout": {
+    "navbar": {
+      "home": "首页",
+      "bookmark": "书签",
+      "settings": "设置"
+    }
+  },
+  "pages": {
+    "home": {
+      "popularMovies": "热门电影",
+      "popularTVSeries": "热门电视剧",
+      "youMayLike": "你可能喜欢"
+    }
+  }
+}

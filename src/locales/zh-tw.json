@@ -1,0 +1,20 @@
+{
+  "common": {
+    "viewAll": "查看全部",
+    "viewMore": "查看更多"
+  },
+  "layout": {
+    "navbar": {
+      "home": "首頁",
+      "bookmark": "書籤",
+      "settings": "設定"
+    }
+  },
+  "pages": {
+    "home": {
+      "popularMovies": "熱門電影",
+      "popularTVSeries": "熱門電視劇",
+      "youMayLike": "你可能喜歡"
+    }
+  }
+}

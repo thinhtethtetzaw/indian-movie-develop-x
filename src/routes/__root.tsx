@@ -13,7 +13,7 @@ import type { QueryClient } from "@tanstack/react-query";
 
 interface MyRouterContext {
   queryClient: QueryClient;
-  layoutConfig: { isShowNavbar: boolean };
+  layoutConfig: { isShowBottomNavbar: boolean };
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -21,7 +21,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     const routerState = useRouterState();
     const currentRoute = routerState.matches[routerState.matches.length - 1];
     const layoutConfig = currentRoute.context.layoutConfig ?? {};
-    const isShowNavbar = layoutConfig.isShowNavbar ?? true;
+    const isShowBottomNavbar = layoutConfig.isShowBottomNavbar ?? true;
 
     return (
       <>
@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
           <div className="flex-1 overflow-y-auto py-10">
             <Outlet />
           </div>
-          {isShowNavbar && <BottomNavbar />}
+          {isShowBottomNavbar && <BottomNavbar />}
         </div>
         <TanstackDevtools
           config={{

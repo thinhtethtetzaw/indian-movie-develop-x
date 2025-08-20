@@ -6,8 +6,10 @@ import IconSettingsActive from "@/assets/svgs/settings-active.svg?react";
 import IconSettingsInactive from "@/assets/svgs/settings-inactive.svg?react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 function BottomNavbar() {
+  const { t } = useTranslation();
   const router = useRouter();
   function checkRouteActive(path: string) {
     if (path === "/") {
@@ -21,7 +23,7 @@ function BottomNavbar() {
         active: IconHomeActive,
         inactive: IconHomeInactive,
       },
-      label: "Home",
+      label: t("layout.navbar.home"),
       path: "/home",
     },
     {
@@ -29,7 +31,7 @@ function BottomNavbar() {
         active: IconBookmarkActive,
         inactive: IconBookmarkInactive,
       },
-      label: "Bookmark",
+      label: t("layout.navbar.bookmark"),
       path: "/bookmark",
     },
     {
@@ -37,7 +39,7 @@ function BottomNavbar() {
         active: IconSettingsActive,
         inactive: IconSettingsInactive,
       },
-      label: "Settings",
+      label: t("layout.navbar.settings"),
       path: "/settings",
     },
   ];

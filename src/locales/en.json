@@ -1,0 +1,20 @@
+{
+  "common": {
+    "viewAll": "View All",
+    "viewMore": "View More"
+  },
+  "layout": {
+    "navbar": {
+      "home": "Home",
+      "bookmark": "Bookmark",
+      "settings": "Settings"
+    }
+  },
+  "pages": {
+    "home": {
+      "popularMovies": "Popular Movies",
+      "popularTVSeries": "Popular TV Series",
+      "youMayLike": "You May Like"
+    }
+  }
+}
