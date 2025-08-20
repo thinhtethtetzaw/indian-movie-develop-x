@@ -15,7 +15,7 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
-      <div className="mx-auto h-dvh w-screen max-w-md bg-gray-100">
+      <div className="mx-auto h-dvh w-screen max-w-md bg-[#111015]">
         <Header />
         <Outlet />
         <Footer />
