@@ -16,7 +16,6 @@
       "popularTVSeries": "熱門電視劇",
       "youMayLike": "你可能喜歡"
     },
-<<<<<<< Updated upstream
     "bookmarks": {
       "title": "書籤",
       "edit": "編輯",
@@ -39,7 +38,8 @@
       },
       "version": {
         "title": "版本"
-=======
+      }
+    },
     "movies": {
       "movieDetails": {
         "director": "導演",
@@ -49,7 +49,6 @@
         "expand": "展開",
         "collapse": "收起",
         "relatedMovies": "相關電影"
->>>>>>> Stashed changes
       }
     }
   }

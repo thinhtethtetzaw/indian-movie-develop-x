@@ -16,7 +16,6 @@
       "popularTVSeries": "人気のテレビシリーズ",
       "youMayLike": "おすすめ"
     },
-<<<<<<< Updated upstream
     "bookmarks": {
       "title": "ブックマーク",
       "edit": "編集",
@@ -39,7 +38,8 @@
       },
       "version": {
         "title": "バージョン"
-=======
+      }
+    },
     "movies": {
       "movieDetails": {
         "director": "監督",
@@ -49,7 +49,6 @@
         "expand": "もっと見る",
         "collapse": "閉じる",
         "relatedMovies": "関連映画"
->>>>>>> Stashed changes
       }
     }
   }

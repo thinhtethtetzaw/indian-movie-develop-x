@@ -16,7 +16,6 @@
       "popularTVSeries": "热门电视剧",
       "youMayLike": "你可能喜欢"
     },
-<<<<<<< Updated upstream
     "bookmarks": {
       "title": "书签",
       "edit": "编辑",
@@ -39,7 +38,8 @@
       },
       "version": {
         "title": "版本"
-=======
+      }
+    },
     "movies": {
       "movieDetails": {
         "director": "导演",
@@ -49,7 +49,6 @@
         "expand": "展开",
         "collapse": "收起",
         "relatedMovies": "相关电影"
->>>>>>> Stashed changes
       }
     }
   }

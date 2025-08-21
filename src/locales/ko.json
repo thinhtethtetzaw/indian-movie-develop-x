@@ -16,7 +16,6 @@
       "popularTVSeries": "인기 TV 시리즈",
       "youMayLike": "추천"
     },
-<<<<<<< Updated upstream
     "bookmarks": {
       "title": "북마크",
       "edit": "편집",
@@ -39,7 +38,8 @@
       },
       "version": {
         "title": "버전"
-=======
+      }
+    },
     "movies": {
       "movieDetails": {
         "director": "감독",
@@ -49,7 +49,6 @@
         "expand": "더보기",
         "collapse": "접기",
         "relatedMovies": "관련 영화"
->>>>>>> Stashed changes
       }
     }
   }

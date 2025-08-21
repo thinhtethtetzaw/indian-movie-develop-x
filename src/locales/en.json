@@ -16,7 +16,6 @@
       "popularTVSeries": "Popular TV Series",
       "youMayLike": "You May Like"
     },
-<<<<<<< Updated upstream
     "bookmarks": {
       "title": "Bookmarks",
       "edit": "Edit",
@@ -26,6 +25,7 @@
       "deselectAll": "Deselect all",
       "remove": "Remove"
     },
+
     "settings": {
       "title": "Settings",
       "notifications": {
@@ -39,7 +39,8 @@
       },
       "version": {
         "title": "Version"
-=======
+      }
+    },
     "movies": {
       "movieDetails": {
         "director": "Director",
@@ -49,7 +50,6 @@
         "expand": "expands",
         "collapse": "collapse",
         "relatedMovies": "Related Movies"
->>>>>>> Stashed changes
       }
     }
   }
