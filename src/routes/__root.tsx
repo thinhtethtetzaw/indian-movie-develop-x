@@ -21,8 +21,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => {
     const routerState = useRouterState();
     const currentRoute = routerState.matches[routerState.matches.length - 1];
-    const layoutConfig = currentRoute.context.layoutConfig ?? {};
-    const isShowBottomNavbar = layoutConfig.isShowBottomNavbar ?? true;
+    const layoutConfig = currentRoute?.context.layoutConfig as
+      | MyRouterContext["layoutConfig"]
+      | undefined;
+    const isShowBottomNavbar = layoutConfig?.isShowBottomNavbar ?? true;
 
     return (
       <>

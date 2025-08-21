@@ -1,3 +1,3 @@
-// import type { components } from "./service-schema";
+import type { components } from "./index.d";
 
-// export type WorkspacesResponse = components["schemas"]["GetAllWorkspaceDto"];
+export type HomeRecommendListResponseMovie = components["schemas"]["Video"];

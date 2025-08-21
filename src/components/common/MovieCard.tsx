@@ -1,32 +1,26 @@
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { COMMON_ANIMATION_CONFIG } from "@/config/animation";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
 import { useLiveQuery } from "dexie-react-hooks";
 import { HeartIcon, Star } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useCallback, useMemo } from "react";
 
-export interface Movie {
-  id: string;
-  title: string;
-  imageUrl: string;
-  rating?: number | null;
-  isFavorite?: boolean;
-  episode?: number | null;
-}
-
 interface MovieCardProps {
-  movie: Movie;
-  onClick?: (movie: Movie) => void;
+  movie: HomeRecommendListResponseMovie;
+  onClick?: (movie: HomeRecommendListResponseMovie) => void;
   className?: string;
   showFavoriteButton?: boolean;
-  index?: number; // Add index prop
+  index?: number;
 }
 
 // Constants
 const PLACEHOLDER_IMAGE =
   "https://via.placeholder.com/300x450/1f2937/ffffff?text=No+Image";
-const ANIMATION_DELAY_MULTIPLIER = 0.05;
+export const MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER = 0.05;
 
 const MovieCard: React.FC<MovieCardProps> = ({
   movie,
@@ -35,7 +29,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
   showFavoriteButton = true,
   index = 0, // Default to 0 if not provided
 }) => {
-  const isExistingBookmark = useLiveQuery(() => db.bookmarks.get(movie.id));
+  const isExistingBookmark = useLiveQuery(() =>
+    db.bookmarks.get(movie.vod_id || ""),
+  );
 
   const handleFavoriteClick = useCallback(
     async (e: React.MouseEvent) => {
@@ -43,15 +39,15 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
       try {
         if (!isExistingBookmark) {
-          await db.bookmarks.add({ id: movie.id });
+          await db.bookmarks.add({ id: movie.vod_id });
         } else {
-          await db.bookmarks.delete(movie.id);
+          await db.bookmarks.delete(movie.vod_id || "");
         }
       } catch (error) {
         console.error("Failed to toggle bookmark:", error);
       }
     },
-    [isExistingBookmark, movie.id],
+    [isExistingBookmark, movie.vod_id],
   );
 
   const handleCardClick = useCallback(() => {
@@ -67,13 +63,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
   // Memoized computed values
   const animationDelay = useMemo(
-    () => index * ANIMATION_DELAY_MULTIPLIER,
+    () => index * MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER,
     [index],
   );
 
   const hasRatingOrEpisode = useMemo(
-    () => Boolean(movie.rating || movie.episode),
-    [movie.rating, movie.episode],
+    () => Boolean(movie.vod_score || movie.vod_sub),
+    [movie.vod_score, movie.vod_sub],
   );
 
   const heartIconClassName = useMemo(
@@ -93,20 +89,20 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
     return (
       <div className="absolute bottom-2 left-2 space-y-1">
-        {movie.rating && (
+        {movie.vod_score && (
           <div className="flex items-center gap-1">
             <span className="text-forground text-xs font-medium">
-              {movie.rating.toFixed(1)}
+              {Number(movie.vod_score).toFixed(1)}
             </span>
             <Star className="text-forground h-3 w-3 fill-white" />
           </div>
         )}
-        {movie.episode && (
+        {/* {movie.episode && (
           <div className="text-forground flex items-center gap-1 text-xs font-medium">
             <span>{movie.episode}</span>
             <span>Episode</span>
           </div>
-        )}
+        )} */}
       </div>
     );
   };
@@ -152,10 +148,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={COMMON_ANIMATION_CONFIG.movieCard.initial}
+      animate={COMMON_ANIMATION_CONFIG.movieCard.animate}
+      exit={COMMON_ANIMATION_CONFIG.movieCard.exit}
       transition={{
-        duration: 0.3,
+        ...COMMON_ANIMATION_CONFIG.movieCard.transition,
         delay: animationDelay,
       }}
       className={cn("min-h-46 w-31 cursor-pointer", className)}
@@ -169,11 +166,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
         }
       }}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-sm">
         <img
-          src={movie.imageUrl}
-          alt={movie.title}
-          className="h-40 w-full rounded-[3px] object-cover"
+          src={movie.vod_pic}
+          alt={movie.vod_name}
+          className="h-40 w-full object-cover"
           onError={handleImageError}
           loading="lazy"
         />
@@ -184,10 +181,33 @@ const MovieCard: React.FC<MovieCardProps> = ({
       </div>
 
       <h3 className="text-forground mt-1.5 truncate text-sm font-semibold">
-        {movie.title}
+        {movie.vod_name}
       </h3>
     </motion.div>
   );
 };
 
+const MovieCardSkeleton = ({
+  className,
+  index = 0,
+}: {
+  className?: string;
+  index?: number;
+}) => (
+  <motion.div
+    initial={COMMON_ANIMATION_CONFIG.movieCard.initial}
+    animate={COMMON_ANIMATION_CONFIG.movieCard.animate}
+    exit={COMMON_ANIMATION_CONFIG.movieCard.exit}
+    transition={{
+      ...COMMON_ANIMATION_CONFIG.movieCard.transition,
+      delay: index * MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER,
+    }}
+    className={cn("min-h-46 w-full min-w-31", className)}
+  >
+    <Skeleton className="h-40 w-full" />
+    <Skeleton className="mt-1.5 h-6 w-3/4" />
+  </motion.div>
+);
+
 export default MovieCard;
+export { MovieCardSkeleton };
