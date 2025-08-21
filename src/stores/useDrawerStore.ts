@@ -30,12 +30,16 @@ export const useDrawerStore = create<DrawerState>()(
 
       showDrawer: (key) => {
         const { openDrawer } = get();
-        if (openDrawer !== key) set({ openDrawer: key }, false, "showDrawer");
+        if (openDrawer !== key) {
+          set({ openDrawer: key }, false, "showDrawer");
+        }
       },
 
       hideDrawer: () => {
         const { openDrawer } = get();
-        if (openDrawer !== null) set({ openDrawer: null }, false, "hideDrawer");
+        if (openDrawer !== null) {
+          set({ openDrawer: null }, false, "hideDrawer");
+        }
       },
     }),
     { name: "drawer-store" },
