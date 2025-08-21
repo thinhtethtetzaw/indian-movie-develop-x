@@ -45,12 +45,12 @@ function RouteComponent() {
           </Button>
         </div>
         <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
-          {MOCK_MOVIES.map((movie) => (
+          {MOCK_MOVIES.map((movie, index) => (
             <div key={movie.id} className="flex-shrink-0 last:pr-4">
               <MovieCard
                 movie={movie}
-                onFavoriteToggle={() => console.log("favorite")}
                 onClick={handleMovieClick}
+                index={index}
               />
             </div>
           ))}
@@ -71,12 +71,12 @@ function RouteComponent() {
           </Button>
         </div>
         <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
-          {MOCK_MOVIES.map((movie) => (
+          {MOCK_MOVIES.map((movie, index) => (
             <div key={movie.id} className="flex-shrink-0 last:pr-4">
               <MovieCard
                 movie={movie}
-                onFavoriteToggle={() => console.log("favorite")}
                 onClick={handleMovieClick}
+                index={index}
               />
             </div>
           ))}
@@ -89,12 +89,12 @@ function RouteComponent() {
           {t("pages.home.youMayLike")}
         </h2>
         <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-          {MOCK_MOVIES.map((movie) => (
+          {MOCK_MOVIES.map((movie, index) => (
             <div key={movie.id} className="flex-shrink-0">
               <MovieCard
                 movie={movie}
-                onFavoriteToggle={() => console.log("favorite")}
                 onClick={handleMovieClick}
+                index={index}
               />
             </div>
           ))}
