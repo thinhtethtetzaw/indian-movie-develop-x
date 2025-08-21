@@ -10,7 +10,7 @@ export const Route = createFileRoute("/settings/")({
 function RouteComponent() {
   const navigate = useNavigate();
   return (
-    <div className="mx-auto bg-[#0a0a0a] p-4 text-white">
+    <div className="mx-auto p-4 text-white">
       <div className="space-y-4">
         <div className="rounded-2xl bg-white/12">
           <div
