@@ -37,10 +37,10 @@ export function DynamicDrawer({
       onOpenChange={(v) => setOpen(drawerKey, v)}
     >
       <DrawerTrigger asChild>
-        <div className="flex w-full items-center justify-between p-4 shadow-md transition">
+        <div className="flex w-full cursor-pointer items-center justify-between p-4 shadow-md transition">
           <div className="flex items-center gap-3">
             {triggerIcon}
-            <span className="text-white">{triggerLabel}</span>
+            <p className="text-sm text-white">{triggerLabel}</p>
           </div>
           <ChevronRight className="h-6 w-6 text-white" />
         </div>

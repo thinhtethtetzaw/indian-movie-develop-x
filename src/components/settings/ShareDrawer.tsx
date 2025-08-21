@@ -1,19 +1,21 @@
-import { DrawerHeaderBar } from "@/components/common/DrawerHeaderBar"; // 🔹 import here
-import { DynamicDrawer } from "@/components/common/DynamicDrawer";
+import ShareApp from "@/assets/svgs/icon-share-app.svg?react";
+import { DrawerHeaderBar } from "@/components/common/DrawerHeaderBar";
+import { DynamicDrawer } from "@/components/settings/DynamicDrawer";
 import { ShareSocialList } from "@/components/settings/ShareSocialList";
 import { useDrawerStore } from "@/stores/useDrawerStore";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function ShareDrawer() {
   const { hideDrawer } = useDrawerStore();
+  const { t } = useTranslation();
 
   return (
     <DynamicDrawer
       drawerKey="share"
-      title="Share"
+      title={t("pages.settings.shareApp.title")}
       description="Share our app"
-      triggerIcon={<SquareArrowOutUpRight className="h-6 w-6 text-white" />}
-      triggerLabel="Share our app"
+      triggerIcon={<ShareApp className="size-6 text-white" />}
+      triggerLabel={t("pages.settings.shareApp.title")}
     >
       <DrawerHeaderBar title="Share To Social Media" onClose={hideDrawer} />
       <ShareSocialList url="http://sample.info/?insect=fire&port=attract#cave" />

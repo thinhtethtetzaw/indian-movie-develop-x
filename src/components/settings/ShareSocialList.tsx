@@ -1,35 +1,35 @@
+import Facebook from "@/assets/svgs/icon-facebook.svg?react";
+import Instagram from "@/assets/svgs/icon-instagram.svg?react";
+import QQ from "@/assets/svgs/icon-qq.svg?react";
+import Telegram from "@/assets/svgs/icon-telegram.svg?react";
+import Twitter from "@/assets/svgs/icon-twitter.svg?react";
 import { Check, Copy } from "lucide-react";
 import React from "react";
-import Facebook from "../../assets/svgs/icon-facebook.svg";
-import Instagram from "../../assets/svgs/icon-instagram.svg";
-import QQ from "../../assets/svgs/icon-qq.svg";
-import Telegram from "../../assets/svgs/icon-telegram.svg";
-import Twitter from "../../assets/svgs/icon-twitter.svg";
 
 const socialPlatforms = [
   {
     name: "Facebook",
     url: "https://www.facebook.com/sharer/sharer.php?u=",
-    icon: <img src={Facebook} alt="Facebook" className="h-12 w-12" />,
+    icon: <Facebook className="h-12 w-12" />,
   },
   {
     name: "Instagram",
-    icon: <img src={Instagram} alt="Instagram" className="h-12 w-12" />,
+    icon: <Instagram className="h-12 w-12" />,
   },
   {
     name: "QQ",
     url: "https://connect.qq.com/widget/shareqq/index.html?url=",
-    icon: <img src={QQ} alt="QQ" className="h-12 w-12" />,
+    icon: <QQ className="h-12 w-12" />,
   },
   {
     name: "Twitter",
     url: "https://twitter.com/intent/tweet?url=",
-    icon: <img src={Twitter} alt="Twitter" className="h-12 w-12" />,
+    icon: <Twitter className="h-12 w-12" />,
   },
   {
     name: "Telegram",
     url: "https://t.me/share/url?url=",
-    icon: <img src={Telegram} alt="Telegram" className="h-12 w-12" />,
+    icon: <Telegram className="h-12 w-12" />,
   },
 ];
 
@@ -67,7 +67,7 @@ export function ShareSocialList({ url = "" }: ShareSocialListProps) {
           <div key={platform.name} className="flex flex-col items-center gap-2">
             <button
               onClick={() => handleSocialShare(platform)}
-              className="flex items-center justify-center rounded-full text-white transition-transform hover:scale-110"
+              className="flex items-center justify-center rounded-full text-white transition-transform duration-300 hover:scale-110"
             >
               {platform.icon}
             </button>

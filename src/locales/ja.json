@@ -6,7 +6,7 @@
   "layout": {
     "navbar": {
       "home": "ホーム",
-      "bookmark": "ブックマーク",
+      "bookmarks": "ブックマーク",
       "settings": "設定"
     }
   },
@@ -15,6 +15,30 @@
       "popularMovies": "人気の映画",
       "popularTVSeries": "人気のテレビシリーズ",
       "youMayLike": "おすすめ"
+    },
+    "bookmarks": {
+      "title": "ブックマーク",
+      "edit": "編集",
+      "cancel": "キャンセル",
+      "selected": "選択済み",
+      "selectAll": "すべて選択",
+      "deselectAll": "選択解除",
+      "remove": "削除"
+    },
+    "settings": {
+      "title": "設定",
+      "notifications": {
+        "title": "通知"
+      },
+      "language": {
+        "title": "言語"
+      },
+      "shareApp": {
+        "title": "アプリを共有"
+      },
+      "version": {
+        "title": "バージョン"
+      }
     }
   }
 }

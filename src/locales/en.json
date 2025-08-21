@@ -17,7 +17,28 @@
       "youMayLike": "You May Like"
     },
     "bookmarks": {
-      "title": "Bookmarks"
+      "title": "Bookmarks",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "selected": "Selected",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all",
+      "remove": "Remove"
+    },
+    "settings": {
+      "title": "Settings",
+      "notifications": {
+        "title": "Notifications"
+      },
+      "language": {
+        "title": "Language"
+      },
+      "shareApp": {
+        "title": "Share our app"
+      },
+      "version": {
+        "title": "Version"
+      }
     }
   }
 }

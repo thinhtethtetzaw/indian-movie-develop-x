@@ -1,30 +1,29 @@
-import i18n from "../../config/i18n.ts";
+import i18n from "@/config/i18n";
 
 const LANGUAGES = [
   { code: "en", name: "English", subtitle: "Default" },
-  { code: "zh-CN", name: "简体中文", subtitle: "Chinese, Simplified" },
-  { code: "zh-TW", name: "繁體中文", subtitle: "Chinese, Traditional" },
+  { code: "zh_cn", name: "简体中文", subtitle: "Chinese, Simplified" },
+  { code: "zh_tw", name: "繁體中文", subtitle: "Chinese, Traditional" },
   { code: "ja", name: "日本語", subtitle: "Japanese" },
   { code: "ko", name: "한국어", subtitle: "Korean" },
 ];
 
 interface Props {
-  selectedLanguage: string;
   onSelect: (code: string) => void;
 }
 
-export function LanguageList({ selectedLanguage, onSelect }: Props) {
+export function LanguageList({ onSelect }: Props) {
+  const selectedLanguage = i18n.language;
+
   return (
-    <div className="mx-auto w-full p-4">
+    <div className="mx-auto mt-4 mb-10 w-full">
       {LANGUAGES.map(({ code, name, subtitle }) => {
         const isSelected = code === selectedLanguage;
         return (
           <button
             key={code}
-            onClick={() =>
-              !isSelected && (i18n.changeLanguage(code), onSelect(code))
-            }
-            className="flex w-full justify-between border-b border-gray-700 px-0 py-4 text-left transition-colors last:border-b-0 hover:bg-gray-700/50"
+            onClick={() => !isSelected && onSelect(code)}
+            className="flex w-full justify-between border-b border-gray-700 p-4 text-left transition-colors last:border-b-0 hover:bg-gray-700/50"
           >
             <div className="flex flex-col">
               <span className="text-base font-medium text-white">{name}</span>

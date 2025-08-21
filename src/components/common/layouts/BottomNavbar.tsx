@@ -1,9 +1,9 @@
-import IconBookmarkActive from "@/assets/svgs/bookmark-active.svg?react";
-import IconBookmarkInactive from "@/assets/svgs/bookmark-inactive.svg?react";
-import IconHomeActive from "@/assets/svgs/home-active.svg?react";
-import IconHomeInactive from "@/assets/svgs/home-inactive.svg?react";
-import IconSettingsActive from "@/assets/svgs/settings-active.svg?react";
-import IconSettingsInactive from "@/assets/svgs/settings-inactive.svg?react";
+import IconBookmarkActive from "@/assets/svgs/icon-bookmark-active.svg?react";
+import IconBookmarkInactive from "@/assets/svgs/icon-bookmark-inactive.svg?react";
+import IconHomeActive from "@/assets/svgs/icon-home-active.svg?react";
+import IconHomeInactive from "@/assets/svgs/icon-home-inactive.svg?react";
+import IconSettingsActive from "@/assets/svgs/icon-settings-active.svg?react";
+import IconSettingsInactive from "@/assets/svgs/icon-settings-inactive.svg?react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";

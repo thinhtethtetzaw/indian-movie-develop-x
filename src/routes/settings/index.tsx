@@ -1,57 +1,88 @@
+import Info from "@/assets/svgs/icon-info.svg?react";
+import Notification from "@/assets/svgs/icon-notification.svg?react";
+import NavHeader from "@/components/common/layouts/NavHeader";
 import { LanguageDrawer } from "@/components/settings/LanguageDrawer";
 import { ShareDrawer } from "@/components/settings/ShareDrawer";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Bell, ChevronRight, Circle, Info } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronRightIcon } from "lucide-react";
+import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/settings/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   return (
-    <div className="mx-auto p-4 text-white">
-      <div className="space-y-4">
-        <div className="rounded-2xl bg-white/12">
-          <div
-            onClick={() => navigate({ to: "/settings/notifications" })}
-            className="flex w-full items-center justify-between p-4 shadow-md transition"
+    <>
+      <NavHeader isShowBack={false} title={t("pages.settings.title")} />
+      <motion.div
+        className="mx-auto mt-5 px-4 text-white"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="space-y-4">
+          <motion.div
+            className="rounded-2xl bg-white/12"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Bell className="h-6 w-6 text-white" />
-                <Circle
-                  className="absolute top-0 right-0 h-2 w-2 text-red-500"
-                  fill="red"
-                />
+            <Link
+              to="/settings/notifications"
+              className="flex w-full items-center justify-between p-4 shadow-md transition"
+            >
+              <div className="flex items-center gap-3">
+                <motion.div
+                  className="relative"
+                  whileHover={{ rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Notification className="size-6 text-white" />
+                </motion.div>
+                <p className="text-sm">
+                  {t("pages.settings.notifications.title")}
+                </p>
               </div>
-              <span>Notifications</span>
+              <ChevronRightIcon className="size-6 text-white" />
+            </Link>
+
+            <div className="px-4">
+              <hr className="w-full border-white/4" />
             </div>
-            <ChevronRight className="h-6 w-6 text-white" />
-          </div>
+            <LanguageDrawer />
+          </motion.div>
 
-          <div className="px-4">
-            <hr className="w-full border-white/4" />
-          </div>
-          <LanguageDrawer />
-        </div>
+          <motion.div
+            className="rounded-2xl bg-white/12"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            <ShareDrawer />
 
-        <div className="rounded-2xl bg-white/12">
-          <ShareDrawer />
-
-          <div className="px-4">
-            <hr className="w-full border-white/4" />
-          </div>
-
-          <div className="flex w-full items-center justify-between p-4 shadow-md">
-            <div className="flex items-center gap-3">
-              <Info className="h-6 w-6 text-white" />
-              <span>Version</span>
+            <div className="px-4">
+              <hr className="w-full border-white/4" />
             </div>
-            <span className="text-white">V1.0.0.1</span>
-          </div>
+
+            <div className="flex w-full items-center justify-between p-4 shadow-md">
+              <div className="flex items-center gap-3">
+                <motion.div
+                  whileHover={{ rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Info className="size-6 text-white" />
+                </motion.div>
+                <p className="text-sm">{t("pages.settings.version.title")}</p>
+              </div>
+              <p className="text-sm text-white">V1.0.0.1</p>
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 }

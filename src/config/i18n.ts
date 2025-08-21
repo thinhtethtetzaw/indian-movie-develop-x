@@ -21,7 +21,6 @@ i18n
       ja: { translation: ja },
       ko: { translation: ko },
     },
-    lng: "en",
     fallbackLng: "en",
     debug: import.meta.env.MODE === "development",
     interpolation: {

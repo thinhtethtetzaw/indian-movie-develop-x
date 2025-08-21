@@ -6,7 +6,7 @@
   "layout": {
     "navbar": {
       "home": "首頁",
-      "bookmark": "書籤",
+      "bookmarks": "書籤",
       "settings": "設定"
     }
   },
@@ -15,6 +15,30 @@
       "popularMovies": "熱門電影",
       "popularTVSeries": "熱門電視劇",
       "youMayLike": "你可能喜歡"
+    },
+    "bookmarks": {
+      "title": "書籤",
+      "edit": "編輯",
+      "cancel": "取消",
+      "selected": "已選擇",
+      "selectAll": "全選",
+      "deselectAll": "取消全選",
+      "remove": "移除"
+    },
+    "settings": {
+      "title": "設定",
+      "notifications": {
+        "title": "通知"
+      },
+      "language": {
+        "title": "語言"
+      },
+      "shareApp": {
+        "title": "分享我們的應用"
+      },
+      "version": {
+        "title": "版本"
+      }
     }
   }
 }

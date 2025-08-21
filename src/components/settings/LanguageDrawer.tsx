@@ -1,30 +1,27 @@
-import { DynamicDrawer } from "@/components/common/DynamicDrawer";
+import Language from "@/assets/svgs/icon-language.svg?react";
+import { DynamicDrawer } from "@/components/settings/DynamicDrawer";
 import { LanguageList } from "@/components/settings/LanguageList";
 import { useDrawerStore } from "@/stores/useDrawerStore";
-import { Languages } from "lucide-react";
-import React from "react";
+import { useTranslation } from "react-i18next";
 
 export function LanguageDrawer() {
-  const [selectedLanguage, setSelectedLanguage] = React.useState("en");
   const { hideDrawer } = useDrawerStore();
+  const { t, i18n } = useTranslation();
 
   const handleSelect = (code: string) => {
-    setSelectedLanguage(code);
+    i18n.changeLanguage(code);
     hideDrawer();
   };
 
   return (
     <DynamicDrawer
       drawerKey="language"
-      title="Language"
+      title={t("pages.settings.language.title")}
       description="Change your language"
-      triggerIcon={<Languages className="h-6 w-6 text-white" />}
-      triggerLabel="Language"
+      triggerIcon={<Language className="size-6 text-white" />}
+      triggerLabel={t("pages.settings.language.title")}
     >
-      <LanguageList
-        selectedLanguage={selectedLanguage}
-        onSelect={handleSelect}
-      />
+      <LanguageList onSelect={handleSelect} />
     </DynamicDrawer>
   );
 }

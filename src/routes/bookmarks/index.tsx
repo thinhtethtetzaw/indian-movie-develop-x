@@ -182,7 +182,7 @@ function RouteComponent() {
                 className="[&_svg:not([class*='size-'])]:size-6"
                 onClick={handleCancelEdit}
               >
-                <X className="h-4 w-4" />
+                <X />
               </Button>
             </div>
 
@@ -193,7 +193,9 @@ function RouteComponent() {
                 onClick={handleSelectAll}
                 className="h-13 flex-1 rounded-full bg-white/8 text-base hover:bg-white/20"
               >
-                {isAllSelected ? "Deselect all" : "Select all"}
+                {isAllSelected
+                  ? t("pages.bookmarks.deselectAll")
+                  : t("pages.bookmarks.selectAll")}
               </Button>
               <Button
                 variant="secondary"
@@ -201,7 +203,7 @@ function RouteComponent() {
                 disabled={selectedItems.size === 0}
                 className="hover:bg-brand-red h-13 flex-1 rounded-full bg-white/8 bg-linear-to-b from-[#FF0040] to-[#990026] text-base disabled:opacity-50"
               >
-                Remove
+                {t("pages.bookmarks.remove")}
               </Button>
             </div>
           </div>
@@ -217,7 +219,9 @@ function RouteComponent() {
         title={t("pages.bookmarks.title")}
         rightNode={
           <Button variant="ghost" onClick={handleModeToggle}>
-            {mode === "list" ? "Edit" : "Cancel"}
+            {mode === "list"
+              ? t("pages.bookmarks.edit")
+              : t("pages.bookmarks.cancel")}
           </Button>
         }
       />

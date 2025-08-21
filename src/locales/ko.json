@@ -6,7 +6,7 @@
   "layout": {
     "navbar": {
       "home": "홈",
-      "bookmark": "북마크",
+      "bookmarks": "북마크",
       "settings": "설정"
     }
   },
@@ -15,6 +15,30 @@
       "popularMovies": "인기 영화",
       "popularTVSeries": "인기 TV 시리즈",
       "youMayLike": "추천"
+    },
+    "bookmarks": {
+      "title": "북마크",
+      "edit": "편집",
+      "cancel": "취소",
+      "selected": "선택됨",
+      "selectAll": "전체 선택",
+      "deselectAll": "전체 해제",
+      "remove": "제거"
+    },
+    "settings": {
+      "title": "설정",
+      "notifications": {
+        "title": "알림"
+      },
+      "language": {
+        "title": "언어"
+      },
+      "shareApp": {
+        "title": "앱 공유하기"
+      },
+      "version": {
+        "title": "버전"
+      }
     }
   }
 }

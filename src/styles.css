@@ -67,7 +67,7 @@ code {
 
   --brand-red: oklch(55.72% 0.217 19.96);
 
-  --nav-header-height: 48px;
+  --nav-header-height: 64px;
 }
 
 @theme inline {
