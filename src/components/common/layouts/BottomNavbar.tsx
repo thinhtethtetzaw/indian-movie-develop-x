@@ -31,8 +31,8 @@ function BottomNavbar() {
         active: IconBookmarkActive,
         inactive: IconBookmarkInactive,
       },
-      label: t("layout.navbar.bookmark"),
-      path: "/bookmark",
+      label: t("layout.navbar.bookmarks"),
+      path: "/bookmarks",
     },
     {
       icon: {
@@ -71,7 +71,7 @@ function BottomNavbar() {
                   )}
                 </motion.div>
                 <motion.p
-                  className="text-sm text-white"
+                  className="text-forground text-sm"
                   animate={{
                     color: isActive ? "#ffffff" : "#9ca3af",
                     fontWeight: isActive ? "600" : "400",

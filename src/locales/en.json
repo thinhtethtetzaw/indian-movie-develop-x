@@ -6,7 +6,7 @@
   "layout": {
     "navbar": {
       "home": "Home",
-      "bookmark": "Bookmark",
+      "bookmarks": "Bookmarks",
       "settings": "Settings"
     }
   },
@@ -15,6 +15,9 @@
       "popularMovies": "Popular Movies",
       "popularTVSeries": "Popular TV Series",
       "youMayLike": "You May Like"
+    },
+    "bookmarks": {
+      "title": "Bookmarks"
     }
   }
 }

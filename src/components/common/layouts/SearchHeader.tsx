@@ -1,5 +1,5 @@
 function SearchHeader() {
-  return <div className="text-white">SearchHeader</div>;
+  return <div className="text-forground">SearchHeader</div>;
 }
 
 export default SearchHeader;

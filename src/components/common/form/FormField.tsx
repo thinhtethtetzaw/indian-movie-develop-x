@@ -34,7 +34,7 @@ export const FormField = <T extends FieldValues>({
       render={({ field: formField }) => (
         <FormItem className={cn("w-full space-y-1", className)}>
           {field.label && (
-            <FormLabel className="gap-1 text-white">
+            <FormLabel className="text-forground gap-1">
               {field.label}
               {field.required && <span className="text-red-500">*</span>}
               {field.optional && (

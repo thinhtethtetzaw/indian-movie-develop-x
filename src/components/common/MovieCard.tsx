@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Heart, Star } from "lucide-react";
+import { motion } from "motion/react";
 import React from "react";
 
 export interface Movie {
@@ -43,14 +44,14 @@ const MovieCard: React.FC<MovieCardProps> = ({
       <div className="absolute bottom-2 left-2">
         {movie.rating && (
           <div className="flex items-center gap-1">
-            <span className="text-xs font-medium text-white">
+            <span className="text-forground text-xs font-medium">
               {movie?.rating.toFixed(1)}
             </span>
-            <Star className="h-3 w-3 fill-white text-white" />
+            <Star className="text-forground h-3 w-3 fill-white" />
           </div>
         )}
         {movie.episode && (
-          <div className="flex items-center gap-1 text-xs font-medium text-white">
+          <div className="text-forground flex items-center gap-1 text-xs font-medium">
             <span>{movie?.episode}</span>
             <span>Episode</span>
           </div>
@@ -76,7 +77,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
             "size-4 transition-all",
             movie.isFavorite
               ? "fill-red-500 text-red-500"
-              : "text-white hover:text-red-400",
+              : "text-forground hover:text-red-400",
           )}
         />
       </Button>
@@ -84,7 +85,16 @@ const MovieCard: React.FC<MovieCardProps> = ({
   };
 
   return (
-    <div className={cn("min-h-46 w-31", className)} onClick={handleCardClick}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.3,
+        delay: Number(movie.id) * 0.05,
+      }}
+      className={cn("min-h-46 w-31", className)}
+      onClick={handleCardClick}
+    >
       <div className="relative">
         <img
           src={movie.imageUrl}
@@ -96,15 +106,15 @@ const MovieCard: React.FC<MovieCardProps> = ({
               "https://via.placeholder.com/300x450/1f2937/ffffff?text=No+Image";
           }}
         />
-        <div className="from-black-800/60 absolute inset-0 bg-gradient-to-t via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 from-10% via-black/20 via-30% to-transparent to-50%" />
 
         {renderFavoriteButton()}
         {renderRating()}
       </div>
-      <h3 className="mt-1.5 truncate text-sm font-semibold text-white">
+      <h3 className="text-forground mt-1.5 truncate text-sm font-semibold">
         {movie.title}
       </h3>
-    </div>
+    </motion.div>
   );
 };
 

@@ -66,6 +66,8 @@ code {
   --sidebar-ring: oklch(0.442 0.017 285.786);
 
   --brand-red: oklch(55.72% 0.217 19.96);
+
+  --nav-header-height: 48px;
 }
 
 @theme inline {

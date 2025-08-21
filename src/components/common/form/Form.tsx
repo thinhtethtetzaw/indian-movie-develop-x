@@ -1,32 +1,32 @@
-import React, { createContext } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { FormField } from "@/components/common/form/FormField";
+import { PasswordInput } from "@/components/common/form/PasswordInput";
+import TextareaInput from "@/components/common/form/TextareaInput";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form as BaseForm } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
+import React, { createContext } from "react";
 import type {
   FieldPath,
   FieldValues,
   Path,
   PathValue,
   UseFormReturn,
-} from 'react-hook-form'
-import { FormField } from '@/components/common/form/FormField'
-import { PasswordInput } from '@/components/common/form/PasswordInput'
-import TextareaInput from '@/components/common/form/TextareaInput'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Form as BaseForm } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
-import { cn } from '@/lib/utils'
+} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const FormMethodsContext = createContext<UseFormReturn<FieldValues> | null>(
   null,
-)
+);
 
 type FormProps<T extends FieldValues> = {
-  id: string
-  formMethods: UseFormReturn<T>
-  onSubmit: (data: T) => void
-  className?: string
-  children: React.ReactNode
-}
+  id: string;
+  formMethods: UseFormReturn<T>;
+  onSubmit: (data: T) => void;
+  className?: string;
+  children: React.ReactNode;
+};
 
 function Form<T extends FieldValues>({
   id,
@@ -50,7 +50,7 @@ function Form<T extends FieldValues>({
         </form>
       </BaseForm>
     </FormMethodsContext.Provider>
-  )
+  );
 }
 
 Form.InputField = function InputField<T extends FieldValues = FieldValues>({
@@ -59,11 +59,11 @@ Form.InputField = function InputField<T extends FieldValues = FieldValues>({
   required = false,
   ...props
 }: {
-  name: FieldPath<T>
-  label?: string
-  required?: boolean
+  name: FieldPath<T>;
+  label?: string;
+  required?: boolean;
 } & React.ComponentProps<typeof Input>) {
-  const { control } = useFormContext<T>()
+  const { control } = useFormContext<T>();
 
   return (
     <FormField
@@ -73,11 +73,11 @@ Form.InputField = function InputField<T extends FieldValues = FieldValues>({
         name,
         label,
         required,
-        render: <Input className="h-12 rounded-lg text-white" {...props} />,
+        render: <Input className="text-forground h-12 rounded-lg" {...props} />,
       }}
     />
-  )
-}
+  );
+};
 
 Form.PasswordField = function PasswordField<
   T extends FieldValues = FieldValues,
@@ -86,7 +86,7 @@ Form.PasswordField = function PasswordField<
   label,
   ...props
 }: { name: FieldPath<T> } & React.ComponentProps<typeof PasswordInput>) {
-  const { control } = useFormContext<T>()
+  const { control } = useFormContext<T>();
 
   return (
     <FormField
@@ -98,8 +98,8 @@ Form.PasswordField = function PasswordField<
         render: <PasswordInput {...props} />,
       }}
     />
-  )
-}
+  );
+};
 
 Form.TextareaField = function TextareaField<
   T extends FieldValues = FieldValues,
@@ -111,7 +111,7 @@ Form.TextareaField = function TextareaField<
 }: { name: FieldPath<T>; optional?: boolean } & React.ComponentProps<
   typeof TextareaInput
 >) {
-  const { control } = useFormContext<T>()
+  const { control } = useFormContext<T>();
 
   return (
     <FormField
@@ -123,8 +123,8 @@ Form.TextareaField = function TextareaField<
         render: <TextareaInput {...props} />,
       }}
     />
-  )
-}
+  );
+};
 
 Form.CheckboxField = function CheckboxField<
   T extends FieldValues = FieldValues,
@@ -134,9 +134,9 @@ Form.CheckboxField = function CheckboxField<
   ...props
 }: { name: FieldPath<T>; label?: string } & Omit<
   React.ComponentProps<typeof Checkbox>,
-  'value'
+  "value"
 >) {
-  const { control } = useFormContext<T>()
+  const { control } = useFormContext<T>();
   return (
     <FormField
       control={control}
@@ -151,23 +151,23 @@ Form.CheckboxField = function CheckboxField<
         ),
       }}
     />
-  )
-}
+  );
+};
 
 Form.SwitchField = function SwitchField<T extends FieldValues = FieldValues>({
   name,
   className,
   ...props
 }: {
-  name: FieldPath<T>
-  className?: string
-} & Omit<React.ComponentProps<typeof Switch>, 'checked' | 'onCheckedChange'>) {
-  const { control, setValue, watch } = useFormContext<T>()
-  const value = watch(name)
+  name: FieldPath<T>;
+  className?: string;
+} & Omit<React.ComponentProps<typeof Switch>, "checked" | "onCheckedChange">) {
+  const { control, setValue, watch } = useFormContext<T>();
+  const value = watch(name);
   return (
     <FormField
       control={control}
-      className={cn('w-full', className)}
+      className={cn("w-full", className)}
       field={{
         name,
         render: (
@@ -183,7 +183,7 @@ Form.SwitchField = function SwitchField<T extends FieldValues = FieldValues>({
         ),
       }}
     />
-  )
-}
+  );
+};
 
-export { Form }
+export { Form };

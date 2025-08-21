@@ -13,7 +13,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as HomeIndexRouteImport } from './routes/home/index'
-import { Route as BookmarkIndexRouteImport } from './routes/bookmark/index'
+import { Route as BookmarksIndexRouteImport } from './routes/bookmarks/index'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SeriesSeriesIdRouteImport } from './routes/series/$seriesId'
 import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
@@ -38,9 +38,9 @@ const HomeIndexRoute = HomeIndexRouteImport.update({
   path: '/home/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BookmarkIndexRoute = BookmarkIndexRouteImport.update({
-  id: '/bookmark/',
-  path: '/bookmark/',
+const BookmarksIndexRoute = BookmarksIndexRouteImport.update({
+  id: '/bookmarks/',
+  path: '/bookmarks/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
@@ -65,7 +65,7 @@ export interface FileRoutesByFullPath {
   '/movies/$movieId': typeof MoviesMovieIdRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/bookmark': typeof BookmarkIndexRoute
+  '/bookmarks': typeof BookmarksIndexRoute
   '/home': typeof HomeIndexRoute
   '/settings': typeof SettingsIndexRoute
 }
@@ -75,7 +75,7 @@ export interface FileRoutesByTo {
   '/movies/$movieId': typeof MoviesMovieIdRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/bookmark': typeof BookmarkIndexRoute
+  '/bookmarks': typeof BookmarksIndexRoute
   '/home': typeof HomeIndexRoute
   '/settings': typeof SettingsIndexRoute
 }
@@ -86,7 +86,7 @@ export interface FileRoutesById {
   '/movies/$movieId': typeof MoviesMovieIdRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/bookmark/': typeof BookmarkIndexRoute
+  '/bookmarks/': typeof BookmarksIndexRoute
   '/home/': typeof HomeIndexRoute
   '/settings/': typeof SettingsIndexRoute
 }
@@ -98,7 +98,7 @@ export interface FileRouteTypes {
     | '/movies/$movieId'
     | '/series/$seriesId'
     | '/settings/notifications'
-    | '/bookmark'
+    | '/bookmarks'
     | '/home'
     | '/settings'
   fileRoutesByTo: FileRoutesByTo
@@ -108,7 +108,7 @@ export interface FileRouteTypes {
     | '/movies/$movieId'
     | '/series/$seriesId'
     | '/settings/notifications'
-    | '/bookmark'
+    | '/bookmarks'
     | '/home'
     | '/settings'
   id:
@@ -118,7 +118,7 @@ export interface FileRouteTypes {
     | '/movies/$movieId'
     | '/series/$seriesId'
     | '/settings/notifications'
-    | '/bookmark/'
+    | '/bookmarks/'
     | '/home/'
     | '/settings/'
   fileRoutesById: FileRoutesById
@@ -129,7 +129,7 @@ export interface RootRouteChildren {
   MoviesMovieIdRoute: typeof MoviesMovieIdRoute
   SeriesSeriesIdRoute: typeof SeriesSeriesIdRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
-  BookmarkIndexRoute: typeof BookmarkIndexRoute
+  BookmarksIndexRoute: typeof BookmarksIndexRoute
   HomeIndexRoute: typeof HomeIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
 }
@@ -164,11 +164,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bookmark/': {
-      id: '/bookmark/'
-      path: '/bookmark'
-      fullPath: '/bookmark'
-      preLoaderRoute: typeof BookmarkIndexRouteImport
+    '/bookmarks/': {
+      id: '/bookmarks/'
+      path: '/bookmarks'
+      fullPath: '/bookmarks'
+      preLoaderRoute: typeof BookmarksIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/notifications': {
@@ -201,7 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoviesMovieIdRoute: MoviesMovieIdRoute,
   SeriesSeriesIdRoute: SeriesSeriesIdRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
-  BookmarkIndexRoute: BookmarkIndexRoute,
+  BookmarksIndexRoute: BookmarksIndexRoute,
   HomeIndexRoute: HomeIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
 }

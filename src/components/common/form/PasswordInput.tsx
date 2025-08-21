@@ -23,7 +23,7 @@ export const PasswordInput = React.memo(
           type={showPassword ? "text" : "password"}
           data-slot="input"
           className={cn(
-            "h-12 rounded-lg text-white",
+            "text-forground h-12 rounded-lg",
             {
               "text-text-destructive": error,
             },
