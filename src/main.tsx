@@ -6,6 +6,7 @@ import * as TanStackQueryProvider from "./integrations/tanstack-query/root-provi
 
 // Import the generated route tree
 
+import "./config/i18n.ts";
 import reportWebVitals from "./reportWebVitals.ts";
 import { routeTree } from "./routeTree.gen.ts";
 import "./styles.css";
@@ -17,6 +18,9 @@ const router = createRouter({
   routeTree,
   context: {
     ...TanStackQueryProviderContext,
+    layoutConfig: {
+      isShowBottomNavbar: true,
+    },
   },
   defaultPreload: "intent",
   scrollRestoration: true,

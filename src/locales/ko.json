@@ -1,0 +1,20 @@
+{
+  "common": {
+    "viewAll": "전체 보기",
+    "viewMore": "더 보기"
+  },
+  "layout": {
+    "navbar": {
+      "home": "홈",
+      "bookmark": "북마크",
+      "settings": "설정"
+    }
+  },
+  "pages": {
+    "home": {
+      "popularMovies": "인기 영화",
+      "popularTVSeries": "인기 TV 시리즈",
+      "youMayLike": "추천"
+    }
+  }
+}
