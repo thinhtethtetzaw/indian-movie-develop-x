@@ -195,7 +195,7 @@ function RouteComponent() {
   );
 
   const renderMovieSkeleton = useCallback(
-    (index: number) => <MovieCardSkeleton index={index} />,
+    (index: number) => <MovieCardSkeleton key={index} index={index} />,
     [],
   );
 
@@ -284,6 +284,7 @@ function RouteComponent() {
           ? renderTagSkeletons()
           : Object.entries(TAGS).map(([key, label], index) => (
               <Tag
+                key={key}
                 index={index}
                 size="lg"
                 className={cn("", {
