@@ -1,5 +1,5 @@
 import { Check, Copy, X } from "lucide-react";
-import * as React from "react";
+import React from "react";
 import Facebook from "../../assets/svgs/icon-facebook.svg";
 import Instagram from "../../assets/svgs/icon-instagram.svg";
 import QQ from "../../assets/svgs/icon-qq.svg";
