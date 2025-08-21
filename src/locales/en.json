@@ -25,6 +25,7 @@
       "deselectAll": "Deselect all",
       "remove": "Remove"
     },
+
     "settings": {
       "title": "Settings",
       "notifications": {
@@ -38,6 +39,17 @@
       },
       "version": {
         "title": "Version"
+      }
+    },
+    "movies": {
+      "movieDetails": {
+        "director": "Director",
+        "actors": "Actors",
+        "releaseDate": "Release Date",
+        "overview": "Overviews",
+        "expand": "expands",
+        "collapse": "collapse",
+        "relatedMovies": "Related Movies"
       }
     }
   }

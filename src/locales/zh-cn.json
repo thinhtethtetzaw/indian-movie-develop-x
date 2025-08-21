@@ -39,6 +39,17 @@
       "version": {
         "title": "版本"
       }
+    },
+    "movies": {
+      "movieDetails": {
+        "director": "导演",
+        "actors": "演员",
+        "releaseDate": "上映日期",
+        "overview": "简介",
+        "expand": "展开",
+        "collapse": "收起",
+        "relatedMovies": "相关电影"
+      }
     }
   }
 }

@@ -39,6 +39,17 @@
       "version": {
         "title": "バージョン"
       }
+    },
+    "movies": {
+      "movieDetails": {
+        "director": "監督",
+        "actors": "出演者",
+        "releaseDate": "公開日",
+        "overview": "概要",
+        "expand": "もっと見る",
+        "collapse": "閉じる",
+        "relatedMovies": "関連映画"
+      }
     }
   }
 }
