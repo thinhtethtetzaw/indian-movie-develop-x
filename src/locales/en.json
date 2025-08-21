@@ -16,6 +16,7 @@
       "popularTVSeries": "Popular TV Series",
       "youMayLike": "You May Like"
     },
+<<<<<<< Updated upstream
     "bookmarks": {
       "title": "Bookmarks",
       "edit": "Edit",
@@ -38,6 +39,17 @@
       },
       "version": {
         "title": "Version"
+=======
+    "movies": {
+      "movieDetails": {
+        "director": "Director",
+        "actors": "Actors",
+        "releaseDate": "Release Date",
+        "overview": "Overviews",
+        "expand": "expands",
+        "collapse": "collapse",
+        "relatedMovies": "Related Movies"
+>>>>>>> Stashed changes
       }
     }
   }
