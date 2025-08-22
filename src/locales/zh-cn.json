@@ -40,6 +40,11 @@
         "title": "版本"
       }
     },
+    "search": {
+      "placeholder": "搜索电影和电视剧...",
+      "recent": "最近搜索",
+      "popularSearches": "热门搜索"
+    },
     "movies": {
       "movieDetails": {
         "director": "导演",

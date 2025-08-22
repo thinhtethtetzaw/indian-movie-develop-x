@@ -1,9 +1,10 @@
+import SearchHeader from "@/components/common/layouts/SearchHeader";
 import type { Movie } from "@/components/common/MovieCard";
 import MovieCard from "@/components/common/MovieCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
 import { Button } from "@/components/ui/button";
 import { MOCK_MOVIES } from "@/constants/mock";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -20,14 +21,25 @@ export const Route = createFileRoute("/home/")({
 
 function RouteComponent() {
   const { t } = useTranslation();
+  const router = useRouter();
+
   const handleMovieClick = (movie: Movie) => {
     console.log("Movie clicked:", movie);
+  };
+
+  const handleSearchClick = () => {
+    router.navigate({ to: "/search" });
   };
 
   return (
     <div className="space-y-10">
       {/* Featured Movies Carousel */}
       <section>
+        <SearchHeader
+          isShowBack={false}
+          isClickable={true}
+          onClick={handleSearchClick}
+        />
         <SliderCarousel movies={MOCK_MOVIES} onMovieClick={handleMovieClick} />
       </section>
 

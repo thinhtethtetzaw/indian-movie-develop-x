@@ -41,6 +41,11 @@
         "title": "Version"
       }
     },
+    "search": {
+      "placeholder": "Search movies and series...",
+      "recent": "Recent",
+      "popularSearches": "Popular Searches"
+    },
     "movies": {
       "movieDetails": {
         "director": "Director",
