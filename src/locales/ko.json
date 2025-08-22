@@ -43,6 +43,7 @@
     "movies": {
       "movieDetails": {
         "title": "영화 정보",
+        "subtitle": "영화 정보",
         "director": "감독",
         "actors": "출연진",
         "releaseDate": "개봉일",

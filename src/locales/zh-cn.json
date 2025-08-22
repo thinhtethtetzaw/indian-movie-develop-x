@@ -43,6 +43,7 @@
     "movies": {
       "movieDetails": {
         "title": "电影详情",
+        "subtitle": "剧情简介",
         "director": "导演",
         "actors": "演员",
         "releaseDate": "上映日期",

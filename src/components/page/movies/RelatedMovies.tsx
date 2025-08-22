@@ -17,8 +17,8 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
     <section className="space-y-4">
       <h2 className="font-semibold text-white">{title}</h2>
       <div className="scrollbar-hide grid grid-cols-3 gap-3">
-        {movies.map((movie) => (
-          <div key={movie.vod_id} className="flex-shrink-0">
+        {movies.map((movie, index) => (
+          <div key={`${movie.vod_id}-${index}`} className="flex-shrink-0">
             <MovieCard movie={movie} onClick={() => onMovieClick?.(movie)} />
           </div>
         ))}
