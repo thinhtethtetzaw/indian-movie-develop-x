@@ -126,125 +126,131 @@ function RouteComponent() {
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
 
   return (
-    <div className="mt-5 space-y-6">
+    <>
       <SearchHeader
         isShowBack={false}
         isClickable={true}
         onClick={handleSearchClick}
       />
-      <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
-        {isCategoryListLoading
-          ? renderTagSkeletons()
-          : allTypes?.map((category, index) => (
-              <Tag
-                key={category.type_id}
-                index={index}
-                size="lg"
-                className={cn("cursor-pointer", {
-                  "ml-4": index === 0,
-                  "mr-4": index === allTypes.length - 1,
-                })}
-                variant={
-                  searchState.category === category.type_id?.toString()
-                    ? "active"
-                    : "default"
-                }
-                onClick={() =>
-                  setSearchState({
-                    category: category.type_id?.toString() ?? "0",
-                  })
-                }
-              >
-                {category.type_name}
-              </Tag>
-            ))}
-      </div>
-      <div className="space-y-10">
-        {isRecommendListLoading ? (
-          <HomeSkeleton />
-        ) : (
-          homeRecommendList?.map((item) => {
-            return (
-              <React.Fragment key={item.title}>
-                {item.type === "carousel" &&
-                  item.list &&
-                  item.list.length > 0 && (
-                    <section>
-                      <SliderCarousel
-                        videos={item.list as CarouselVideoResponse[]}
-                        onVideoClick={handleVideoClick}
-                      />
-                    </section>
-                  )}
-                {item.type === "list" && item.list && item.list.length > 0 && (
-                  <section className="space-y-4">
-                    <div className="flex items-center justify-between px-4">
-                      <h2 className="text-forground font-semibold">
-                        {item.title}
-                      </h2>
-                      <Button
-                        variant="link"
-                        className="text-forground text-sm font-medium"
-                        onClick={() => {
-                          "navigator" in item &&
-                            navigate({
-                              to: "/home/navigator/$navigatorId",
-                              params: {
-                                navigatorId: item.navigator?.id ?? "",
-                              },
-                            });
-                        }}
-                      >
-                        {"navigator" in item && item.navigator?.title}{" "}
-                        <ChevronRightIcon />
-                      </Button>
-                    </div>
-                    <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
-                      {item.list.map((video, index) => (
-                        <div
-                          key={video.vod_id}
-                          className="flex-shrink-0 last:pr-4"
+      <div className="space-y-6 pb-5">
+        <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
+          {isCategoryListLoading
+            ? renderTagSkeletons()
+            : allTypes?.map((category, index) => (
+                <Tag
+                  key={category.type_id}
+                  index={index}
+                  size="lg"
+                  className={cn("cursor-pointer", {
+                    "ml-4": index === 0,
+                    "mr-4": index === allTypes.length - 1,
+                  })}
+                  variant={
+                    searchState.category === category.type_id?.toString()
+                      ? "active"
+                      : "default"
+                  }
+                  onClick={() =>
+                    setSearchState({
+                      category: category.type_id?.toString() ?? "0",
+                    })
+                  }
+                >
+                  {category.type_name}
+                </Tag>
+              ))}
+        </div>
+        <div className="space-y-10">
+          {isRecommendListLoading ? (
+            <HomeSkeleton />
+          ) : (
+            homeRecommendList?.map((item) => {
+              return (
+                <React.Fragment key={item.title}>
+                  {item.type === "carousel" &&
+                    item.list &&
+                    item.list.length > 0 && (
+                      <section>
+                        <SliderCarousel
+                          videos={item.list as CarouselVideoResponse[]}
+                          onVideoClick={handleVideoClick}
+                        />
+                      </section>
+                    )}
+                  {item.type === "list" &&
+                    item.list &&
+                    item.list.length > 0 && (
+                      <section className="space-y-4">
+                        <div className="flex items-center justify-between px-4">
+                          <h2 className="text-forground font-semibold">
+                            {item.title}
+                          </h2>
+                          <Button
+                            variant="link"
+                            className="text-forground text-sm font-medium"
+                            onClick={() => {
+                              "navigator" in item &&
+                                navigate({
+                                  to: "/home/navigator/$navigatorId",
+                                  params: {
+                                    navigatorId: item.navigator?.id ?? "",
+                                  },
+                                });
+                            }}
+                          >
+                            {"navigator" in item && item.navigator?.title}{" "}
+                            <ChevronRightIcon />
+                          </Button>
+                        </div>
+                        <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
+                          {item.list.map((video, index) => (
+                            <div
+                              key={video.vod_id}
+                              className="flex-shrink-0 last:pr-4"
+                            >
+                              <VideoCard
+                                video={video}
+                                onClick={handleVideoClick}
+                                index={index}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                  {item.type === "topic" &&
+                    item.list &&
+                    item.list.length > 0 && (
+                      <section className="space-y-4 px-4">
+                        <h2 className="text-forground font-semibold">
+                          {item.title}
+                        </h2>
+                        <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+                          {item.list.map((video, index) => (
+                            <div key={video.vod_id} className="flex-shrink-0">
+                              <VideoCard
+                                video={video}
+                                onClick={handleVideoClick}
+                                index={index}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <Button
+                          variant="default"
+                          className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
                         >
-                          <VideoCard
-                            video={video}
-                            onClick={handleVideoClick}
-                            index={index}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-                {item.type === "topic" && item.list && item.list.length > 0 && (
-                  <section className="space-y-4 px-4">
-                    <h2 className="text-forground font-semibold">
-                      {item.title}
-                    </h2>
-                    <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-                      {item.list.map((video, index) => (
-                        <div key={video.vod_id} className="flex-shrink-0">
-                          <VideoCard
-                            video={video}
-                            onClick={handleVideoClick}
-                            index={index}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                    <Button
-                      variant="default"
-                      className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
-                    >
-                      {"navigator" in item && item.navigator?.title}
-                      <ChevronDownIcon />
-                    </Button>
-                  </section>
-                )}
-              </React.Fragment>
-            );
-          })
-        )}
+                          {"navigator" in item && item.navigator?.title}
+                          <ChevronDownIcon />
+                        </Button>
+                      </section>
+                    )}
+                </React.Fragment>
+              );
+            })
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

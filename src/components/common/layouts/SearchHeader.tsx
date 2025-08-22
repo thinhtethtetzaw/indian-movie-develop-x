@@ -110,8 +110,10 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
     return (
       <motion.div
         className={cn(
-          "flex h-[var(--search-header-height)] items-center px-4 py-2.5",
-          isShowBack && "pr-4 pl-0",
+          "bg-background sticky top-0 z-10 flex h-[var(--search-header-height)] items-center px-4 pt-6 pb-4",
+          {
+            "gap-x-2": isShowBack,
+          },
         )}
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -132,12 +134,13 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
         </div>
         <div className="relative w-full" onClick={handleContainerClick}>
           <Input
+            id="search"
             type="text"
             placeholder={t("pages.search.placeholder")}
             value={inputValue}
             onChange={handleSearchChange}
             className={cn(
-              "bg-glass h-13 rounded-full border border-white/20 pl-10 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
+              "bg-glass h-13 rounded-full border border-white/20 pl-12 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
               isClickable && "cursor-pointer",
             )}
             readOnly={isClickable}
