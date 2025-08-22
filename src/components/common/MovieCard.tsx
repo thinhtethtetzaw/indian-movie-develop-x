@@ -18,8 +18,7 @@ interface MovieCardProps {
 }
 
 // Constants
-const PLACEHOLDER_IMAGE =
-  "https://via.placeholder.com/300x450/1f2937/ffffff?text=No+Image";
+const PLACEHOLDER_IMAGE = "https://placehold.co/300x450?text=No+Preview";
 export const MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER = 0.05;
 
 const MovieCard: React.FC<MovieCardProps> = ({

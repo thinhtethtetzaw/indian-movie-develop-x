@@ -33,7 +33,12 @@ function RouteComponent() {
   });
 
   const handleMovieClick = (movie: MovieResponse) => {
-    console.log("Movie clicked:", movie);
+    navigate({
+      to: "/movies/$movieId",
+      params: {
+        movieId: movie.vod_id ?? "",
+      },
+    });
   };
 
   const renderMovieSkeleton = useCallback(
@@ -220,7 +225,7 @@ function RouteComponent() {
                       variant="default"
                       className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
                     >
-                      {"navigator" in item && item.navigator?.title} 12
+                      {"navigator" in item && item.navigator?.title}
                       <ChevronDownIcon />
                     </Button>
                   </section>

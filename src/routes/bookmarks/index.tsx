@@ -14,7 +14,7 @@ import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { useDialogStore } from "@/stores/useDialogStore";
 import type { MovieResponse } from "@/types/api-schema/response";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
 import { CheckIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -38,7 +38,18 @@ const SKELETON_COUNT = {
 
 function RouteComponent() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { showDialog } = useDialogStore();
+
+  // Query state management
+  const [mode, setMode] = useQueryState(
+    "mode",
+    parseAsStringEnum(["list", "edit"]).withDefault("list"),
+  );
+  const [searchState, setSearchState] = useQueryStates({
+    mode: parseAsStringEnum(["list", "edit"]).withDefault("list"),
+    category: parseAsString.withDefault("0"),
+  });
 
   // Data fetching
   const allBookmarks =
@@ -57,16 +68,6 @@ function RouteComponent() {
   });
 
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
-
-  // Query state management
-  const [mode, setMode] = useQueryState(
-    "mode",
-    parseAsStringEnum(["list", "edit"]).withDefault("list"),
-  );
-  const [searchState, setSearchState] = useQueryStates({
-    mode: parseAsStringEnum(["list", "edit"]).withDefault("list"),
-    category: parseAsString.withDefault("0"),
-  });
 
   // Local state
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -211,11 +212,16 @@ function RouteComponent() {
         <MovieCard
           movie={movie}
           showFavoriteButton={false}
-          onClick={
+          onClick={() => {
             mode === "edit"
-              ? () => handleItemSelect(movie.vod_id ?? "")
-              : undefined
-          }
+              ? handleItemSelect(movie.vod_id ?? "")
+              : navigate({
+                  to: "/movies/$movieId",
+                  params: {
+                    movieId: movie.vod_id ?? "",
+                  },
+                });
+          }}
           index={index}
         />
       </motion.div>

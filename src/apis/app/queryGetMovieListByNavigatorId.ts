@@ -8,7 +8,7 @@ export const getMovieListByNavigatorIdQueryOptions = (navigatorId: string) => {
   const selectedLanguage = i18n.language;
 
   return infiniteQueryOptions({
-    queryKey: ["movie-list-by-navigator-id"],
+    queryKey: ["movie-list-by-navigator-id", navigatorId],
     queryFn: ({ pageParam }) =>
       API_CLIENT.GET("/api/v1/video/topic/{navigatorId}", {
         params: {
@@ -29,8 +29,8 @@ export const getMovieListByNavigatorIdQueryOptions = (navigatorId: string) => {
     staleTime: 10 * 1000,
     initialPageParam: 1,
     getNextPageParam: (page) => {
-      const totalPages = page.data?.data?.total ?? 0;
-      const nextPage = (page.data?.data?.current_page || 1) + 1;
+      const totalPages = page.data?.data?.pagination?.total ?? 0;
+      const nextPage = (page.data?.data?.pagination?.current_page || 1) + 1;
       return nextPage <= totalPages ? nextPage : undefined;
     },
   });
@@ -50,11 +50,12 @@ export const useGetMovieListByNavigatorId = ({
     ...queryConfig,
   });
 
-  const movieList = data.data?.pages.flatMap((page) => page.data?.data);
+  const movieList = data.data?.pages.flatMap((page) => page.data?.data?.videos);
 
   return {
     ...data,
     movieList,
-    totalItems: data.data?.pages[0]?.data?.data?.total,
+    pageTitle: data.data?.pages[0]?.data?.data?.topic_name,
+    totalItems: data.data?.pages[0]?.data?.data?.pagination?.total,
   };
 };
