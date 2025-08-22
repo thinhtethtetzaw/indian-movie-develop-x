@@ -48,8 +48,15 @@
         "title": "バージョン"
       }
     },
+    "search": {
+      "placeholder": "映画とシリーズを検索...",
+      "recent": "最近の検索",
+      "popularSearches": "人気の検索"
+    },
     "movies": {
       "movieDetails": {
+        "title": "映画詳細",
+        "subtitle": "映画詳細",
         "director": "監督",
         "actors": "出演者",
         "releaseDate": "公開日",

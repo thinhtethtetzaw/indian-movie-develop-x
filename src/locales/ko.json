@@ -48,8 +48,15 @@
         "title": "버전"
       }
     },
+    "search": {
+      "placeholder": "영화와 시리즈 검색...",
+      "recent": "최근 검색",
+      "popularSearches": "인기 검색"
+    },
     "movies": {
       "movieDetails": {
+        "title": "영화 정보",
+        "subtitle": "영화 정보",
         "director": "감독",
         "actors": "출연진",
         "releaseDate": "개봉일",

@@ -1,5 +1,6 @@
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
+import SearchHeader from "@/components/common/layouts/SearchHeader";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
@@ -39,6 +40,10 @@ function RouteComponent() {
         videoId: video.vod_id ?? "",
       },
     });
+  };
+
+  const handleSearchClick = () => {
+    navigate({ to: "/search" });
   };
 
   const renderVideoCardSkeleton = useCallback(
@@ -122,6 +127,11 @@ function RouteComponent() {
 
   return (
     <div className="mt-5 space-y-6">
+      <SearchHeader
+        isShowBack={false}
+        isClickable={true}
+        onClick={handleSearchClick}
+      />
       <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
         {isCategoryListLoading
           ? renderTagSkeletons()

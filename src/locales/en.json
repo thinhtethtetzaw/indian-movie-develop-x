@@ -49,11 +49,18 @@
         "title": "Version"
       }
     },
+    "search": {
+      "placeholder": "Search movies and series...",
+      "recent": "Recent",
+      "popularSearches": "Popular Searches"
+    },
     "movies": {
       "movieDetails": {
+        "title": "Details",
+        "subtitle": "Subtitle",
         "director": "Director",
         "actors": "Actors",
-        "releaseDate": "Release Date",
+        "releaseDate": "Release",
         "overview": "Overviews",
         "expand": "expands",
         "collapse": "collapse",
