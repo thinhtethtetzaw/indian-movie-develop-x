@@ -40,8 +40,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
       try {
         if (!isExistingBookmark) {
           await db.bookmarks.add({
-            id: movie.vod_id,
-            vod_class: movie.vod_class || "",
+            id: movie.vod_id || "",
           });
         } else {
           await db.bookmarks.delete(movie.vod_id || "");
@@ -173,8 +172,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
     >
       <div className="relative overflow-hidden rounded-sm">
         <img
-          src={movie.vod_pic}
-          alt={movie.vod_name}
+          src={movie.vod_pic || PLACEHOLDER_IMAGE}
+          alt={movie.vod_name || "Movie"}
           className="h-40 w-full object-cover"
           onError={handleImageError}
           loading="lazy"
@@ -186,7 +185,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
       </div>
 
       <h3 className="text-forground mt-1.5 truncate text-sm font-semibold">
-        {movie.vod_name}
+        {movie.vod_name || "Untitled"}
       </h3>
     </motion.div>
   );

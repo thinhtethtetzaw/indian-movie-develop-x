@@ -4,7 +4,7 @@ import Overview from "@/components/page/movies/Overview";
 import RelatedMovies from "@/components/page/movies/RelatedMovies";
 import VideoInfo from "@/components/page/movies/VideoInfo";
 import VideoPlayer from "@/components/page/movies/VideoPlayer";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type { MovieResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
@@ -133,9 +133,7 @@ function RouteComponent() {
       />
 
       <RelatedMovies
-        movies={
-          MOCK_MOVIE.movies as unknown as HomeRecommendListResponseMovie[]
-        }
+        movies={MOCK_MOVIE.movies as unknown as MovieResponse[]}
         onMovieClick={(movie) => console.log("Clicked:", movie)}
         title={t("pages.movies.movieDetails.relatedMovies")}
       />

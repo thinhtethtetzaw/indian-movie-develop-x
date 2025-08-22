@@ -1,4 +1,4 @@
-import NotificationImage from "@/assets/svgs/image-notification-message.svg";
+import NotificationEmptyImage from "@/assets/svgs/image-notification-empty.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import { createFileRoute } from "@tanstack/react-router";
@@ -15,9 +15,9 @@ export const Route = createFileRoute("/settings/notifications")({
           title={t("pages.settings.notifications.title")}
         />
         <EmptyState
-          imageSrc={NotificationImage}
-          title="You've caught up with everything"
-          description="No notification at this time"
+          imageSrc={<NotificationEmptyImage className="size-33" />}
+          title={t("pages.settings.notifications.emptyTitle")}
+          description={t("pages.settings.notifications.emptyDescription")}
         />
       </>
     );

@@ -1,5 +1,7 @@
-import { useGetAllCategories } from "@/apis/app/queryGetAllCategories";
+import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetMovieListByIds } from "@/apis/app/queryGetMovieListByIds";
+import BookmarksEmptyImage from "@/assets/svgs/image-bookmarks-empty.svg?react";
+import { EmptyState } from "@/components/common/EmptyState";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
@@ -10,6 +12,7 @@ import {
 } from "@/config/animation";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import { useDialogStore } from "@/stores/useDialogStore";
 import type { MovieResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -35,6 +38,7 @@ const SKELETON_COUNT = {
 
 function RouteComponent() {
   const { t } = useTranslation();
+  const { showDialog } = useDialogStore();
 
   // Data fetching
   const allBookmarks =
@@ -52,8 +56,7 @@ function RouteComponent() {
     },
   });
 
-  const { allCategories, isLoading: isCategoryListLoading } =
-    useGetAllCategories({});
+  const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
 
   // Query state management
   const [mode, setMode] = useQueryState(
@@ -116,12 +119,30 @@ function RouteComponent() {
   }, [isAllSelected, bookmarkedMovies]);
 
   const handleRemoveSelected = useCallback(async () => {
-    if (selectedItems.size > 0) {
-      await db.bookmarks.bulkDelete(Array.from(selectedItems));
-    }
-    setSelectedItems(new Set());
-    setMode("list");
-  }, [selectedItems, setMode]);
+    showDialog({
+      dialog: {
+        isAlert: true,
+        title: t("pages.bookmarks.removeDialogTitle"),
+        description: t("pages.bookmarks.removeDialogDescription"),
+        action: {
+          label: t("pages.bookmarks.confirm"),
+          variant: "ghost",
+          className: "text-red-600 hover:text-red-500",
+          onClick: async () => {
+            if (selectedItems.size > 0) {
+              await db.bookmarks.bulkDelete(Array.from(selectedItems));
+            }
+            setSelectedItems(new Set());
+            setMode("list");
+          },
+        },
+        cancel: {
+          label: t("pages.bookmarks.goBack"),
+          variant: "ghost",
+        },
+      },
+    });
+  }, [selectedItems, setMode, showDialog, t]);
 
   const handleCancelEdit = useCallback(() => {
     setMode("list");
@@ -290,14 +311,14 @@ function RouteComponent() {
       <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
         {isCategoryListLoading
           ? renderTagSkeletons()
-          : allCategories?.map((category, index) => (
+          : allTypes?.map((category, index) => (
               <Tag
                 key={category.type_id}
                 index={index}
                 size="lg"
                 className={cn("cursor-pointer", {
                   "ml-4": index === 0,
-                  "mr-4": index === allCategories.length - 1,
+                  "mr-4": index === allTypes.length - 1,
                 })}
                 variant={
                   searchState.category === category.type_id?.toString()
@@ -359,7 +380,11 @@ function RouteComponent() {
           <Button
             variant="ghost"
             onClick={handleModeToggle}
-            disabled={isMovieListLoading || isCategoryListLoading}
+            disabled={
+              isMovieListLoading ||
+              isCategoryListLoading ||
+              allBookmarks.length === 0
+            }
           >
             {mode === "list"
               ? t("pages.bookmarks.edit")
@@ -370,7 +395,16 @@ function RouteComponent() {
 
       <div className="mt-5">
         {renderTags()}
-        {renderMovieGrid()}
+        {allBookmarks.length > 0 ? (
+          renderMovieGrid()
+        ) : (
+          <EmptyState
+            imageSrc={<BookmarksEmptyImage className="size-33" />}
+            title={t("pages.bookmarks.emptyTitle")}
+            description={t("pages.bookmarks.emptyDescription")}
+            className="translate-y-1/2"
+          />
+        )}
       </div>
 
       {renderBottomDrawer()}

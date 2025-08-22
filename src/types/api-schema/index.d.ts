@@ -89,6 +89,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/video/popular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get most popular videos with pagination
+         * @description Retrieve the most popular videos based on weekly hits, automatically sorted by popularity with pagination support
+         */
+        get: operations["c7c09b6baa42d0c97324a555494b9f18"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/type/list": {
         parameters: {
             query?: never;
@@ -149,6 +169,46 @@ export interface paths {
         };
         /** Get list of all video categories */
         get: operations["cdce6778c48f7258ecd8a150f3b91d1f"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/video/topic/{navigatorId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get videos by topic level
+         * @description Retrieve videos based on the specified topic level using an encoded navigator ID
+         */
+        get: operations["50a2a6ddab666ca74da3e4015f285d1f"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/video/popular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get popular videos
+         * @description Retrieve popular videos sorted by weekly hits, score, and release time with pagination
+         */
+        get: operations["142b8ab6aa0d26432fc090c0779789d9"];
         put?: never;
         post?: never;
         delete?: never;
@@ -421,27 +481,33 @@ export interface components {
             status?: boolean;
             /**
              * @description Response message
-             * @example Success
+             * @example success
              */
             message?: string;
-            data?: {
+            /** @description List of videos */
+            data?: components["schemas"]["Video"][];
+            /** @description Pagination information */
+            pagination?: {
                 /**
-                 * @description Current page number
-                 * @example 1
+                 * @description Total number of items
+                 * @example 532
                  */
-                current_page?: number;
+                total?: number;
                 /**
                  * @description Items per page
                  * @example 10
                  */
                 per_page?: number;
                 /**
-                 * @description Total number of items
-                 * @example 100
+                 * @description Current page number
+                 * @example 1
                  */
-                total?: number;
-                /** @description List of videos */
-                videos?: components["schemas"]["Video"][];
+                current_page?: number;
+                /**
+                 * @description Last page number
+                 * @example 54
+                 */
+                last_page?: number;
             };
         };
         /**
@@ -623,10 +689,10 @@ export interface components {
             video_ids?: string[];
         };
         /**
-         * Paginated Video Response
-         * @description Response model for paginated video lists
+         * Topic Videos Response
+         * @description Response model for getting videos by topic level
          */
-        PaginatedVideoResponse: {
+        TopicVideosResponse: {
             /**
              * @description Response status
              * @example true
@@ -639,28 +705,80 @@ export interface components {
             message?: string;
             /** @description Paginated data */
             data?: {
+                /**
+                 * @description Name of the topic
+                 * @example Action Movies
+                 */
+                topic_name?: string;
                 /** @description List of videos */
-                data?: components["schemas"]["Video"][];
-                /**
-                 * @description Current page number
-                 * @example 1
-                 */
-                current_page?: number;
-                /**
-                 * @description Items per page
-                 * @example 20
-                 */
-                per_page?: number;
-                /**
-                 * @description Total number of items
-                 * @example 100
-                 */
-                total?: number;
-                /**
-                 * @description Last page number
-                 * @example 5
-                 */
-                last_page?: number;
+                videos?: components["schemas"]["Video"][];
+                /** @description Pagination information */
+                pagination?: {
+                    /**
+                     * @description Current page number
+                     * @example 1
+                     */
+                    current_page?: number;
+                    /**
+                     * @description Items per page
+                     * @example 20
+                     */
+                    per_page?: number;
+                    /**
+                     * @description Total number of items
+                     * @example 100
+                     */
+                    total?: number;
+                    /**
+                     * @description Last page number
+                     * @example 5
+                     */
+                    last_page?: number;
+                };
+            };
+        };
+        /**
+         * Popular Video Response
+         * @description Response model for popular videos endpoint with pagination
+         */
+        PopularVideoResponse: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description Paginated data */
+            data?: {
+                /** @description List of popular videos sorted by weekly hits */
+                videos?: components["schemas"]["Video"][];
+                /** @description Pagination information */
+                pagination?: {
+                    /**
+                     * @description Current page number
+                     * @example 1
+                     */
+                    current_page?: number;
+                    /**
+                     * @description Items per page
+                     * @example 20
+                     */
+                    per_page?: number;
+                    /**
+                     * @description Total number of popular videos
+                     * @example 150
+                     */
+                    total?: number;
+                    /**
+                     * @description Last page number
+                     * @example 8
+                     */
+                    last_page?: number;
+                };
             };
         };
         /**
@@ -822,11 +940,48 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PaginatedVideoResponse"];
+                    "application/json": components["schemas"]["TopicVideosResponse"];
                 };
             };
             /** @description Navigator ID not found or invalid */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    c7c09b6baa42d0c97324a555494b9f18: {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination (default: 1) */
+                page?: number;
+                /** @description Number of items per page (default: 20, max: 50) */
+                per_page?: number;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response with paginated popular videos */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PopularVideoResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -946,6 +1101,73 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CategoryList"];
+                };
+            };
+        };
+    };
+    "50a2a6ddab666ca74da3e4015f285d1f": {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Encoded navigator ID representing the topic level */
+                navigatorId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully retrieved videos for the topic */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TopicVideosResponse"];
+                };
+            };
+            /** @description Invalid navigator ID or topic not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example false */
+                        status?: boolean;
+                        /** @example Invalid ID */
+                        message?: string;
+                        /** @example null */
+                        data?: null;
+                    };
+                };
+            };
+        };
+    };
+    "142b8ab6aa0d26432fc090c0779789d9": {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: number;
+                /** @description Number of items per page */
+                per_page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully retrieved popular videos */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PopularVideoResponse"];
                 };
             };
         };

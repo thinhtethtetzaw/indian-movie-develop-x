@@ -8,6 +8,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
+import Dialog from "@/components/common/Dialog";
 import BottomNavbar from "@/components/common/layouts/BottomNavbar";
 import type { QueryClient } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/react";
@@ -35,6 +36,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
               <Outlet />
             </div>
             {isShowBottomNavbar && <BottomNavbar />}
+            <Dialog />
           </div>
           <TanstackDevtools
             config={{

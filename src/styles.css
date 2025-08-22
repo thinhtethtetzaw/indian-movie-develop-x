@@ -35,7 +35,7 @@ code {
   --foreground: oklch(0.985 0 0);
   --card: oklch(17.66% 0.01 294.49);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(17.66% 0.01 294.49);
+  --popover: oklch(28.91% 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.21 0.006 285.885);
@@ -68,6 +68,8 @@ code {
   --brand-red: oklch(55.72% 0.217 19.96);
 
   --nav-header-height: 64px;
+  --z-popover: 50;
+  --z-dialog: 60;
 }
 
 @theme inline {

@@ -1,4 +1,4 @@
-import { useGetAllCategories } from "@/apis/app/queryGetAllCategories";
+import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
 import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
@@ -10,7 +10,7 @@ import type {
   CarouselVideoResponse,
   MovieResponse,
 } from "@/types/api-schema/response";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { parseAsString, useQueryStates } from "nuqs";
 import React, { useCallback } from "react";
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/home/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const [searchState, setSearchState] = useQueryStates({
     category: parseAsString.withDefault("0"),
   });
@@ -112,22 +113,21 @@ function RouteComponent() {
   const { homeRecommendList, isLoading: isRecommendListLoading } =
     useGetHomeRecommendList({});
 
-  const { allCategories, isLoading: isCategoryListLoading } =
-    useGetAllCategories({});
+  const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
 
   return (
     <div className="mt-5 space-y-6">
       <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
         {isCategoryListLoading
           ? renderTagSkeletons()
-          : allCategories?.map((category, index) => (
+          : allTypes?.map((category, index) => (
               <Tag
                 key={category.type_id}
                 index={index}
                 size="lg"
                 className={cn("cursor-pointer", {
                   "ml-4": index === 0,
-                  "mr-4": index === allCategories.length - 1,
+                  "mr-4": index === allTypes.length - 1,
                 })}
                 variant={
                   searchState.category === category.type_id?.toString()
@@ -170,6 +170,15 @@ function RouteComponent() {
                       <Button
                         variant="link"
                         className="text-forground text-sm font-medium"
+                        onClick={() => {
+                          "navigator" in item &&
+                            navigate({
+                              to: "/home/navigator/$navigatorId",
+                              params: {
+                                navigatorId: item.navigator?.id ?? "",
+                              },
+                            });
+                        }}
                       >
                         {"navigator" in item && item.navigator?.title}{" "}
                         <ChevronRightIcon />

@@ -40,7 +40,11 @@ function RouteComponent() {
       <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
         {movieList?.map((movie, index) => (
           <div key={movie.vod_id} className="flex-shrink-0">
-            <MovieCard movie={movie} onClick={handleMovieClick} index={index} />
+            <MovieCard
+              movie={movie as MovieResponse}
+              onClick={handleMovieClick}
+              index={index}
+            />
           </div>
         ))}
       </div>

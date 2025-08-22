@@ -1,10 +1,10 @@
 import MovieCard from "@/components/common/MovieCard";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type { MovieResponse } from "@/types/api-schema/response";
 import React from "react";
 
 interface RelatedMoviesProps {
-  movies: HomeRecommendListResponseMovie[];
-  onMovieClick?: (movie: HomeRecommendListResponseMovie) => void;
+  movies: MovieResponse[];
+  onMovieClick?: (movie: MovieResponse) => void;
   title: string;
 }
 

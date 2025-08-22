@@ -4,11 +4,11 @@ import { API_CLIENT } from "@/lib/openapi-api-client";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
-export const getAllCategoriesQueryOptions = () => {
+export const getAllTypesQueryOptions = () => {
   const selectedLanguage = i18n.language;
 
   return queryOptions({
-    queryKey: ["all-categories"],
+    queryKey: ["all-types"],
     queryFn: () =>
       API_CLIENT.GET("/api/v1/type/list", {
         params: {
@@ -23,19 +23,17 @@ export const getAllCategoriesQueryOptions = () => {
   });
 };
 
-type UseGetAllCategoriesOptions = {
-  queryConfig?: QueryConfig<typeof getAllCategoriesQueryOptions>;
+type UseGetAllTypesOptions = {
+  queryConfig?: QueryConfig<typeof getAllTypesQueryOptions>;
 };
 
-export const useGetAllCategories = ({
-  queryConfig,
-}: UseGetAllCategoriesOptions) => {
+export const useGetAllTypes = ({ queryConfig }: UseGetAllTypesOptions) => {
   const data = useQuery({
-    ...getAllCategoriesQueryOptions(),
+    ...getAllTypesQueryOptions(),
     ...queryConfig,
   });
 
-  const allCategories = data.data?.data?.data;
+  const allTypes = data.data?.data?.data;
 
-  return { ...data, allCategories };
+  return { ...data, allTypes };
 };
