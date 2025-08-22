@@ -1,14 +1,14 @@
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
-import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
+import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type {
   CarouselVideoResponse,
-  MovieResponse,
+  VideoResponse,
 } from "@/types/api-schema/response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
@@ -32,17 +32,17 @@ function RouteComponent() {
     category: parseAsString.withDefault("0"),
   });
 
-  const handleMovieClick = (movie: MovieResponse) => {
+  const handleVideoClick = (video: VideoResponse) => {
     navigate({
-      to: "/movies/$movieId",
+      to: "/videos/$videoId",
       params: {
-        movieId: movie.vod_id ?? "",
+        videoId: video.vod_id ?? "",
       },
     });
   };
 
-  const renderMovieSkeleton = useCallback(
-    (index: number) => <MovieCardSkeleton index={index} />,
+  const renderVideoCardSkeleton = useCallback(
+    (index: number) => <VideoCardSkeleton index={index} />,
     [],
   );
 
@@ -86,7 +86,7 @@ function RouteComponent() {
       <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
         {Array.from({ length: 5 }).map((_, index) => (
           <div key={index} className="flex-shrink-0 last:pr-4">
-            {renderMovieSkeleton(index)}
+            {renderVideoCardSkeleton(index)}
           </div>
         ))}
       </div>
@@ -99,7 +99,7 @@ function RouteComponent() {
       <div className="grid grid-cols-3 gap-x-3 gap-y-6">
         {Array.from({ length: 6 }).map((_, index) => (
           <div key={index} className="flex-shrink-0">
-            {renderMovieSkeleton(index)}
+            {renderVideoCardSkeleton(index)}
           </div>
         ))}
       </div>
@@ -161,8 +161,8 @@ function RouteComponent() {
                   item.list.length > 0 && (
                     <section>
                       <SliderCarousel
-                        movies={item.list as CarouselVideoResponse[]}
-                        onMovieClick={handleMovieClick}
+                        videos={item.list as CarouselVideoResponse[]}
+                        onVideoClick={handleVideoClick}
                       />
                     </section>
                   )}
@@ -190,14 +190,14 @@ function RouteComponent() {
                       </Button>
                     </div>
                     <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
-                      {item.list.map((movie, index) => (
+                      {item.list.map((video, index) => (
                         <div
-                          key={movie.vod_id}
+                          key={video.vod_id}
                           className="flex-shrink-0 last:pr-4"
                         >
-                          <MovieCard
-                            movie={movie}
-                            onClick={handleMovieClick}
+                          <VideoCard
+                            video={video}
+                            onClick={handleVideoClick}
                             index={index}
                           />
                         </div>
@@ -211,11 +211,11 @@ function RouteComponent() {
                       {item.title}
                     </h2>
                     <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-                      {item.list.map((movie, index) => (
-                        <div key={movie.vod_id} className="flex-shrink-0">
-                          <MovieCard
-                            movie={movie}
-                            onClick={handleMovieClick}
+                      {item.list.map((video, index) => (
+                        <div key={video.vod_id} className="flex-shrink-0">
+                          <VideoCard
+                            video={video}
+                            onClick={handleVideoClick}
                             index={index}
                           />
                         </div>

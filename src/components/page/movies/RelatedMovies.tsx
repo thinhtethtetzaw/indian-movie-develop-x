@@ -1,25 +1,21 @@
-import MovieCard from "@/components/common/MovieCard";
-import type { MovieResponse } from "@/types/api-schema/response";
+import VideoCard from "@/components/common/VideoCard";
+import type { VideoResponse } from "@/types/api-schema/response";
 import React from "react";
 
-interface RelatedMoviesProps {
-  movies: MovieResponse[];
-  onMovieClick?: (movie: MovieResponse) => void;
+interface Props {
+  videos: VideoResponse[];
+  onVideoClick?: (video: VideoResponse) => void;
   title: string;
 }
 
-const RelatedMovies: React.FC<RelatedMoviesProps> = ({
-  movies,
-  onMovieClick,
-  title,
-}) => {
+const RelatedVideos: React.FC<Props> = ({ videos, onVideoClick, title }) => {
   return (
     <section className="space-y-4">
       <h2 className="font-semibold text-white">{title}</h2>
       <div className="scrollbar-hide grid grid-cols-3 gap-3">
-        {movies.map((movie) => (
-          <div key={movie.vod_id} className="flex-shrink-0">
-            <MovieCard movie={movie} onClick={() => onMovieClick?.(movie)} />
+        {videos.map((video) => (
+          <div key={video.vod_id} className="flex-shrink-0">
+            <VideoCard video={video} onClick={() => onVideoClick?.(video)} />
           </div>
         ))}
       </div>
@@ -27,4 +23,4 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
   );
 };
 
-export default RelatedMovies;
+export default RelatedVideos;

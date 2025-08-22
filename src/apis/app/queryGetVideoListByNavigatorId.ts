@@ -4,11 +4,11 @@ import { API_CLIENT } from "@/lib/openapi-api-client";
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
-export const getMovieListByNavigatorIdQueryOptions = (navigatorId: string) => {
+export const getVideoListByNavigatorIdQueryOptions = (navigatorId: string) => {
   const selectedLanguage = i18n.language;
 
   return infiniteQueryOptions({
-    queryKey: ["movie-list-by-navigator-id", navigatorId],
+    queryKey: ["video-list-by-navigator-id", navigatorId],
     queryFn: ({ pageParam }) =>
       API_CLIENT.GET("/api/v1/video/topic/{navigatorId}", {
         params: {
@@ -36,25 +36,25 @@ export const getMovieListByNavigatorIdQueryOptions = (navigatorId: string) => {
   });
 };
 
-type UseGetMovieListByIdsOptions = {
+type UseGetVideoListByIdsOptions = {
   navigatorId: string;
-  queryConfig?: QueryConfig<typeof getMovieListByNavigatorIdQueryOptions>;
+  queryConfig?: QueryConfig<typeof getVideoListByNavigatorIdQueryOptions>;
 };
 
-export const useGetMovieListByNavigatorId = ({
+export const useGetVideoListByNavigatorId = ({
   navigatorId,
   queryConfig,
-}: UseGetMovieListByIdsOptions) => {
+}: UseGetVideoListByIdsOptions) => {
   const data = useInfiniteQuery({
-    ...getMovieListByNavigatorIdQueryOptions(navigatorId),
+    ...getVideoListByNavigatorIdQueryOptions(navigatorId),
     ...queryConfig,
   });
 
-  const movieList = data.data?.pages.flatMap((page) => page.data?.data?.videos);
+  const videoList = data.data?.pages.flatMap((page) => page.data?.data?.videos);
 
   return {
     ...data,
-    movieList,
+    videoList,
     pageTitle: data.data?.pages[0]?.data?.data?.topic_name,
     totalItems: data.data?.pages[0]?.data?.data?.pagination?.total,
   };

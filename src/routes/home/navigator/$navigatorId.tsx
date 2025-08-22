@@ -1,8 +1,8 @@
-import { useGetMovieListByNavigatorId } from "@/apis/app/queryGetMovieListByNavigatorId";
+import { useGetVideoListByNavigatorId } from "@/apis/app/queryGetVideoListByNavigatorId";
 import NavHeader from "@/components/common/layouts/NavHeader";
-import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
+import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { MovieResponse } from "@/types/api-schema/response";
+import type { VideoResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback } from "react";
 
@@ -12,17 +12,17 @@ export const Route = createFileRoute("/home/navigator/$navigatorId")({
 
 function RouteComponent() {
   const { navigatorId } = Route.useParams();
-  const { pageTitle, movieList, isPending } = useGetMovieListByNavigatorId({
+  const { pageTitle, videoList, isPending } = useGetVideoListByNavigatorId({
     navigatorId,
   });
 
-  const renderMovieSkeleton = useCallback(
-    (index: number) => <MovieCardSkeleton index={index} />,
+  const renderVideoCardSkeleton = useCallback(
+    (index: number) => <VideoCardSkeleton index={index} />,
     [],
   );
 
-  function handleMovieClick(movie: MovieResponse) {
-    console.log("Movie clicked:", movie);
+  function handleVideoClick(video: VideoResponse) {
+    console.log("Video clicked:", video);
   }
 
   if (isPending)
@@ -32,7 +32,7 @@ function RouteComponent() {
         <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-6 px-4">
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="flex-shrink-0">
-              {renderMovieSkeleton(index)}
+              {renderVideoCardSkeleton(index)}
             </div>
           ))}
         </div>
@@ -45,13 +45,13 @@ function RouteComponent() {
 
       <section className="mt-5 space-y-4 px-4">
         <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-          {movieList?.map(
-            (movie, index) =>
-              !!movie && (
-                <div key={movie.vod_id} className="flex-shrink-0">
-                  <MovieCard
-                    movie={movie}
-                    onClick={handleMovieClick}
+          {videoList?.map(
+            (video, index) =>
+              !!video && (
+                <div key={video.vod_id} className="flex-shrink-0">
+                  <VideoCard
+                    video={video}
+                    onClick={handleVideoClick}
                     index={index}
                   />
                 </div>

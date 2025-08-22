@@ -3,15 +3,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { COMMON_ANIMATION_CONFIG } from "@/config/animation";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
-import type { MovieResponse } from "@/types/api-schema/response";
+import type { VideoResponse } from "@/types/api-schema/response";
 import { useLiveQuery } from "dexie-react-hooks";
 import { HeartIcon, Star } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useCallback, useMemo } from "react";
 
-interface MovieCardProps {
-  movie: MovieResponse;
-  onClick?: (movie: MovieResponse) => void;
+interface VideoCardProps {
+  video: VideoResponse;
+  onClick?: (video: VideoResponse) => void;
   className?: string;
   showFavoriteButton?: boolean;
   index?: number;
@@ -19,17 +19,17 @@ interface MovieCardProps {
 
 // Constants
 const PLACEHOLDER_IMAGE = "https://placehold.co/300x450?text=No+Preview";
-export const MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER = 0.05;
+export const VIDEO_CARD_ANIMATION_DELAY_MULTIPLIER = 0.05;
 
-const MovieCard: React.FC<MovieCardProps> = ({
-  movie,
+const VideoCard: React.FC<VideoCardProps> = ({
+  video,
   onClick,
   className,
   showFavoriteButton = true,
   index = 0,
 }) => {
   const isExistingBookmark = useLiveQuery(() =>
-    db.bookmarks.get(movie.vod_id || ""),
+    db.bookmarks.get(video.vod_id || ""),
   );
 
   const handleFavoriteClick = useCallback(
@@ -39,21 +39,21 @@ const MovieCard: React.FC<MovieCardProps> = ({
       try {
         if (!isExistingBookmark) {
           await db.bookmarks.add({
-            id: movie.vod_id || "",
+            id: video.vod_id || "",
           });
         } else {
-          await db.bookmarks.delete(movie.vod_id || "");
+          await db.bookmarks.delete(video.vod_id || "");
         }
       } catch (error) {
         console.error("Failed to toggle bookmark:", error);
       }
     },
-    [isExistingBookmark, movie.vod_id],
+    [isExistingBookmark, video.vod_id],
   );
 
   const handleCardClick = useCallback(() => {
-    onClick?.(movie);
-  }, [onClick, movie]);
+    onClick?.(video);
+  }, [onClick, video]);
 
   const handleImageError = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -64,13 +64,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
   // Memoized computed values
   const animationDelay = useMemo(
-    () => index * MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER,
+    () => index * VIDEO_CARD_ANIMATION_DELAY_MULTIPLIER,
     [index],
   );
 
   const hasRatingOrEpisode = useMemo(
-    () => Boolean(movie.vod_score || movie.vod_sub),
-    [movie.vod_score, movie.vod_sub],
+    () => Boolean(video.vod_score || video.vod_sub),
+    [video.vod_score, video.vod_sub],
   );
 
   const heartIconClassName = useMemo(
@@ -90,17 +90,17 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
     return (
       <div className="absolute bottom-2 left-2 space-y-1">
-        {movie.vod_score && (
+        {video.vod_score && (
           <div className="flex items-center gap-1">
             <span className="text-forground text-xs font-medium">
-              {Number(movie.vod_score).toFixed(1)}
+              {Number(video.vod_score).toFixed(1)}
             </span>
             <Star className="text-forground h-3 w-3 fill-white" />
           </div>
         )}
-        {/* {movie.episode && (
+        {/* {video.episode && (
           <div className="text-forground flex items-center gap-1 text-xs font-medium">
-            <span>{movie.episode}</span>
+            <span>{video.episode}</span>
             <span>Episode</span>
           </div>
         )} */}
@@ -149,11 +149,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
   return (
     <motion.div
-      initial={COMMON_ANIMATION_CONFIG.movieCard.initial}
-      animate={COMMON_ANIMATION_CONFIG.movieCard.animate}
-      exit={COMMON_ANIMATION_CONFIG.movieCard.exit}
+      initial={COMMON_ANIMATION_CONFIG.videoCard.initial}
+      animate={COMMON_ANIMATION_CONFIG.videoCard.animate}
+      exit={COMMON_ANIMATION_CONFIG.videoCard.exit}
       transition={{
-        ...COMMON_ANIMATION_CONFIG.movieCard.transition,
+        ...COMMON_ANIMATION_CONFIG.videoCard.transition,
         delay: animationDelay,
       }}
       className={cn("min-h-46 w-31", className, {
@@ -171,8 +171,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
     >
       <div className="relative overflow-hidden rounded-sm">
         <img
-          src={movie.vod_pic || PLACEHOLDER_IMAGE}
-          alt={movie.vod_name || "Movie"}
+          src={video.vod_pic || PLACEHOLDER_IMAGE}
+          alt={video.vod_name || "Video"}
           className="h-40 w-full object-cover"
           onError={handleImageError}
           loading="lazy"
@@ -184,13 +184,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
       </div>
 
       <h3 className="text-forground mt-1.5 truncate text-sm font-semibold">
-        {movie.vod_name || "Untitled"}
+        {video.vod_name || "Untitled"}
       </h3>
     </motion.div>
   );
 };
 
-const MovieCardSkeleton = ({
+const VideoCardSkeleton = ({
   className,
   index = 0,
 }: {
@@ -198,12 +198,12 @@ const MovieCardSkeleton = ({
   index?: number;
 }) => (
   <motion.div
-    initial={COMMON_ANIMATION_CONFIG.movieCard.initial}
-    animate={COMMON_ANIMATION_CONFIG.movieCard.animate}
-    exit={COMMON_ANIMATION_CONFIG.movieCard.exit}
+    initial={COMMON_ANIMATION_CONFIG.videoCard.initial}
+    animate={COMMON_ANIMATION_CONFIG.videoCard.animate}
+    exit={COMMON_ANIMATION_CONFIG.videoCard.exit}
     transition={{
-      ...COMMON_ANIMATION_CONFIG.movieCard.transition,
-      delay: index * MOVIE_CARD_ANIMATION_DELAY_MULTIPLIER,
+      ...COMMON_ANIMATION_CONFIG.videoCard.transition,
+      delay: index * VIDEO_CARD_ANIMATION_DELAY_MULTIPLIER,
     }}
     className={cn("min-h-46 w-full min-w-31", className)}
   >
@@ -212,5 +212,5 @@ const MovieCardSkeleton = ({
   </motion.div>
 );
 
-export default MovieCard;
-export { MovieCardSkeleton };
+export default VideoCard;
+export { VideoCardSkeleton };

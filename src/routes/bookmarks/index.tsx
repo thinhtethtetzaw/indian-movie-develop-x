@@ -1,10 +1,10 @@
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
-import { useGetMovieListByIds } from "@/apis/app/queryGetMovieListByIds";
+import { useGetVideoListByIds } from "@/apis/app/queryGetVideoListByIds";
 import BookmarksEmptyImage from "@/assets/svgs/image-bookmarks-empty.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
 import NavHeader from "@/components/common/layouts/NavHeader";
-import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
+import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import { Button } from "@/components/ui/button";
 import {
   BOOKMARKS_ANIMATION_CONFIG,
@@ -13,7 +13,7 @@ import {
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { useDialogStore } from "@/stores/useDialogStore";
-import type { MovieResponse } from "@/types/api-schema/response";
+import type { VideoResponse } from "@/types/api-schema/response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
 import { CheckIcon, X } from "lucide-react";
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/bookmarks/")({
 
 const SKELETON_COUNT = {
   tags: 4,
-  movies: 9,
+  videos: 9,
 } as const;
 
 function RouteComponent() {
@@ -60,7 +60,7 @@ function RouteComponent() {
       }),
     ) ?? [];
 
-  const { movieList, isLoading: isMovieListLoading } = useGetMovieListByIds({
+  const { videoList, isLoading: isVideoListLoading } = useGetVideoListByIds({
     videoIds: allBookmarks.map((bookmark) => bookmark.id ?? ""),
     queryConfig: {
       enabled: allBookmarks.length > 0,
@@ -73,35 +73,35 @@ function RouteComponent() {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 
   // Computed values
-  const bookmarkedMovies = useMemo(
+  const bookmarkedVideos = useMemo(
     () =>
-      movieList?.filter((movie) =>
-        allBookmarks.some((bookmark) => bookmark.id === movie.vod_id),
+      videoList?.filter((video) =>
+        allBookmarks.some((bookmark) => bookmark.id === video.vod_id),
       ),
-    [allBookmarks, movieList],
+    [allBookmarks, videoList],
   );
 
   const isAllSelected = useMemo(
-    () => selectedItems.size === bookmarkedMovies?.length,
-    [selectedItems.size, bookmarkedMovies?.length],
+    () => selectedItems.size === bookmarkedVideos?.length,
+    [selectedItems.size, bookmarkedVideos?.length],
   );
 
   // Event handlers
   const isSelected = useCallback(
-    (movieId: string) => selectedItems.has(movieId),
+    (videoId: string) => selectedItems.has(videoId),
     [selectedItems],
   );
 
   const handleItemSelect = useCallback(
-    (movieId: string) => {
+    (videoId: string) => {
       if (mode !== "edit") return;
 
       setSelectedItems((prev) => {
         const newSet = new Set(prev);
-        if (newSet.has(movieId)) {
-          newSet.delete(movieId);
+        if (newSet.has(videoId)) {
+          newSet.delete(videoId);
         } else {
-          newSet.add(movieId);
+          newSet.add(videoId);
         }
         return newSet;
       });
@@ -114,10 +114,10 @@ function RouteComponent() {
       setSelectedItems(new Set());
     } else {
       setSelectedItems(
-        new Set(bookmarkedMovies?.map((movie) => movie.vod_id ?? "")),
+        new Set(bookmarkedVideos?.map((video) => video.vod_id ?? "")),
       );
     }
-  }, [isAllSelected, bookmarkedMovies]);
+  }, [isAllSelected, bookmarkedVideos]);
 
   const handleRemoveSelected = useCallback(async () => {
     showDialog({
@@ -157,17 +157,17 @@ function RouteComponent() {
 
   // Render functions
   const renderSelectionIndicator = useCallback(
-    (movieId: string) => (
+    (videoId: string) => (
       <AnimatePresence>
         {mode === "edit" && (
           <motion.div
             className={cn(
               "absolute top-2 right-3 z-10 size-6 cursor-pointer rounded-full border-2 p-1",
-              isSelected(movieId)
+              isSelected(videoId)
                 ? "bg-brand-red border-transparent"
                 : "border-white/30 bg-white/50",
             )}
-            onClick={() => handleItemSelect(movieId)}
+            onClick={() => handleItemSelect(videoId)}
             whileHover={BOOKMARKS_ANIMATION_CONFIG.selectionIndicator.hover}
             whileTap={BOOKMARKS_ANIMATION_CONFIG.selectionIndicator.tap}
             initial={BOOKMARKS_ANIMATION_CONFIG.selectionIndicator.initial}
@@ -175,11 +175,11 @@ function RouteComponent() {
             exit={BOOKMARKS_ANIMATION_CONFIG.selectionIndicator.exit}
             transition={{
               ...BOOKMARKS_ANIMATION_CONFIG.selectionIndicator.transition,
-              delay: Number(movieId) * 0.05,
+              delay: Number(videoId) * 0.05,
             }}
           >
             <AnimatePresence mode="wait">
-              {isSelected(movieId) && (
+              {isSelected(videoId) && (
                 <motion.div
                   initial={BOOKMARKS_ANIMATION_CONFIG.checkIcon.initial}
                   animate={BOOKMARKS_ANIMATION_CONFIG.checkIcon.animate}
@@ -197,28 +197,28 @@ function RouteComponent() {
     [mode, isSelected, handleItemSelect],
   );
 
-  const renderMovieCard = useCallback(
-    (movie: MovieResponse, index: number) => (
+  const renderVideoCard = useCallback(
+    (video: VideoResponse, index: number) => (
       <motion.div
-        key={movie.vod_id}
+        key={video.vod_id}
         className="relative flex-shrink-0"
-        initial={COMMON_ANIMATION_CONFIG.movieCard.initial}
-        animate={COMMON_ANIMATION_CONFIG.movieCard.animate}
-        exit={COMMON_ANIMATION_CONFIG.movieCard.exit}
-        transition={COMMON_ANIMATION_CONFIG.movieCard.transition}
+        initial={COMMON_ANIMATION_CONFIG.videoCard.initial}
+        animate={COMMON_ANIMATION_CONFIG.videoCard.animate}
+        exit={COMMON_ANIMATION_CONFIG.videoCard.exit}
+        transition={COMMON_ANIMATION_CONFIG.videoCard.transition}
         layout
       >
-        {renderSelectionIndicator(movie.vod_id ?? "")}
-        <MovieCard
-          movie={movie}
+        {renderSelectionIndicator(video.vod_id ?? "")}
+        <VideoCard
+          video={video}
           showFavoriteButton={false}
           onClick={() => {
             mode === "edit"
-              ? handleItemSelect(movie.vod_id ?? "")
+              ? handleItemSelect(video.vod_id ?? "")
               : navigate({
-                  to: "/movies/$movieId",
+                  to: "/videos/$videoId",
                   params: {
-                    movieId: movie.vod_id ?? "",
+                    videoId: video.vod_id ?? "",
                   },
                 });
           }}
@@ -229,8 +229,8 @@ function RouteComponent() {
     [renderSelectionIndicator, mode, handleItemSelect],
   );
 
-  const renderMovieSkeleton = useCallback(
-    (index: number) => <MovieCardSkeleton key={index} index={index} />,
+  const renderVideoCardSkeleton = useCallback(
+    (index: number) => <VideoCardSkeleton key={index} index={index} />,
     [],
   );
 
@@ -345,24 +345,24 @@ function RouteComponent() {
     [searchState.category, isCategoryListLoading, renderTagSkeletons],
   );
 
-  const renderMovieSkeletons = useCallback(
+  const renderVideoSkeletons = useCallback(
     () =>
-      Array.from({ length: SKELETON_COUNT.movies }).map((_, index) =>
-        renderMovieSkeleton(index),
+      Array.from({ length: SKELETON_COUNT.videos }).map((_, index) =>
+        renderVideoCardSkeleton(index),
       ),
-    [renderMovieSkeleton],
+    [renderVideoCardSkeleton],
   );
 
-  const renderMovieGrid = useCallback(
+  const renderVideoGrid = useCallback(
     () => (
       <div className="mt-5 px-4 pb-32">
         <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-          {isMovieListLoading ? (
-            renderMovieSkeletons()
+          {isVideoListLoading ? (
+            renderVideoSkeletons()
           ) : (
             <AnimatePresence mode="popLayout">
-              {bookmarkedMovies?.map((movie, index) =>
-                renderMovieCard(movie, index),
+              {bookmarkedVideos?.map((video, index) =>
+                renderVideoCard(video, index),
               )}
             </AnimatePresence>
           )}
@@ -370,10 +370,10 @@ function RouteComponent() {
       </div>
     ),
     [
-      bookmarkedMovies,
-      renderMovieCard,
-      renderMovieSkeletons,
-      isMovieListLoading,
+      bookmarkedVideos,
+      renderVideoCard,
+      renderVideoSkeletons,
+      isVideoListLoading,
     ],
   );
 
@@ -387,7 +387,7 @@ function RouteComponent() {
             variant="ghost"
             onClick={handleModeToggle}
             disabled={
-              isMovieListLoading ||
+              isVideoListLoading ||
               isCategoryListLoading ||
               allBookmarks.length === 0
             }
@@ -402,7 +402,7 @@ function RouteComponent() {
       <div className="mt-5">
         {renderTags()}
         {allBookmarks.length > 0 ? (
-          renderMovieGrid()
+          renderVideoGrid()
         ) : (
           <EmptyState
             imageSrc={<BookmarksEmptyImage className="size-33" />}
