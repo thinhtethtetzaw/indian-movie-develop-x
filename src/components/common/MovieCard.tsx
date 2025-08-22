@@ -3,15 +3,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { COMMON_ANIMATION_CONFIG } from "@/config/animation";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type { MovieResponse } from "@/types/api-schema/response";
 import { useLiveQuery } from "dexie-react-hooks";
 import { HeartIcon, Star } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useCallback, useMemo } from "react";
 
 interface MovieCardProps {
-  movie: HomeRecommendListResponseMovie;
-  onClick?: (movie: HomeRecommendListResponseMovie) => void;
+  movie: MovieResponse;
+  onClick?: (movie: MovieResponse) => void;
   className?: string;
   showFavoriteButton?: boolean;
   index?: number;

@@ -217,44 +217,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "status": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Success"
-                    },
-                    "data": {
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Video"
-                          }
-                        },
-                        "current_page": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "per_page": {
-                          "type": "integer",
-                          "example": 20
-                        },
-                        "total": {
-                          "type": "integer",
-                          "example": 100
-                        },
-                        "last_page": {
-                          "type": "integer",
-                          "example": 5
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
+                  "$ref": "#/components/schemas/PaginatedVideoResponse"
                 }
               }
             }
@@ -275,19 +238,9 @@
     "/api/v1/type/list": {
       "get": {
         "tags": ["Type"],
-        "summary": "Get list of types for a video",
+        "summary": "Get list of all available video types/categories",
         "operationId": "a92d49f1475c4a465ce2884bcd8e416c",
         "parameters": [
-          {
-            "name": "vod_id",
-            "in": "query",
-            "description": "Video ID to get types for",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "MS1xx411c7Xq"
-            }
-          },
           {
             "name": "Accept-Language",
             "in": "header",
@@ -408,6 +361,46 @@
             "schema": {
               "type": "integer",
               "example": 1
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Filter by release year",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "class",
+            "in": "query",
+            "description": "Filter by video class/category",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Action,Thriller"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "Sort field (vod_time, vod_score, vod_hits_week)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "vod_time"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "description": "Sort order (asc, desc)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "desc"
             }
           },
           {
@@ -605,16 +598,6 @@
             "description": "Type name in English",
             "type": "string",
             "example": "Action"
-          },
-          "type_pic": {
-            "description": "Type icon image",
-            "type": "string",
-            "example": "https://via.placeholder.com/150x150.png"
-          },
-          "type_extend": {
-            "description": "Additional type information",
-            "type": "string",
-            "example": ""
           }
         },
         "type": "object"
@@ -647,15 +630,26 @@
         "title": "Search Suggestion Model",
         "description": "Search suggestion model",
         "properties": {
-          "suggestion": {
+          "type": {
+            "description": "Suggestion type (video_name, actor, director, year)",
+            "type": "string",
+            "example": "video_name"
+          },
+          "text": {
             "description": "Search suggestion text",
             "type": "string",
             "example": "Action Movie"
           },
-          "vod_id": {
-            "description": "Associated video ID",
+          "id": {
+            "description": "Associated video ID (null for non-video suggestions)",
             "type": "string",
-            "example": "MS1xx411c7Xq"
+            "example": "MS1xx411c7Xq",
+            "nullable": true
+          },
+          "category": {
+            "description": "Suggestion category",
+            "type": "string",
+            "example": "Video Title"
           }
         },
         "type": "object"
@@ -746,8 +740,147 @@
             "description": "List of videos in carousel",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Video"
+              "$ref": "#/components/schemas/CarouselVideo"
             }
+          }
+        },
+        "type": "object"
+      },
+      "CarouselVideo": {
+        "title": "Carousel Video Model",
+        "description": "Video model for carousel display",
+        "properties": {
+          "vod_id": {
+            "description": "Unique video identifier",
+            "type": "string",
+            "example": "MS1xx411c7Xq"
+          },
+          "vod_name": {
+            "description": "Video title",
+            "type": "string",
+            "example": "Road House"
+          },
+          "vod_pic": {
+            "description": "Video poster image",
+            "type": "string",
+            "example": "https://via.placeholder.com/380x562.png"
+          },
+          "vod_remarks": {
+            "description": "Video quality remarks",
+            "type": "string",
+            "example": "1080p"
+          },
+          "vod_class": {
+            "description": "Video categories",
+            "type": "string",
+            "example": "Action,Thriller"
+          },
+          "vod_year": {
+            "description": "Video release year",
+            "type": "string",
+            "example": "2024"
+          },
+          "vod_pic_slide": {
+            "description": "Video slide image",
+            "type": "string",
+            "example": "https://via.placeholder.com/800x400.png"
+          }
+        },
+        "type": "object"
+      },
+      "TopicVideo": {
+        "title": "Topic Video Model",
+        "description": "Video model for topic sections",
+        "properties": {
+          "vod_id": {
+            "description": "Unique video identifier",
+            "type": "string",
+            "example": "MS1xx411c7Xq"
+          },
+          "vod_name": {
+            "description": "Video title",
+            "type": "string",
+            "example": "Road House"
+          },
+          "vod_pic": {
+            "description": "Video poster image",
+            "type": "string",
+            "example": "https://via.placeholder.com/380x562.png"
+          },
+          "vod_remarks": {
+            "description": "Video quality remarks",
+            "type": "string",
+            "example": "1080p"
+          },
+          "vod_class": {
+            "description": "Video categories",
+            "type": "string",
+            "example": "Action,Thriller"
+          },
+          "vod_year": {
+            "description": "Video release year",
+            "type": "string",
+            "example": "2024"
+          },
+          "vod_time": {
+            "description": "Video timestamp",
+            "type": "integer",
+            "example": 1752742999
+          },
+          "vod_hits_week": {
+            "description": "Weekly view count",
+            "type": "integer",
+            "example": 1500
+          },
+          "vod_score": {
+            "description": "Video rating score",
+            "type": "string",
+            "example": "3.0"
+          },
+          "type_id": {
+            "description": "Type ID",
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "type": "object"
+      },
+      "TopicItem": {
+        "title": "Topic Item Model",
+        "description": "Topic section item model for home page",
+        "properties": {
+          "type": {
+            "description": "Topic type",
+            "type": "string",
+            "example": "action"
+          },
+          "title": {
+            "description": "Section title",
+            "type": "string",
+            "example": "Action Movies"
+          },
+          "list": {
+            "description": "List of videos in topic",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopicVideo"
+            }
+          },
+          "navigator": {
+            "description": "Navigation information",
+            "properties": {
+              "title": {
+                "description": "Navigation button text",
+                "type": "string",
+                "example": "View More"
+              },
+              "id": {
+                "description": "Encoded navigator ID",
+                "type": "string",
+                "example": "k5"
+              }
+            },
+            "type": "object"
           }
         },
         "type": "object"
@@ -767,10 +900,17 @@
             "example": "Success"
           },
           "data": {
-            "description": "List of carousel items",
+            "description": "List of carousel and topic items",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CarouselItem"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CarouselItem"
+                },
+                {
+                  "$ref": "#/components/schemas/TopicItem"
+                }
+              ]
             }
           }
         },
@@ -787,6 +927,56 @@
               "type": "string"
             },
             "example": ["MS1xx411c7Xq", "MS1xx411c7Xy"]
+          }
+        },
+        "type": "object"
+      },
+      "PaginatedVideoResponse": {
+        "title": "Paginated Video Response",
+        "description": "Response model for paginated video lists",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "Paginated data",
+            "properties": {
+              "data": {
+                "description": "List of videos",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              },
+              "current_page": {
+                "description": "Current page number",
+                "type": "integer",
+                "example": 1
+              },
+              "per_page": {
+                "description": "Items per page",
+                "type": "integer",
+                "example": 20
+              },
+              "total": {
+                "description": "Total number of items",
+                "type": "integer",
+                "example": 100
+              },
+              "last_page": {
+                "description": "Last page number",
+                "type": "integer",
+                "example": 5
+              }
+            },
+            "type": "object"
           }
         },
         "type": "object"

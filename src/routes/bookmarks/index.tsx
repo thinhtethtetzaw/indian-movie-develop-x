@@ -9,7 +9,7 @@ import {
 } from "@/config/animation";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type { MovieResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
 import { CheckIcon, X } from "lucide-react";
@@ -44,9 +44,19 @@ function RouteComponent() {
   const { t } = useTranslation();
 
   // Data fetching
-  const allBookmarks = useLiveQuery(() => db.bookmarks.toArray()) ?? [];
+  const allBookmarks =
+    useLiveQuery(() =>
+      db.bookmarks.toArray().catch((err) => {
+        console.error("Dexie query error:", err);
+        return [];
+      }),
+    ) ?? [];
+
   const { movieList, isLoading } = useGetMovieListByIds({
     videoIds: allBookmarks.map((bookmark) => bookmark.id ?? ""),
+    queryConfig: {
+      enabled: allBookmarks.length > 0,
+    },
   });
 
   // Query state management
@@ -170,7 +180,7 @@ function RouteComponent() {
   );
 
   const renderMovieCard = useCallback(
-    (movie: HomeRecommendListResponseMovie, index: number) => (
+    (movie: MovieResponse, index: number) => (
       <motion.div
         key={movie.vod_id}
         className="relative flex-shrink-0"

@@ -4,12 +4,12 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type { CarouselVideoResponse } from "@/types/api-schema/response";
 import { useEffect, useState } from "react";
 
 interface SliderCarouselProps {
-  movies: HomeRecommendListResponseMovie[];
-  onMovieClick?: (movie: HomeRecommendListResponseMovie) => void;
+  movies: CarouselVideoResponse[];
+  onMovieClick?: (movie: CarouselVideoResponse) => void;
 }
 
 const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
@@ -28,7 +28,7 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
     });
   }, [api]);
 
-  const handleMovieClick = (movie: HomeRecommendListResponseMovie) => {
+  const handleMovieClick = (movie: CarouselVideoResponse) => {
     onMovieClick?.(movie);
   };
 

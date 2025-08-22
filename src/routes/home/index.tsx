@@ -3,11 +3,13 @@ import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type {
+  CarouselVideoResponse,
+  MovieResponse,
+} from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/home/")({
   component: RouteComponent,
@@ -21,8 +23,7 @@ export const Route = createFileRoute("/home/")({
 });
 
 function RouteComponent() {
-  const { t } = useTranslation();
-  const handleMovieClick = (movie: HomeRecommendListResponseMovie) => {
+  const handleMovieClick = (movie: MovieResponse) => {
     console.log("Movie clicked:", movie);
   };
 
@@ -99,7 +100,7 @@ function RouteComponent() {
             {item.type === "carousel" && item.list && item.list.length > 0 && (
               <section>
                 <SliderCarousel
-                  movies={item.list as HomeRecommendListResponseMovie[]}
+                  movies={item.list as CarouselVideoResponse[]}
                   onMovieClick={handleMovieClick}
                 />
               </section>
@@ -112,8 +113,8 @@ function RouteComponent() {
                     variant="link"
                     className="text-forground text-sm font-medium"
                   >
-                    {/* TODO: update text after backend fix */}
-                    {t("common.viewAll")} <ChevronRightIcon />
+                    {"navigator" in item && item.navigator?.title}{" "}
+                    <ChevronRightIcon />
                   </Button>
                 </div>
                 <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
@@ -147,7 +148,7 @@ function RouteComponent() {
                   variant="default"
                   className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
                 >
-                  {t("common.viewMore")}
+                  {"navigator" in item && item.navigator?.title} 12
                   <ChevronDownIcon />
                 </Button>
               </section>
