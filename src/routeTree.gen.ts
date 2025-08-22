@@ -17,6 +17,7 @@ import { Route as BookmarksIndexRouteImport } from './routes/bookmarks/index'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SeriesSeriesIdRouteImport } from './routes/series/$seriesId'
 import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
+import { Route as HomeNavigatorNavigatorIdRouteImport } from './routes/home/navigator/$navigatorId'
 
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
@@ -58,6 +59,12 @@ const MoviesMovieIdRoute = MoviesMovieIdRouteImport.update({
   path: '/movies/$movieId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeNavigatorNavigatorIdRoute =
+  HomeNavigatorNavigatorIdRouteImport.update({
+    id: '/home/navigator/$navigatorId',
+    path: '/home/navigator/$navigatorId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/bookmarks': typeof BookmarksIndexRoute
   '/home': typeof HomeIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/home/navigator/$navigatorId': typeof HomeNavigatorNavigatorIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +86,7 @@ export interface FileRoutesByTo {
   '/bookmarks': typeof BookmarksIndexRoute
   '/home': typeof HomeIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/home/navigator/$navigatorId': typeof HomeNavigatorNavigatorIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +98,7 @@ export interface FileRoutesById {
   '/bookmarks/': typeof BookmarksIndexRoute
   '/home/': typeof HomeIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/home/navigator/$navigatorId': typeof HomeNavigatorNavigatorIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
     | '/bookmarks'
     | '/home'
     | '/settings'
+    | '/home/navigator/$navigatorId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/bookmarks'
     | '/home'
     | '/settings'
+    | '/home/navigator/$navigatorId'
   id:
     | '__root__'
     | '/'
@@ -121,6 +133,7 @@ export interface FileRouteTypes {
     | '/bookmarks/'
     | '/home/'
     | '/settings/'
+    | '/home/navigator/$navigatorId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +145,7 @@ export interface RootRouteChildren {
   BookmarksIndexRoute: typeof BookmarksIndexRoute
   HomeIndexRoute: typeof HomeIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
+  HomeNavigatorNavigatorIdRoute: typeof HomeNavigatorNavigatorIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesMovieIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home/navigator/$navigatorId': {
+      id: '/home/navigator/$navigatorId'
+      path: '/home/navigator/$navigatorId'
+      fullPath: '/home/navigator/$navigatorId'
+      preLoaderRoute: typeof HomeNavigatorNavigatorIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +225,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookmarksIndexRoute: BookmarksIndexRoute,
   HomeIndexRoute: HomeIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
+  HomeNavigatorNavigatorIdRoute: HomeNavigatorNavigatorIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
