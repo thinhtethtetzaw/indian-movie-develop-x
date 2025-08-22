@@ -1,0 +1,831 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Indian Movie Service API",
+    "description": "API documentation for BeaBox Review Service",
+    "contact": {
+      "email": "admin@indian.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://woaiik2.afrupqj.cn/",
+      "description": "Production API Server"
+    },
+    {
+      "url": "http://localhost:8000",
+      "description": "Local Development Server"
+    },
+    {
+      "url": ""
+    }
+  ],
+  "paths": {
+    "/api/v1/home/recommend/list": {
+      "get": {
+        "tags": ["Video"],
+        "summary": "Get recommended home list",
+        "operationId": "9e166e127a0ca3ec2d76102813629dff",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeRecommendResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/video/detail": {
+      "get": {
+        "tags": ["Video"],
+        "summary": "Get video detail by vod_id",
+        "operationId": "91ce612d7b9b32feb799b233d2cd891f",
+        "parameters": [
+          {
+            "name": "vod_id",
+            "in": "query",
+            "description": "Video ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "MS1xx411c7Xq"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/video/recommend": {
+      "get": {
+        "tags": ["Video"],
+        "summary": "Get recommended videos based on vod_id",
+        "operationId": "35573ee310642d46d83e4c991e77f2db",
+        "parameters": [
+          {
+            "name": "vod_id",
+            "in": "query",
+            "description": "Video ID to get recommendations for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "MS1xx411c7Xq"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/video/list-by-ids": {
+      "post": {
+        "tags": ["Video"],
+        "summary": "Get videos by multiple IDs",
+        "operationId": "bd5c37c490c8ae400a01bdf3f35fd814",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoIdsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/video/topic/{navigatorId}": {
+      "get": {
+        "tags": ["Video"],
+        "summary": "Get videos by topic level using navigator ID",
+        "operationId": "28c45982fa08f66ddaffb255a19e7040",
+        "parameters": [
+          {
+            "name": "navigatorId",
+            "in": "path",
+            "description": "Navigator ID from home page (e.g., k5, mO)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "k5"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with paginated videos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Video"
+                          }
+                        },
+                        "current_page": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "per_page": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "total": {
+                          "type": "integer",
+                          "example": 100
+                        },
+                        "last_page": {
+                          "type": "integer",
+                          "example": 5
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Navigator ID not found or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/type/list": {
+      "get": {
+        "tags": ["Type"],
+        "summary": "Get list of types for a video",
+        "operationId": "a92d49f1475c4a465ce2884bcd8e416c",
+        "parameters": [
+          {
+            "name": "vod_id",
+            "in": "query",
+            "description": "Video ID to get types for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "MS1xx411c7Xq"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/videos/search/suggestions": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Get search suggestions for videos",
+        "operationId": "8a33cd74ccf35a01d87bf9164735c2c6",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search query string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "action"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of suggestions to return",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 5
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchSuggestionList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/videos/search": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Search videos with pagination",
+        "operationId": "fd98c593e0e6e771e36285f4a9dea36e",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search query string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "action"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of results per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "type_id",
+            "in": "query",
+            "description": "Filter by type ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Video": {
+        "title": "Video Model",
+        "description": "Video information model",
+        "properties": {
+          "vod_id": {
+            "description": "Unique video identifier",
+            "type": "string",
+            "example": "MS1xx411c7Xq"
+          },
+          "vod_name": {
+            "description": "Video title",
+            "type": "string",
+            "example": "Road House"
+          },
+          "vod_en": {
+            "description": "Video title in English",
+            "type": "string",
+            "example": "Road House"
+          },
+          "vod_sub": {
+            "description": "Video subtitle",
+            "type": "string",
+            "example": "Road House"
+          },
+          "type_id": {
+            "description": "Type ID",
+            "type": "integer",
+            "example": 1
+          },
+          "vod_class": {
+            "description": "Video categories",
+            "type": "string",
+            "example": "Action,Thriller,Movies"
+          },
+          "vod_actor": {
+            "description": "Video actors",
+            "type": "string",
+            "example": "Sample Actor 1,Sample Actor 2"
+          },
+          "vod_director": {
+            "description": "Video director",
+            "type": "string",
+            "example": "Doug Liman"
+          },
+          "vod_blurb": {
+            "description": "Video description",
+            "type": "string",
+            "example": "Ex-UFC fighter Dalton takes a job at a Florida Keys roadhouse."
+          },
+          "vod_area": {
+            "description": "Video production country",
+            "type": "string",
+            "example": "United States"
+          },
+          "vod_lang": {
+            "description": "Video language",
+            "type": "string",
+            "example": "English"
+          },
+          "vod_year": {
+            "description": "Video release year",
+            "type": "string",
+            "example": "2024"
+          },
+          "vod_time": {
+            "description": "Video timestamp",
+            "type": "integer",
+            "example": 1752742999
+          },
+          "vod_content": {
+            "description": "Detailed video content",
+            "type": "string",
+            "example": "Video description content here."
+          },
+          "vod_score": {
+            "description": "Video rating score",
+            "type": "string",
+            "example": "3.0"
+          },
+          "vod_pic": {
+            "description": "Video poster image",
+            "type": "string",
+            "example": "https://via.placeholder.com/380x562.png"
+          },
+          "vod_remarks": {
+            "description": "Video quality remarks",
+            "type": "string",
+            "example": "1080p"
+          },
+          "vod_play_url": {
+            "description": "Video play URLs",
+            "type": "array",
+            "items": {
+              "properties": {
+                "NO1": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "VideoList": {
+        "title": "Video List Response",
+        "description": "Response model for video list endpoints",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "List of videos",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Video"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "VideoDetail": {
+        "title": "Video Detail Response",
+        "description": "Response model for video detail endpoint",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Video"
+          }
+        },
+        "type": "object"
+      },
+      "Type": {
+        "title": "Type Model",
+        "description": "Video type/category model",
+        "properties": {
+          "type_id": {
+            "description": "Unique type identifier",
+            "type": "integer",
+            "example": 1
+          },
+          "type_name": {
+            "description": "Type name",
+            "type": "string",
+            "example": "Action"
+          },
+          "type_en": {
+            "description": "Type name in English",
+            "type": "string",
+            "example": "Action"
+          },
+          "type_pic": {
+            "description": "Type icon image",
+            "type": "string",
+            "example": "https://via.placeholder.com/150x150.png"
+          },
+          "type_extend": {
+            "description": "Additional type information",
+            "type": "string",
+            "example": ""
+          }
+        },
+        "type": "object"
+      },
+      "TypeList": {
+        "title": "Type List Response",
+        "description": "Response model for type list endpoint",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "List of types",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Type"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "SearchSuggestion": {
+        "title": "Search Suggestion Model",
+        "description": "Search suggestion model",
+        "properties": {
+          "suggestion": {
+            "description": "Search suggestion text",
+            "type": "string",
+            "example": "Action Movie"
+          },
+          "vod_id": {
+            "description": "Associated video ID",
+            "type": "string",
+            "example": "MS1xx411c7Xq"
+          }
+        },
+        "type": "object"
+      },
+      "SearchSuggestionList": {
+        "title": "Search Suggestion List Response",
+        "description": "Response model for search suggestions endpoint",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "List of search suggestions",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchSuggestion"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "SearchResult": {
+        "title": "Search Result Response",
+        "description": "Response model for search endpoint with pagination",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "properties": {
+              "current_page": {
+                "description": "Current page number",
+                "type": "integer",
+                "example": 1
+              },
+              "per_page": {
+                "description": "Items per page",
+                "type": "integer",
+                "example": 10
+              },
+              "total": {
+                "description": "Total number of items",
+                "type": "integer",
+                "example": 100
+              },
+              "videos": {
+                "description": "List of videos",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "CarouselItem": {
+        "title": "Carousel Item Model",
+        "description": "Carousel item model for home page",
+        "properties": {
+          "type": {
+            "description": "Item type",
+            "type": "string",
+            "example": "carousel"
+          },
+          "title": {
+            "description": "Section title",
+            "type": "string",
+            "example": "Carousel"
+          },
+          "list": {
+            "description": "List of videos in carousel",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Video"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "HomeRecommendResponse": {
+        "title": "Home Recommend Response",
+        "description": "Response model for home recommend endpoint",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "List of carousel items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarouselItem"
+            }
+          }
+        },
+        "type": "object"
+      },
+      "VideoIdsRequest": {
+        "title": "Video IDs Request",
+        "description": "Request model for getting videos by IDs",
+        "properties": {
+          "video_ids": {
+            "description": "Array of video IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["MS1xx411c7Xq", "MS1xx411c7Xy"]
+          }
+        },
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "title": "Error Response",
+        "description": "Standard error response model",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "description": "Error description",
+            "type": "string",
+            "example": "Error message"
+          },
+          "errors": {
+            "description": "Validation errors if any",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Video",
+      "description": "Video"
+    },
+    {
+      "name": "Type",
+      "description": "Type"
+    },
+    {
+      "name": "Search",
+      "description": "Search"
+    }
+  ]
+}

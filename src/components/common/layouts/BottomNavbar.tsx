@@ -74,7 +74,7 @@ function BottomNavbar() {
                   className="text-forground text-sm"
                   animate={{
                     color: isActive ? "#ffffff" : "#9ca3af",
-                    fontWeight: isActive ? "600" : "400",
+                    fontWeight: isActive ? 600 : 400,
                   }}
                   transition={{ duration: 0.2 }}
                 >

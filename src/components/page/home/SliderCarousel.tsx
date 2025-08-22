@@ -1,15 +1,15 @@
-import type { Movie } from "@/components/common/MovieCard";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
 import { useEffect, useState } from "react";
 
 interface SliderCarouselProps {
-  movies: Movie[];
-  onMovieClick?: (movie: Movie) => void;
+  movies: HomeRecommendListResponseMovie[];
+  onMovieClick?: (movie: HomeRecommendListResponseMovie) => void;
 }
 
 const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
@@ -28,7 +28,7 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
     });
   }, [api]);
 
-  const handleMovieClick = (movie: Movie) => {
+  const handleMovieClick = (movie: HomeRecommendListResponseMovie) => {
     onMovieClick?.(movie);
   };
 
@@ -44,7 +44,7 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
       >
         <CarouselContent className="ml-0">
           {movies.map((movie, index) => (
-            <CarouselItem key={movie.id} className="basis-2/3 pl-0">
+            <CarouselItem key={movie.vod_id} className="basis-2/3 pl-0">
               <div
                 className={`group relative cursor-pointer ${
                   index !== current - 1
@@ -54,8 +54,8 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
                 onClick={() => handleMovieClick(movie)}
               >
                 <img
-                  src={movie.imageUrl}
-                  alt={movie.title}
+                  src={movie.vod_pic}
+                  alt={movie.vod_name}
                   className={`h-[157px] w-full transform rounded-xl border border-[#222222] object-cover transition-all duration-500 ease-in-out ${
                     index === current - 1 ? "scale-100" : "scale-90"
                   }`}

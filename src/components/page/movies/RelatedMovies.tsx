@@ -1,26 +1,16 @@
 import MovieCard from "@/components/common/MovieCard";
+import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
 import React from "react";
 
-interface Movie {
-  id: string;
-  title: string;
-  imageUrl: string;
-  rating?: number | null;
-  isFavorite?: boolean;
-  episode?: number | null;
-}
-
 interface RelatedMoviesProps {
-  movies: Movie[];
-  onMovieClick?: (movie: Movie) => void;
-  onFavoriteToggle?: (movie: Movie) => void;
+  movies: HomeRecommendListResponseMovie[];
+  onMovieClick?: (movie: HomeRecommendListResponseMovie) => void;
   title: string;
 }
 
 const RelatedMovies: React.FC<RelatedMoviesProps> = ({
   movies,
   onMovieClick,
-  onFavoriteToggle,
   title,
 }) => {
   return (
@@ -28,12 +18,8 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
       <h2 className="font-semibold text-white">{title}</h2>
       <div className="scrollbar-hide grid grid-cols-3 gap-3">
         {movies.map((movie) => (
-          <div key={movie.id} className="flex-shrink-0">
-            <MovieCard
-              movie={movie}
-              onFavoriteToggle={() => onFavoriteToggle?.(movie)}
-              onClick={() => onMovieClick?.(movie)}
-            />
+          <div key={movie.vod_id} className="flex-shrink-0">
+            <MovieCard movie={movie} onClick={() => onMovieClick?.(movie)} />
           </div>
         ))}
       </div>

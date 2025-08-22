@@ -78,7 +78,7 @@ function RouteComponent() {
                 </motion.div>
                 <p className="text-sm">{t("pages.settings.version.title")}</p>
               </div>
-              <p className="text-sm text-white">V1.0.0.1</p>
+              <p className="text-sm text-white">V1.0.1</p>
             </div>
           </motion.div>
         </div>
