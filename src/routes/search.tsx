@@ -1,11 +1,10 @@
+import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
+import ArrowUpLeftIcon from "@/assets/svgs/icon-arrow-up-left.svg?react";
 import TrashIcon from "@/assets/svgs/icon-trash.svg?react";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
-import MovieCard from "@/components/common/MovieCard";
-import { Button } from "@/components/ui/button";
-import { MOCK_MOVIES } from "@/constants/mock";
+import Loading from "@/components/common/Loading";
 import { createFileRoute } from "@tanstack/react-router";
 import { t } from "i18next";
-import { ChevronDownIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
@@ -20,6 +19,25 @@ export const Route = createFileRoute("/search")({
     };
   },
 });
+
+// Helper function to highlight matching text
+const highlightText = (text: string, searchTerm: string) => {
+  if (!searchTerm) return { highlighted: text, remaining: "" };
+
+  const lowerText = text.toLowerCase();
+  const lowerSearchTerm = searchTerm.toLowerCase();
+  const matchIndex = lowerText.indexOf(lowerSearchTerm);
+
+  if (matchIndex === -1) return { highlighted: "", remaining: text };
+
+  const highlighted = text.substring(
+    matchIndex,
+    matchIndex + searchTerm.length,
+  );
+  const remaining = text.substring(matchIndex + searchTerm.length);
+
+  return { highlighted, remaining };
+};
 
 function RouteComponent() {
   const [recentlySearched, setRecentlySearched] = useState([
@@ -42,6 +60,11 @@ function RouteComponent() {
     setRecentlySearched([]);
   };
 
+  const handleSuggestionClick = (suggestion: any) => {
+    console.log("Selected suggestion:", suggestion);
+    // Navigate to movie detail or search results
+  };
+
   if (recentlySearched.length === 0) {
     return (
       <div>
@@ -50,13 +73,60 @@ function RouteComponent() {
     );
   }
 
+  const { suggestions, isLoading: isLoadingSuggestions } =
+    useGetSearchSuggestion({
+      q: searchTerm,
+    });
+
   return (
     <div>
       <SearchHeader isShowBack={true} autoFocus={true} />
 
+      {/* Search Suggestions */}
+      {searchTerm &&
+        searchTerm.length >= 2 &&
+        suggestions &&
+        suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="px-4"
+          >
+            <div className="space-y-0">
+              {suggestions.map((suggestion, index) => {
+                console.log("suggestion", suggestion);
+                const { highlighted, remaining } = highlightText(
+                  suggestion.text || suggestion.suggestion || "",
+                  searchTerm,
+                );
+                return (
+                  <motion.div
+                    key={suggestion.id || suggestion.vod_id || index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="flex cursor-pointer items-center justify-between border-b border-[#222222] py-4 transition-colors last:border-b-0 hover:bg-white/5"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    <div className="flex-1">
+                      <span className="text-brand-red text-sm font-semibold">
+                        {highlighted}
+                      </span>
+                      <span className="text-sm font-semibold text-white">
+                        {remaining}
+                      </span>
+                    </div>
+                    <ArrowUpLeftIcon className="h-4 w-4 text-white/60" />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
       {/* Recent Search */}
       <motion.div
-        className="pt-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
@@ -90,7 +160,7 @@ function RouteComponent() {
                 ))}
               </div>
             </div>
-            <section className="mt-5 space-y-4 px-4">
+            {/* <section className="mt-5 space-y-4 px-4">
               <h2 className="text-forground font-semibold">
                 {t("pages.search.popularSearches")}
               </h2>
@@ -112,7 +182,13 @@ function RouteComponent() {
                 {t("common.viewMore")}
                 <ChevronDownIcon />
               </Button>
-            </section>
+            </section> */}
+          </div>
+        )}
+
+        {isLoadingSuggestions && searchTerm && searchTerm.length >= 2 && (
+          <div className="m-auto h-[calc(100vh-var(--search-header-height))]">
+            <Loading />
           </div>
         )}
       </motion.div>

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useDebounce } from "@uidotdev/usehooks";
 import { t } from "i18next";
-import { ChevronLeftIcon, Loader2, SearchIcon, XIcon } from "lucide-react";
+import { ChevronLeftIcon, SearchIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { parseAsString, useQueryState } from "nuqs";
 import {
@@ -20,6 +20,7 @@ type Props = {
   isClickable?: boolean;
   onClick?: () => void;
   autoFocus?: boolean;
+  onChange?: (value: string) => void;
 };
 
 export interface SearchHeaderRef {
@@ -27,14 +28,18 @@ export interface SearchHeaderRef {
 }
 
 const SearchHeader = forwardRef<SearchHeaderRef, Props>(
-  ({ isShowBack, isClickable = false, onClick, autoFocus = false }, ref) => {
+  (
+    { isShowBack, isClickable = false, onClick, autoFocus = false, onChange },
+    ref,
+  ) => {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useQueryState(
       "q",
       parseAsString.withDefault(""),
     );
+    const [inputValue, setInputValue] = useState(searchTerm || "");
     const [isResultLoading, setIsResultLoading] = useState(false);
-    const debouncedSearchTerm = useDebounce(searchTerm, 300);
+    const debouncedSearchTerm = useDebounce(inputValue, 500);
 
     // Expose focus method to parent component
     useImperativeHandle(ref, () => ({
@@ -60,6 +65,16 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
       }
     }, [autoFocus]);
 
+    // Update input value when URL search term changes
+    useEffect(() => {
+      setInputValue(searchTerm || "");
+    }, [searchTerm]);
+
+    // Update URL parameters when debounced value changes
+    useEffect(() => {
+      setSearchTerm(debouncedSearchTerm || null);
+    }, [debouncedSearchTerm, setSearchTerm]);
+
     // Trigger search when debounced value changes
     useEffect(() => {
       if (debouncedSearchTerm) {
@@ -75,11 +90,13 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
     // Handle search input change
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setSearchTerm(value || null);
+      setInputValue(value);
+      onChange?.(value);
     };
 
     // Handle clear search
     const handleClearSearch = useCallback(() => {
+      setInputValue("");
       setSearchTerm(null);
     }, [setSearchTerm]);
 
@@ -117,7 +134,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
           <Input
             type="text"
             placeholder={t("pages.search.placeholder")}
-            value={searchTerm || ""}
+            value={inputValue}
             onChange={handleSearchChange}
             className={cn(
               "bg-glass h-13 rounded-full border border-white/20 pl-10 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
@@ -126,7 +143,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
             readOnly={isClickable}
           />
           <SearchIcon className="absolute top-1/2 left-4 size-5 -translate-y-1/2" />
-          {searchTerm && !isResultLoading && !isClickable && (
+          {inputValue && !isResultLoading && !isClickable && (
             <div className="absolute top-1/2 right-3 flex -translate-y-1/2 items-center gap-2.5">
               <div
                 className="flex cursor-pointer items-center justify-center rounded-full bg-white/10 p-1"
@@ -135,9 +152,6 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
                 <XIcon className="size-4" />
               </div>
             </div>
-          )}
-          {isResultLoading && !isClickable && (
-            <Loader2 className="absolute top-1/2 right-3 size-4 -translate-y-1/2 animate-spin" />
           )}
         </div>
       </motion.div>
