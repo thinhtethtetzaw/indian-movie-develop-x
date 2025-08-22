@@ -42,6 +42,7 @@
     },
     "movies": {
       "movieDetails": {
+        "title": "電影詳情",
         "director": "導演",
         "actors": "演員",
         "releaseDate": "上映日期",

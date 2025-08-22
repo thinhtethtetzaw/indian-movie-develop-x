@@ -43,6 +43,7 @@
     },
     "movies": {
       "movieDetails": {
+        "title": "Details",
         "director": "Director",
         "actors": "Actors",
         "releaseDate": "Release Date",
