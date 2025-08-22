@@ -44,6 +44,7 @@ function Tag({
     <motion.div
       initial={COMMON_ANIMATION_CONFIG.tag.initial}
       animate={COMMON_ANIMATION_CONFIG.tag.animate}
+      whileTap={props.onClick ? COMMON_ANIMATION_CONFIG.tag.tap : undefined}
       transition={{
         ...COMMON_ANIMATION_CONFIG.tag.transition,
         delay: index * TAG_ANIMATION_DELAY_MULTIPLIER,
@@ -75,7 +76,7 @@ const TagSkeleton = ({
   >
     <div
       className={cn(
-        "h-10 w-20 animate-pulse rounded-full bg-white/8",
+        "h-12 w-24 animate-pulse rounded-full bg-white/8",
         className,
       )}
     />

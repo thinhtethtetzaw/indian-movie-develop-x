@@ -9,7 +9,7 @@ export const COMMON_ANIMATION_CONFIG = {
       rotateX: -5,
     },
     transition: {
-      type: "spring" as const,
+      type: "spring",
       stiffness: 400,
       damping: 30,
       duration: 0.3,
@@ -18,6 +18,14 @@ export const COMMON_ANIMATION_CONFIG = {
   tag: {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
+    tap: {
+      scale: 0.95,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 20,
+      },
+    },
     transition: {
       duration: 0.3,
     },
@@ -42,7 +50,7 @@ export const BOOKMARKS_ANIMATION_CONFIG = {
     animate: { scale: 1, rotate: 0 },
     exit: { scale: 0, rotate: 180 },
     transition: {
-      type: "spring" as const,
+      type: "spring",
       stiffness: 400,
       damping: 25,
     },
@@ -52,7 +60,7 @@ export const BOOKMARKS_ANIMATION_CONFIG = {
     animate: { y: 0 },
     exit: { y: "100%" },
     transition: {
-      type: "spring" as const,
+      type: "spring",
       stiffness: 300,
       damping: 30,
     },

@@ -320,14 +320,14 @@
     "/api/v1/videos/search": {
       "get": {
         "tags": ["Search"],
-        "summary": "Search videos with pagination",
+        "summary": "Search or browse videos with pagination and filtering",
         "operationId": "fd98c593e0e6e771e36285f4a9dea36e",
         "parameters": [
           {
             "name": "q",
             "in": "query",
-            "description": "Search query string",
-            "required": true,
+            "description": "Search query string (optional - if not provided, returns all videos)",
+            "required": false,
             "schema": {
               "type": "string",
               "example": "action"
@@ -421,6 +421,37 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category/list": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Get list of all video categories",
+        "operationId": "cdce6778c48f7258ecd8a150f3b91d1f",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryList"
                 }
               }
             }
@@ -650,6 +681,47 @@
             "description": "Suggestion category",
             "type": "string",
             "example": "Video Title"
+          }
+        },
+        "type": "object"
+      },
+      "Category": {
+        "title": "Category Model",
+        "description": "Video category model",
+        "properties": {
+          "category_id": {
+            "description": "Unique category identifier",
+            "type": "string",
+            "example": "action"
+          },
+          "category_name": {
+            "description": "Category name",
+            "type": "string",
+            "example": "Action"
+          }
+        },
+        "type": "object"
+      },
+      "CategoryList": {
+        "title": "Category List Response",
+        "description": "Response model for category list endpoint",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "List of categories",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
           }
         },
         "type": "object"
@@ -1016,6 +1088,10 @@
     {
       "name": "Search",
       "description": "Search"
+    },
+    {
+      "name": "Category",
+      "description": "Category"
     }
   ]
 }

@@ -3,11 +3,12 @@ import Dexie, { type EntityTable } from "dexie";
 
 interface Bookmark {
   id: string;
+  vod_class: string;
 }
 
 interface WatchList {
   id: string;
-  playHeadInSec: number;
+  play_head_in_sec: number;
 }
 
 const db = new Dexie("IndiaMovie") as Dexie & {
@@ -23,8 +24,8 @@ const db = new Dexie("IndiaMovie") as Dexie & {
 
 // Schema declaration:
 db.version(1).stores({
-  bookmarks: "++id", // primary key "id" (for the runtime!)
-  watchList: "++id, playHeadInSec", // primary key "id" (for the runtime!)
+  bookmarks: "++id, vod_class", // primary key "id" (for the runtime!)
+  watchList: "++id, play_head_in_sec", // primary key "id" (for the runtime!)
 });
 
 export { db };

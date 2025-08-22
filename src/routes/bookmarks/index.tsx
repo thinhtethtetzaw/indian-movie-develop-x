@@ -1,3 +1,4 @@
+import { useGetAllCategories } from "@/apis/app/queryGetAllCategories";
 import { useGetMovieListByIds } from "@/apis/app/queryGetMovieListByIds";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
@@ -27,14 +28,6 @@ export const Route = createFileRoute("/bookmarks/")({
   component: RouteComponent,
 });
 
-// Constants
-const TAGS = {
-  all: "All",
-  movies: "Movies",
-  "tv-series": "TV Series",
-  animation: "Animation",
-} as const;
-
 const SKELETON_COUNT = {
   tags: 4,
   movies: 9,
@@ -52,21 +45,24 @@ function RouteComponent() {
       }),
     ) ?? [];
 
-  const { movieList, isLoading } = useGetMovieListByIds({
+  const { movieList, isLoading: isMovieListLoading } = useGetMovieListByIds({
     videoIds: allBookmarks.map((bookmark) => bookmark.id ?? ""),
     queryConfig: {
       enabled: allBookmarks.length > 0,
     },
   });
 
+  const { allCategories, isLoading: isCategoryListLoading } =
+    useGetAllCategories({});
+
   // Query state management
   const [mode, setMode] = useQueryState(
     "mode",
     parseAsStringEnum(["list", "edit"]).withDefault("list"),
   );
-  const [searchState] = useQueryStates({
+  const [searchState, setSearchState] = useQueryStates({
     mode: parseAsStringEnum(["list", "edit"]).withDefault("list"),
-    tags: parseAsString.withDefault("all"),
+    category: parseAsString.withDefault("0"),
   });
 
   // Local state
@@ -194,8 +190,10 @@ function RouteComponent() {
         <MovieCard
           movie={movie}
           showFavoriteButton={false}
-          onClick={() =>
-            mode === "edit" && handleItemSelect(movie.vod_id ?? "")
+          onClick={
+            mode === "edit"
+              ? () => handleItemSelect(movie.vod_id ?? "")
+              : undefined
           }
           index={index}
         />
@@ -290,25 +288,34 @@ function RouteComponent() {
   const renderTags = useCallback(
     () => (
       <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
-        {isLoading
+        {isCategoryListLoading
           ? renderTagSkeletons()
-          : Object.entries(TAGS).map(([key, label], index) => (
+          : allCategories?.map((category, index) => (
               <Tag
-                key={key}
+                key={category.type_id}
                 index={index}
                 size="lg"
-                className={cn("", {
+                className={cn("cursor-pointer", {
                   "ml-4": index === 0,
-                  "mr-4": index === Object.keys(TAGS).length - 1,
+                  "mr-4": index === allCategories.length - 1,
                 })}
-                variant={searchState.tags === key ? "active" : "default"}
+                variant={
+                  searchState.category === category.type_id?.toString()
+                    ? "active"
+                    : "default"
+                }
+                onClick={() =>
+                  setSearchState({
+                    category: category.type_id?.toString() ?? "0",
+                  })
+                }
               >
-                {label}
+                {category.type_name}
               </Tag>
             ))}
       </div>
     ),
-    [searchState.tags, isLoading, renderTagSkeletons],
+    [searchState.category, isCategoryListLoading, renderTagSkeletons],
   );
 
   const renderMovieSkeletons = useCallback(
@@ -323,7 +330,7 @@ function RouteComponent() {
     () => (
       <div className="mt-5 px-4 pb-32">
         <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-          {isLoading ? (
+          {isMovieListLoading ? (
             renderMovieSkeletons()
           ) : (
             <AnimatePresence mode="popLayout">
@@ -335,7 +342,12 @@ function RouteComponent() {
         </div>
       </div>
     ),
-    [bookmarkedMovies, renderMovieCard, renderMovieSkeletons, isLoading],
+    [
+      bookmarkedMovies,
+      renderMovieCard,
+      renderMovieSkeletons,
+      isMovieListLoading,
+    ],
   );
 
   return (
@@ -347,7 +359,7 @@ function RouteComponent() {
           <Button
             variant="ghost"
             onClick={handleModeToggle}
-            disabled={isLoading}
+            disabled={isMovieListLoading || isCategoryListLoading}
           >
             {mode === "list"
               ? t("pages.bookmarks.edit")

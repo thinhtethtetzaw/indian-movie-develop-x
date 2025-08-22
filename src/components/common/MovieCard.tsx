@@ -27,7 +27,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
   onClick,
   className,
   showFavoriteButton = true,
-  index = 0, // Default to 0 if not provided
+  index = 0,
 }) => {
   const isExistingBookmark = useLiveQuery(() =>
     db.bookmarks.get(movie.vod_id || ""),
@@ -39,7 +39,10 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
       try {
         if (!isExistingBookmark) {
-          await db.bookmarks.add({ id: movie.vod_id });
+          await db.bookmarks.add({
+            id: movie.vod_id,
+            vod_class: movie.vod_class || "",
+          });
         } else {
           await db.bookmarks.delete(movie.vod_id || "");
         }
@@ -155,7 +158,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
         ...COMMON_ANIMATION_CONFIG.movieCard.transition,
         delay: animationDelay,
       }}
-      className={cn("min-h-46 w-31 cursor-pointer", className)}
+      className={cn("min-h-46 w-31", className, {
+        "cursor-pointer": !!onClick,
+      })}
       onClick={handleCardClick}
       role="button"
       tabIndex={0}

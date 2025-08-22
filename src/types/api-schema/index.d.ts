@@ -130,8 +130,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Search videos with pagination */
+        /** Search or browse videos with pagination and filtering */
         get: operations["fd98c593e0e6e771e36285f4a9dea36e"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get list of all video categories */
+        get: operations["cdce6778c48f7258ecd8a150f3b91d1f"];
         put?: never;
         post?: never;
         delete?: never;
@@ -339,6 +356,40 @@ export interface components {
              * @example Video Title
              */
             category?: string;
+        };
+        /**
+         * Category Model
+         * @description Video category model
+         */
+        Category: {
+            /**
+             * @description Unique category identifier
+             * @example action
+             */
+            category_id?: string;
+            /**
+             * @description Category name
+             * @example Action
+             */
+            category_name?: string;
+        };
+        /**
+         * Category List Response
+         * @description Response model for category list endpoint
+         */
+        CategoryList: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of categories */
+            data?: components["schemas"]["Category"][];
         };
         /**
          * Search Suggestion List Response
@@ -838,9 +889,9 @@ export interface operations {
     };
     fd98c593e0e6e771e36285f4a9dea36e: {
         parameters: {
-            query: {
-                /** @description Search query string */
-                q: string;
+            query?: {
+                /** @description Search query string (optional - if not provided, returns all videos) */
+                q?: string;
                 /** @description Number of results per page */
                 per_page?: number;
                 /** @description Page number */
@@ -872,6 +923,29 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SearchResult"];
+                };
+            };
+        };
+    };
+    cdce6778c48f7258ecd8a150f3b91d1f: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryList"];
                 };
             };
         };
