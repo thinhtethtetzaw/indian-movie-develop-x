@@ -30,6 +30,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+
+    "noUncheckedIndexedAccess": true
   }
 }

@@ -47,6 +47,8 @@
     },
     "movies": {
       "movieDetails": {
+        "title": "映画詳細",
+        "subtitle": "映画詳細",
         "director": "監督",
         "actors": "出演者",
         "releaseDate": "公開日",

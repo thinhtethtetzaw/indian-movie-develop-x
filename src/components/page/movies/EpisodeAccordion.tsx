@@ -93,7 +93,7 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
   useEffect(() => {
     // default active: first episode
     if (episodes.length > 0 && activeEpisodeId === null) {
-      setActiveEpisodeId(episodes[0].id);
+      setActiveEpisodeId(episodes[0]?.id ?? 0);
     }
   }, [episodes, activeEpisodeId]);
 
