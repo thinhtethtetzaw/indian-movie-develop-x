@@ -1,10 +1,11 @@
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
+import SearchHeader from "@/components/common/layouts/SearchHeader";
 import MovieCard, { MovieCardSkeleton } from "@/components/common/MovieCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,8 +23,13 @@ export const Route = createFileRoute("/home/")({
 
 function RouteComponent() {
   const { t } = useTranslation();
+  const router = useRouter();
   const handleMovieClick = (movie: HomeRecommendListResponseMovie) => {
     console.log("Movie clicked:", movie);
+  };
+
+  const handleSearchClick = () => {
+    router.navigate({ to: "/search" });
   };
 
   const renderMovieSkeleton = useCallback(
@@ -93,7 +99,12 @@ function RouteComponent() {
 
   return (
     <div className="mt-5 space-y-10">
-      {homeRecommendList?.map((item) => {
+      <SearchHeader
+        isShowBack={false}
+        isClickable={true}
+        onClick={handleSearchClick}
+      />
+      {homeRecommendList?.map((item: any) => {
         return (
           <React.Fragment key={item.title}>
             {item.type === "carousel" && item.list && item.list.length > 0 && (
@@ -117,7 +128,7 @@ function RouteComponent() {
                   </Button>
                 </div>
                 <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
-                  {item.list.map((movie, index) => (
+                  {item.list.map((movie: any, index: number) => (
                     <div key={movie.vod_id} className="flex-shrink-0 last:pr-4">
                       <MovieCard
                         movie={movie}
@@ -133,7 +144,7 @@ function RouteComponent() {
               <section className="space-y-4 px-4">
                 <h2 className="text-forground font-semibold">{item.title}</h2>
                 <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-                  {item.list.map((movie, index) => (
+                  {item.list.map((movie: any, index: number) => (
                     <div key={movie.vod_id} className="flex-shrink-0">
                       <MovieCard
                         movie={movie}

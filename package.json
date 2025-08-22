@@ -33,6 +33,7 @@
     "@tanstack/react-router-devtools": "^1.131.5",
     "@tanstack/react-table": "^8.21.2",
     "@tanstack/router-plugin": "^1.121.2",
+    "@uidotdev/usehooks": "^2.4.1",
     "artplayer": "^5.2.5",
     "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
