@@ -5,7 +5,7 @@ import { ShareSocialList } from "@/components/settings/ShareSocialList";
 import { useDrawerStore } from "@/stores/useDrawerStore";
 import { useTranslation } from "react-i18next";
 
-export function ShareDrawer() {
+export function ShareDrawer({ shareConfigLink }: { shareConfigLink?: any }) {
   const { hideDrawer } = useDrawerStore();
   const { t } = useTranslation();
 
@@ -18,7 +18,7 @@ export function ShareDrawer() {
       triggerLabel={t("pages.settings.shareApp.title")}
     >
       <DrawerHeaderBar title="Share To Social Media" onClose={hideDrawer} />
-      <ShareSocialList url="http://sample.info/?insect=fire&port=attract#cave" />
+      <ShareSocialList url={shareConfigLink} />
     </DynamicDrawer>
   );
 }
