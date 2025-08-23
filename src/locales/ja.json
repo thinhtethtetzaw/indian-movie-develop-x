@@ -23,12 +23,20 @@
       "selected": "選択済み",
       "selectAll": "すべて選択",
       "deselectAll": "選択解除",
-      "remove": "削除"
+      "remove": "削除",
+      "removeDialogTitle": "ブックマークから削除しますか？",
+      "removeDialogDescription": "選択したアイテムをブックマークから削除してもよろしいですか？",
+      "goBack": "戻る",
+      "confirm": "はい、削除します",
+      "emptyTitle": "お気に入りの映画とシリーズを保存",
+      "emptyDescription": "お気に入りの映画とテレビシリーズを閲覧して保存"
     },
     "settings": {
       "title": "設定",
       "notifications": {
-        "title": "通知"
+        "title": "通知",
+        "emptyTitle": "すべて確認しました",
+        "emptyDescription": "現在通知はありません"
       },
       "language": {
         "title": "言語"
@@ -39,6 +47,11 @@
       "version": {
         "title": "バージョン"
       }
+    },
+    "search": {
+      "placeholder": "映画とシリーズを検索...",
+      "recent": "最近の検索",
+      "popularSearches": "人気の検索"
     },
     "movies": {
       "movieDetails": {

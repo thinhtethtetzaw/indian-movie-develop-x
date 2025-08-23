@@ -23,12 +23,20 @@
       "selected": "선택됨",
       "selectAll": "전체 선택",
       "deselectAll": "전체 해제",
-      "remove": "제거"
+      "remove": "제거",
+      "removeDialogTitle": "북마크에서 제거하시겠습니까?",
+      "removeDialogDescription": "선택한 항목을 북마크에서 제거하시겠습니까?",
+      "goBack": "돌아가기",
+      "confirm": "네, 제거합니다",
+      "emptyTitle": "좋아하는 영화와 시리즈를 저장하세요",
+      "emptyDescription": "좋아하는 영화와 TV 시리즈를 찾아서 저장하세요"
     },
     "settings": {
       "title": "설정",
       "notifications": {
-        "title": "알림"
+        "title": "알림",
+        "emptyTitle": "모든 것을 확인했습니다",
+        "emptyDescription": "현재 알림이 없습니다"
       },
       "language": {
         "title": "언어"
@@ -39,6 +47,11 @@
       "version": {
         "title": "버전"
       }
+    },
+    "search": {
+      "placeholder": "영화와 시리즈 검색...",
+      "recent": "최근 검색",
+      "popularSearches": "인기 검색"
     },
     "movies": {
       "movieDetails": {

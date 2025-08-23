@@ -1,3 +1,7 @@
 import type { components } from "./index.d";
 
-export type HomeRecommendListResponseMovie = components["schemas"]["Video"];
+export type HomeRecommendListResponse =
+  components["schemas"]["HomeRecommendResponse"];
+export type CarouselVideoResponse = components["schemas"]["CarouselVideo"];
+export type TopicVideoResponse = components["schemas"]["TopicVideo"];
+export type VideoResponse = components["schemas"]["Video"];

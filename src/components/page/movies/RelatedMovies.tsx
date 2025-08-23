@@ -67,4 +67,4 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
   );
 };
 
-export default RelatedMovies;
+export default RelatedVideos;

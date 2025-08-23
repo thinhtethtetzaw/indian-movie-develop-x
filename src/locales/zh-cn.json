@@ -23,12 +23,20 @@
       "selected": "已选择",
       "selectAll": "全选",
       "deselectAll": "取消全选",
-      "remove": "移除"
+      "remove": "移除",
+      "removeDialogTitle": "从书签中移除？",
+      "removeDialogDescription": "确定要从书签中移除选中的项目吗？",
+      "goBack": "返回",
+      "confirm": "是的，移除",
+      "emptyTitle": "保存您喜爱的电影和剧集",
+      "emptyDescription": "浏览并保存您喜爱的电影和电视剧"
     },
     "settings": {
       "title": "设置",
       "notifications": {
-        "title": "通知"
+        "title": "通知",
+        "emptyTitle": "您已经查看了所有内容",
+        "emptyDescription": "目前没有通知"
       },
       "language": {
         "title": "语言"
@@ -39,6 +47,11 @@
       "version": {
         "title": "版本"
       }
+    },
+    "search": {
+      "placeholder": "搜索电影和电视剧...",
+      "recent": "最近搜索",
+      "popularSearches": "热门搜索"
     },
     "movies": {
       "movieDetails": {

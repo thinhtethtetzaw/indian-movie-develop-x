@@ -23,13 +23,21 @@
       "selected": "Selected",
       "selectAll": "Select all",
       "deselectAll": "Deselect all",
-      "remove": "Remove"
+      "remove": "Remove",
+      "removeDialogTitle": "Remove from Bookmark?",
+      "removeDialogDescription": "Are sure you want to remove selected items to remove from bookmark?",
+      "goBack": "Go back",
+      "confirm": "Yes, Remove",
+      "emptyTitle": "Save Your Favorite Movies and Series",
+      "emptyDescription": "Browse and saved your favourite movies and tv series"
     },
 
     "settings": {
       "title": "Settings",
       "notifications": {
-        "title": "Notifications"
+        "title": "Notifications",
+        "emptyTitle": "You've caught up with everything",
+        "emptyDescription": "No notification at this time"
       },
       "language": {
         "title": "Language"
@@ -40,6 +48,11 @@
       "version": {
         "title": "Version"
       }
+    },
+    "search": {
+      "placeholder": "Search movies and series...",
+      "recent": "Recent",
+      "popularSearches": "Popular Searches"
     },
     "movies": {
       "movieDetails": {

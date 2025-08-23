@@ -14,7 +14,7 @@ function NavHeader({ title, isShowBack, rightNode }: Props) {
   // const canGoBack = useCanGoBack();
 
   return (
-    <div className="relative flex h-[var(--nav-header-height)] items-center gap-x-4">
+    <div className="bg-background sticky top-0 z-10 flex h-[var(--nav-header-height)] items-center gap-x-4">
       <div className="absolute left-4">
         {isShowBack && (
           <Button

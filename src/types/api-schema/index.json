@@ -217,44 +217,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "status": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Success"
-                    },
-                    "data": {
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Video"
-                          }
-                        },
-                        "current_page": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "per_page": {
-                          "type": "integer",
-                          "example": 20
-                        },
-                        "total": {
-                          "type": "integer",
-                          "example": 100
-                        },
-                        "last_page": {
-                          "type": "integer",
-                          "example": 5
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
+                  "$ref": "#/components/schemas/TopicVideosResponse"
                 }
               }
             }
@@ -272,22 +235,77 @@
         }
       }
     },
-    "/api/v1/type/list": {
+    "/api/v1/video/popular": {
       "get": {
-        "tags": ["Type"],
-        "summary": "Get list of types for a video",
-        "operationId": "a92d49f1475c4a465ce2884bcd8e416c",
+        "tags": ["Video"],
+        "summary": "Get most popular videos with pagination",
+        "description": "Retrieve the most popular videos based on weekly hits, automatically sorted by popularity with pagination support",
+        "operationId": "c7c09b6baa42d0c97324a555494b9f18",
         "parameters": [
           {
-            "name": "vod_id",
+            "name": "page",
             "in": "query",
-            "description": "Video ID to get types for",
+            "description": "Page number for pagination (default: 1)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page (default: 20, max: 50)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "example": 20
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
             "required": true,
             "schema": {
               "type": "string",
-              "example": "MS1xx411c7Xq"
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with paginated popular videos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PopularVideoResponse"
+                }
+              }
             }
           },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/type/list": {
+      "get": {
+        "tags": ["Type"],
+        "summary": "Get list of all available video types/categories",
+        "operationId": "a92d49f1475c4a465ce2884bcd8e416c",
+        "parameters": [
           {
             "name": "Accept-Language",
             "in": "header",
@@ -367,14 +385,14 @@
     "/api/v1/videos/search": {
       "get": {
         "tags": ["Search"],
-        "summary": "Search videos with pagination",
+        "summary": "Search or browse videos with pagination and filtering",
         "operationId": "fd98c593e0e6e771e36285f4a9dea36e",
         "parameters": [
           {
             "name": "q",
             "in": "query",
-            "description": "Search query string",
-            "required": true,
+            "description": "Search query string (optional - if not provided, returns all videos)",
+            "required": false,
             "schema": {
               "type": "string",
               "example": "action"
@@ -411,6 +429,46 @@
             }
           },
           {
+            "name": "year",
+            "in": "query",
+            "description": "Filter by release year",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "class",
+            "in": "query",
+            "description": "Filter by video class/category",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Action,Thriller"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "Sort field (vod_time, vod_score, vod_hits_week)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "vod_time"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "description": "Sort order (asc, desc)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "desc"
+            }
+          },
+          {
             "name": "Accept-Language",
             "in": "header",
             "description": "Language code (en, cn, tw, ko, ja)",
@@ -428,6 +486,149 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category/list": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Get list of all video categories",
+        "operationId": "cdce6778c48f7258ecd8a150f3b91d1f",
+        "parameters": [
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language code (en, cn, tw, ko, ja)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/video/topic/{navigatorId}": {
+      "get": {
+        "tags": ["Videos"],
+        "summary": "Get videos by topic level",
+        "description": "Retrieve videos based on the specified topic level using an encoded navigator ID",
+        "operationId": "50a2a6ddab666ca74da3e4015f285d1f",
+        "parameters": [
+          {
+            "name": "navigatorId",
+            "in": "path",
+            "description": "Encoded navigator ID representing the topic level",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "k5"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved videos for the topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicVideosResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid navigator ID or topic not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid ID"
+                    },
+                    "data": {
+                      "type": "null",
+                      "example": null
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/video/popular": {
+      "get": {
+        "tags": ["Videos"],
+        "summary": "Get popular videos",
+        "description": "Retrieve popular videos sorted by weekly hits, score, and release time with pagination",
+        "operationId": "142b8ab6aa0d26432fc090c0779789d9",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved popular videos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PopularVideoResponse"
                 }
               }
             }
@@ -605,16 +806,6 @@
             "description": "Type name in English",
             "type": "string",
             "example": "Action"
-          },
-          "type_pic": {
-            "description": "Type icon image",
-            "type": "string",
-            "example": "https://via.placeholder.com/150x150.png"
-          },
-          "type_extend": {
-            "description": "Additional type information",
-            "type": "string",
-            "example": ""
           }
         },
         "type": "object"
@@ -647,15 +838,67 @@
         "title": "Search Suggestion Model",
         "description": "Search suggestion model",
         "properties": {
-          "suggestion": {
+          "type": {
+            "description": "Suggestion type (video_name, actor, director, year)",
+            "type": "string",
+            "example": "video_name"
+          },
+          "text": {
             "description": "Search suggestion text",
             "type": "string",
             "example": "Action Movie"
           },
-          "vod_id": {
-            "description": "Associated video ID",
+          "id": {
+            "description": "Associated video ID (null for non-video suggestions)",
             "type": "string",
-            "example": "MS1xx411c7Xq"
+            "example": "MS1xx411c7Xq",
+            "nullable": true
+          },
+          "category": {
+            "description": "Suggestion category",
+            "type": "string",
+            "example": "Video Title"
+          }
+        },
+        "type": "object"
+      },
+      "Category": {
+        "title": "Category Model",
+        "description": "Video category model",
+        "properties": {
+          "category_id": {
+            "description": "Unique category identifier",
+            "type": "string",
+            "example": "action"
+          },
+          "category_name": {
+            "description": "Category name",
+            "type": "string",
+            "example": "Action"
+          }
+        },
+        "type": "object"
+      },
+      "CategoryList": {
+        "title": "Category List Response",
+        "description": "Response model for category list endpoint",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "List of categories",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
           }
         },
         "type": "object"
@@ -696,31 +939,37 @@
           "message": {
             "description": "Response message",
             "type": "string",
-            "example": "Success"
+            "example": "success"
           },
           "data": {
+            "description": "List of videos",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Video"
+            }
+          },
+          "pagination": {
+            "description": "Pagination information",
             "properties": {
-              "current_page": {
-                "description": "Current page number",
+              "total": {
+                "description": "Total number of items",
                 "type": "integer",
-                "example": 1
+                "example": 532
               },
               "per_page": {
                 "description": "Items per page",
                 "type": "integer",
                 "example": 10
               },
-              "total": {
-                "description": "Total number of items",
+              "current_page": {
+                "description": "Current page number",
                 "type": "integer",
-                "example": 100
+                "example": 1
               },
-              "videos": {
-                "description": "List of videos",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Video"
-                }
+              "last_page": {
+                "description": "Last page number",
+                "type": "integer",
+                "example": 54
               }
             },
             "type": "object"
@@ -746,8 +995,147 @@
             "description": "List of videos in carousel",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Video"
+              "$ref": "#/components/schemas/CarouselVideo"
             }
+          }
+        },
+        "type": "object"
+      },
+      "CarouselVideo": {
+        "title": "Carousel Video Model",
+        "description": "Video model for carousel display",
+        "properties": {
+          "vod_id": {
+            "description": "Unique video identifier",
+            "type": "string",
+            "example": "MS1xx411c7Xq"
+          },
+          "vod_name": {
+            "description": "Video title",
+            "type": "string",
+            "example": "Road House"
+          },
+          "vod_pic": {
+            "description": "Video poster image",
+            "type": "string",
+            "example": "https://via.placeholder.com/380x562.png"
+          },
+          "vod_remarks": {
+            "description": "Video quality remarks",
+            "type": "string",
+            "example": "1080p"
+          },
+          "vod_class": {
+            "description": "Video categories",
+            "type": "string",
+            "example": "Action,Thriller"
+          },
+          "vod_year": {
+            "description": "Video release year",
+            "type": "string",
+            "example": "2024"
+          },
+          "vod_pic_slide": {
+            "description": "Video slide image",
+            "type": "string",
+            "example": "https://via.placeholder.com/800x400.png"
+          }
+        },
+        "type": "object"
+      },
+      "TopicVideo": {
+        "title": "Topic Video Model",
+        "description": "Video model for topic sections",
+        "properties": {
+          "vod_id": {
+            "description": "Unique video identifier",
+            "type": "string",
+            "example": "MS1xx411c7Xq"
+          },
+          "vod_name": {
+            "description": "Video title",
+            "type": "string",
+            "example": "Road House"
+          },
+          "vod_pic": {
+            "description": "Video poster image",
+            "type": "string",
+            "example": "https://via.placeholder.com/380x562.png"
+          },
+          "vod_remarks": {
+            "description": "Video quality remarks",
+            "type": "string",
+            "example": "1080p"
+          },
+          "vod_class": {
+            "description": "Video categories",
+            "type": "string",
+            "example": "Action,Thriller"
+          },
+          "vod_year": {
+            "description": "Video release year",
+            "type": "string",
+            "example": "2024"
+          },
+          "vod_time": {
+            "description": "Video timestamp",
+            "type": "integer",
+            "example": 1752742999
+          },
+          "vod_hits_week": {
+            "description": "Weekly view count",
+            "type": "integer",
+            "example": 1500
+          },
+          "vod_score": {
+            "description": "Video rating score",
+            "type": "string",
+            "example": "3.0"
+          },
+          "type_id": {
+            "description": "Type ID",
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "type": "object"
+      },
+      "TopicItem": {
+        "title": "Topic Item Model",
+        "description": "Topic section item model for home page",
+        "properties": {
+          "type": {
+            "description": "Topic type",
+            "type": "string",
+            "example": "action"
+          },
+          "title": {
+            "description": "Section title",
+            "type": "string",
+            "example": "Action Movies"
+          },
+          "list": {
+            "description": "List of videos in topic",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopicVideo"
+            }
+          },
+          "navigator": {
+            "description": "Navigation information",
+            "properties": {
+              "title": {
+                "description": "Navigation button text",
+                "type": "string",
+                "example": "View More"
+              },
+              "id": {
+                "description": "Encoded navigator ID",
+                "type": "string",
+                "example": "k5"
+              }
+            },
+            "type": "object"
           }
         },
         "type": "object"
@@ -767,10 +1155,17 @@
             "example": "Success"
           },
           "data": {
-            "description": "List of carousel items",
+            "description": "List of carousel and topic items",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CarouselItem"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CarouselItem"
+                },
+                {
+                  "$ref": "#/components/schemas/TopicItem"
+                }
+              ]
             }
           }
         },
@@ -787,6 +1182,123 @@
               "type": "string"
             },
             "example": ["MS1xx411c7Xq", "MS1xx411c7Xy"]
+          }
+        },
+        "type": "object"
+      },
+      "TopicVideosResponse": {
+        "title": "Topic Videos Response",
+        "description": "Response model for getting videos by topic level",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "Paginated data",
+            "properties": {
+              "topic_name": {
+                "description": "Name of the topic",
+                "type": "string",
+                "example": "Action Movies"
+              },
+              "videos": {
+                "description": "List of videos",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              },
+              "pagination": {
+                "description": "Pagination information",
+                "properties": {
+                  "current_page": {
+                    "description": "Current page number",
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "per_page": {
+                    "description": "Items per page",
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "total": {
+                    "description": "Total number of items",
+                    "type": "integer",
+                    "example": 100
+                  },
+                  "last_page": {
+                    "description": "Last page number",
+                    "type": "integer",
+                    "example": 5
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "PopularVideoResponse": {
+        "title": "Popular Video Response",
+        "description": "Response model for popular videos endpoint with pagination",
+        "properties": {
+          "status": {
+            "description": "Response status",
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "description": "Response message",
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "description": "Paginated data",
+            "properties": {
+              "videos": {
+                "description": "List of popular videos sorted by weekly hits",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              },
+              "pagination": {
+                "description": "Pagination information",
+                "properties": {
+                  "current_page": {
+                    "description": "Current page number",
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "per_page": {
+                    "description": "Items per page",
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "total": {
+                    "description": "Total number of popular videos",
+                    "type": "integer",
+                    "example": 150
+                  },
+                  "last_page": {
+                    "description": "Last page number",
+                    "type": "integer",
+                    "example": 8
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
           }
         },
         "type": "object"
@@ -826,6 +1338,14 @@
     {
       "name": "Search",
       "description": "Search"
+    },
+    {
+      "name": "Category",
+      "description": "Category"
+    },
+    {
+      "name": "Videos",
+      "description": "Videos"
     }
   ]
 }
