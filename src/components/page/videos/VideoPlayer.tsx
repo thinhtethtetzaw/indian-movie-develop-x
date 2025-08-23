@@ -56,15 +56,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
               cursor: pointer;
               pointer-events: auto;
               transition: transform 0.2s ease;
-              width: 22px;
-              height: 22px;
+              width: 33px;
+              height: 33px;
               display: flex;
               align-items: center;
               justify-content: center;
               position: relative;
             `;
             const backwardRoot = createRoot(backwardBtn);
-            backwardRoot.render(<Backward style={{ width: 22, height: 22 }} />);
+            backwardRoot.render(<Backward style={{ width: 33, height: 33 }} />);
             backwardBtn.addEventListener("click", () => {
               art.currentTime = Math.max(0, art.currentTime - 10);
             });
@@ -76,8 +76,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
               cursor: pointer;
               pointer-events: auto;
               transition: transform 0.2s ease;
-              width: 36px;
-              height: 36px;
+              width: 56px;
+              height: 56px;
               border-radius: 50%;
               background-color: rgba(0, 0, 0, 0.5);
               display: flex;
@@ -90,13 +90,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
                 art.playing ? (
                   <Pause
                     style={{
-                      width: 12,
-                      height: 12,
+                      width: 33,
+                      height: 33,
                       color: "white",
                     }}
                   />
                 ) : (
-                  <Play style={{ width: 12, height: 12, fill: "white" }} />
+                  <Play style={{ width: 33, height: 33, fill: "white" }} />
                 ),
               );
             };
@@ -112,15 +112,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
               cursor: pointer;
               pointer-events: auto;
               transition: transform 0.2s ease;
-              width: 22px;
-              height: 22px;
+              width: 33px;
+              height: 33px;
               display: flex;
               align-items: center;
               justify-content: center;
               position: relative;
             `;
             const forwardRoot = createRoot(forwardBtn);
-            forwardRoot.render(<Forward style={{ width: 22, height: 22 }} />);
+            forwardRoot.render(<Forward style={{ width: 33, height: 33 }} />);
             forwardBtn.addEventListener("click", () => {
               art.currentTime = Math.min(art.duration, art.currentTime + 10);
             });
