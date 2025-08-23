@@ -1,10 +1,10 @@
-import MovieCard from "@/components/common/MovieCard";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import VideoCard from "@/components/common/VideoCard";
+import type { VideoResponse } from "@/types/api-schema/response";
 import React, { useEffect, useRef, useState } from "react";
 
 interface RelatedMoviesProps {
-  movies: HomeRecommendListResponseMovie[];
-  onMovieClick?: (movie: HomeRecommendListResponseMovie) => void;
+  movies: VideoResponse[];
+  onMovieClick?: (movie: VideoResponse) => void;
   /** Pass this if your grid is inside a scrollable container (overflow-auto) */
   scrollContainerRef?: React.RefObject<HTMLElement>;
 }
@@ -56,7 +56,7 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
       <div className="grid grid-cols-3 gap-3">
         {movies.slice(0, visibleCount).map((movie) => (
           <div key={movie.vod_id} className="flex-shrink-0">
-            <MovieCard movie={movie} onClick={() => onMovieClick?.(movie)} />
+            <VideoCard video={movie} onClick={onMovieClick} />
           </div>
         ))}
       </div>
@@ -67,4 +67,4 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
   );
 };
 
-export default RelatedVideos;
+export default RelatedMovies;
