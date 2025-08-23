@@ -11,8 +11,8 @@ import { useTranslation } from "react-i18next";
 
 function Sorting() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useQueryState(
-    "category",
+  const [selectedClass, setSelectedClass] = useQueryState(
+    "class",
     parseAsString.withDefault(""),
   );
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ function Sorting() {
   };
 
   const handleSelectCategory = (categoryId: string) => {
-    setSelectedCategory(categoryId);
+    setSelectedClass(categoryId);
     setTimeout(() => {
       handleClose();
     }, 300);
@@ -44,7 +44,7 @@ function Sorting() {
 
   return (
     <>
-      <div className="px-4">
+      <div>
         <Button
           variant="ghost"
           onClick={handleSortClick}
@@ -141,7 +141,7 @@ function Sorting() {
                         "w-full cursor-pointer rounded-full bg-white/10 p-4 backdrop-blur-sm transition-colors hover:bg-white/20",
                         {
                           "bg-brand-red hover:bg-brand-red/90 text-white":
-                            selectedCategory === category.category_id,
+                            selectedClass === category.category_id,
                         },
                       )}
                       onTap={() =>

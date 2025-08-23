@@ -54,9 +54,9 @@ const RelatedMovies: React.FC<RelatedMoviesProps> = ({
   return (
     <section className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
-        {movies.slice(0, visibleCount).map((movie) => (
+        {movies.slice(0, visibleCount).map((movie, index) => (
           <div key={movie.vod_id} className="flex-shrink-0">
-            <VideoCard video={movie} onClick={onMovieClick} />
+            <VideoCard index={index} video={movie} onClick={onMovieClick} />
           </div>
         ))}
       </div>

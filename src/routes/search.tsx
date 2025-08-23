@@ -49,6 +49,7 @@ function RouteComponent() {
   const [filters] = useQueryStates({
     sort_order: parseAsString.withDefault("asc"),
     year: parseAsString.withDefault(""),
+    class: parseAsString.withDefault(""),
   });
 
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
@@ -95,6 +96,7 @@ function RouteComponent() {
       q: submittedSearchTerm,
       year: filters.year,
       sort_order: filters.sort_order,
+      class: filters.class,
     },
     enabled: !!submittedSearchTerm,
   });

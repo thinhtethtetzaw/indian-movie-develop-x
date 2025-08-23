@@ -1,10 +1,10 @@
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
-import Sorting from "@/components/common/Sorting";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
+import { Filter } from "@/components/page/search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -133,7 +133,6 @@ function RouteComponent() {
         isClickable={true}
         onClick={handleSearchClick}
       />
-      <Sorting />
       <div className="space-y-6 pb-5">
         <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
           {isCategoryListLoading
@@ -162,6 +161,11 @@ function RouteComponent() {
                 </Tag>
               ))}
         </div>
+        {searchState.type !== "0" && (
+          <div className="px-4">
+            <Filter />
+          </div>
+        )}
         <div className="space-y-10">
           {isRecommendListLoading ? (
             <HomeSkeleton />

@@ -271,7 +271,7 @@ function RouteComponent() {
       <AnimatePresence>
         {mode === "edit" && (
           <motion.div
-            className="fixed right-0 bottom-0 left-0 z-40 mx-auto max-w-md rounded-t-3xl border-t border-[#444444] bg-[#2B2B2B] backdrop-blur-sm"
+            className="fixed right-0 bottom-0 left-0 z-[var(--z-popover)] mx-auto max-w-md rounded-t-3xl border-t border-[#444444] bg-[#2B2B2B] backdrop-blur-sm"
             initial={BOOKMARKS_ANIMATION_CONFIG.bottomDrawer.initial}
             animate={BOOKMARKS_ANIMATION_CONFIG.bottomDrawer.animate}
             exit={BOOKMARKS_ANIMATION_CONFIG.bottomDrawer.exit}

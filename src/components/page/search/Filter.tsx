@@ -1,3 +1,4 @@
+import Sorting from "@/components/common/Sorting";
 import { Button } from "@/components/ui/button";
 import { ChevronDownIcon } from "lucide-react";
 import { parseAsString, useQueryState } from "nuqs";
@@ -13,7 +14,7 @@ function DropdownTrigger({ label, onClick }: DropdownTriggerProps) {
   return (
     <Button
       variant="ghost"
-      className="bg-glass rounded-full !px-6"
+      className="bg-glass h-10 rounded-full !px-6"
       onClick={onClick}
     >
       {label}
@@ -131,59 +132,63 @@ export function Filter() {
   };
 
   return (
-    <div className="flex items-center justify-between pt-1">
-      <div className="flex items-center gap-3">
+    <div className="flex items-center justify-between">
+      <div className="flex w-full items-center justify-between gap-3">
         <span className="text-base font-medium text-[#CCCCCC]">Sort by</span>
         <div className="h-4 w-px bg-white/20"></div>
-        {/* Sort Dropdown */}
-        <div className="relative" ref={sortDropdownRef}>
-          <DropdownTrigger
-            label={
-              sortOptions.find((option) => option.value === sortOrder)?.label ||
-              ""
-            }
-            onClick={() => {
-              setIsDropdownOpen((prev) => ({ ...prev, sort: !prev.sort }));
-            }}
-          />
+        <div className="flex items-center gap-x-3">
+          {/* Sort Dropdown */}
+          <div className="relative" ref={sortDropdownRef}>
+            <DropdownTrigger
+              label={
+                sortOptions.find((option) => option.value === sortOrder)
+                  ?.label || ""
+              }
+              onClick={() => {
+                setIsDropdownOpen((prev) => ({ ...prev, sort: !prev.sort }));
+              }}
+            />
 
-          {isDropdownOpen.sort && (
-            <div className="absolute top-full left-0 z-50 mt-1 w-full space-y-2.5 rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
-              {sortOptions.map((option) => (
-                <SortOptionButton
-                  key={option.value}
-                  option={option}
-                  isSelected={sortOrder === option.value}
-                  onClick={() => handleSortChange(option.value)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Year Dropdown */}
-        <div className="relative" ref={yearDropdownRef}>
-          <DropdownTrigger
-            label={year || "Year"}
-            onClick={() => {
-              setIsDropdownOpen((prev) => ({ ...prev, year: !prev.year }));
-            }}
-          />
-
-          {isDropdownOpen.year && (
-            <div className="absolute top-full left-0 z-50 mt-1 w-48 rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
-              <div className="grid grid-cols-2 gap-2">
-                {years.map((yearValue) => (
-                  <YearOptionButton
-                    key={yearValue}
-                    year={yearValue}
-                    isSelected={year === yearValue.toString()}
-                    onClick={() => handleYearChange(yearValue.toString())}
+            {isDropdownOpen.sort && (
+              <div className="absolute top-full left-0 z-50 mt-1 w-full space-y-2.5 rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
+                {sortOptions.map((option) => (
+                  <SortOptionButton
+                    key={option.value}
+                    option={option}
+                    isSelected={sortOrder === option.value}
+                    onClick={() => handleSortChange(option.value)}
                   />
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
+
+          {/* Year Dropdown */}
+          <div className="relative" ref={yearDropdownRef}>
+            <DropdownTrigger
+              label={year || "Year"}
+              onClick={() => {
+                setIsDropdownOpen((prev) => ({ ...prev, year: !prev.year }));
+              }}
+            />
+
+            {isDropdownOpen.year && (
+              <div className="absolute top-full left-0 z-50 mt-1 w-48 rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
+                <div className="grid grid-cols-2 gap-2">
+                  {years.map((yearValue) => (
+                    <YearOptionButton
+                      key={yearValue}
+                      year={yearValue}
+                      isSelected={year === yearValue.toString()}
+                      onClick={() => handleYearChange(yearValue.toString())}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Sorting />
         </div>
       </div>
     </div>
