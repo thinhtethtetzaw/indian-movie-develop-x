@@ -1,21 +1,20 @@
 import { useGetSearch } from "@/apis/app/queryGetSearch";
 import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
-import ArrowUpLeftIcon from "@/assets/svgs/icon-arrow-up-left.svg?react";
-import TrashIcon from "@/assets/svgs/icon-trash.svg?react";
 import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
 import Loading from "@/components/common/Loading";
-import VideoCard from "@/components/common/VideoCard";
-import { Button } from "@/components/ui/button";
+import {
+  RecentSearch,
+  SearchResults,
+  SearchSuggestions,
+} from "@/components/page/search";
 import type {
   SearchResultResponse,
   SearchSuggestionResponse,
-  VideoResponse,
 } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
-import { t } from "i18next";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { parseAsString, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
@@ -29,25 +28,6 @@ export const Route = createFileRoute("/search")({
     };
   },
 });
-
-// Helper function to highlight matching text
-const highlightText = (text: string, searchTerm: string) => {
-  if (!searchTerm) return { highlighted: text, remaining: "" };
-
-  const lowerText = text.toLowerCase();
-  const lowerSearchTerm = searchTerm.toLowerCase();
-  const matchIndex = lowerText.indexOf(lowerSearchTerm);
-
-  if (matchIndex === -1) return { highlighted: "", remaining: text };
-
-  const highlighted = text.substring(
-    matchIndex,
-    matchIndex + searchTerm.length,
-  );
-  const remaining = text.substring(matchIndex + searchTerm.length);
-
-  return { highlighted, remaining };
-};
 
 function RouteComponent() {
   const [recentlySearched, setRecentlySearched] = useState([
@@ -118,10 +98,9 @@ function RouteComponent() {
     !isLoadingSuggestions &&
     searchTerm &&
     searchTerm.length >= 2 &&
-    ((shouldShowSearchResults && (searchResults as any)?.data?.length === 0) ||
+    ((shouldShowSearchResults &&
+      (searchResults as SearchResultResponse)?.data?.length === 0) ||
       (!shouldShowSearchResults && suggestions && suggestions.length === 0));
-
-  console.log("searchResult", searchResults?.data);
 
   return (
     <div className="pb-10">
@@ -133,62 +112,12 @@ function RouteComponent() {
 
       <AnimatePresence mode="popLayout">
         {/* Recent Search */}
-        {!searchTerm && recentlySearched.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{
-              opacity: 0,
-              transition: { duration: 0.3, delay: 0.5 },
-            }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-          >
-            <div>
-              <div className="flex flex-col gap-y-4">
-                <div className="flex items-center justify-between px-4">
-                  <p className="text-base font-semibold text-white">
-                    {t("pages.search.recent")}
-                  </p>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleClearRecent}
-                  >
-                    <TrashIcon />
-                  </Button>
-                </div>
-
-                <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-2 pl-4 last:pr-4">
-                  {recentlySearched.map((item, index) => (
-                    <motion.div
-                      initial={{ opacity: 0, rotateX: -5 }}
-                      animate={{ opacity: 1 }}
-                      transition={{
-                        duration: 0.3,
-                        delay: Number(index) * 0.07,
-                      }}
-                      exit={{
-                        opacity: 0,
-                        y: -10,
-                        rotateX: -5,
-                        transition: {
-                          duration: 0.3,
-                          delay: (recentlySearched.length - 1 - index) * 0.07,
-                        },
-                      }}
-                      layout
-                      key={item}
-                      className="flex-shrink-0 rounded-md bg-white/10 px-4 py-2.5 text-sm font-medium whitespace-nowrap text-gray-300 transition-colors hover:bg-white/20"
-                      onClick={() => handleRecentItemClick(item)}
-                    >
-                      {item}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+        {!searchTerm && (
+          <RecentSearch
+            recentlySearched={recentlySearched}
+            onItemClick={handleRecentItemClick}
+            onClearRecent={handleClearRecent}
+          />
         )}
 
         {/* Search Suggestions */}
@@ -197,64 +126,19 @@ function RouteComponent() {
           searchTerm.length >= 2 &&
           suggestions &&
           suggestions.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="px-4"
-            >
-              <div className="space-y-0">
-                {suggestions.map((suggestion, index) => {
-                  console.log("suggestion", suggestion);
-                  const { highlighted, remaining } = highlightText(
-                    suggestion.text || "",
-                    searchTerm,
-                  );
-                  return (
-                    <motion.div
-                      key={suggestion.id || suggestion.id || index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="group flex cursor-pointer items-center justify-between border-b border-[#222222] py-4 transition-colors last:border-b-0"
-                      onClick={() => handleSuggestionClick(suggestion)}
-                    >
-                      <div className="flex-1">
-                        <span className="text-brand-red text-sm font-semibold">
-                          {highlighted}
-                        </span>
-                        <span className="text-sm font-semibold text-white">
-                          {remaining}
-                        </span>
-                      </div>
-                      <ArrowUpLeftIcon className="h-4 w-4 text-white/60 transition-transform duration-300 ease-in-out group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
+            <SearchSuggestions
+              suggestions={suggestions}
+              searchTerm={searchTerm}
+              onSuggestionClick={handleSuggestionClick}
+            />
           )}
 
         {/* Search Results */}
-        {shouldShowSearchResults &&
-          (searchResults as any)?.data?.length > 0 && (
-            <section className="space-y-4 px-4">
-              <h2 className="text-forground font-semibold">Search results</h2>
-              <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-                {(searchResults as SearchResultResponse)?.data?.map(
-                  (movie: VideoResponse, index) => (
-                    <div key={movie.vod_id} className="flex-shrink-0">
-                      <VideoCard
-                        video={movie}
-                        // onClick={handleMovieClick}
-                        index={index}
-                      />
-                    </div>
-                  ),
-                )}
-              </div>
-            </section>
-          )}
+        {shouldShowSearchResults && (
+          <SearchResults
+            searchResults={searchResults as SearchResultResponse}
+          />
+        )}
 
         {/* Shared Loading State */}
         {shouldShowLoading && (
