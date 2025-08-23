@@ -1,11 +1,7 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
 import { ChartNoAxesColumn, ChevronUp } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { Tag } from "@/components/common/Tag";
 
 interface Episode {
   id: number;
@@ -23,64 +19,21 @@ const EpisodeItem: React.FC<{
   isActive: boolean;
   onClick: () => void;
 }> = ({ episode, isActive, onClick }) => (
-  <button
-    type="button"
-    className={`flex-group relative flex min-w-fit items-center gap-2 rounded-full px-4 py-3 whitespace-nowrap transition-all duration-200 ${
-      isActive
-        ? "blur-1 bg-[#D5123A] text-white"
-        : "blur-1 bg-gradient-to-r from-white/4 to-white/12"
-    } cursor-pointer`}
+  <Tag
+    asChild
+    variant={isActive ? "active" : "default"}
+    size="lg"
+    className="relative cursor-pointer"
     onClick={onClick}
   >
-    <span className="text-sm font-medium">{episode.title}</span>
-    {isActive && (
-      <ChartNoAxesColumn className="absolute bottom-1 left-1/2 h-5 w-5 -translate-x-1/2 translate-y-1/2 text-white" />
-    )}
-  </button>
+    <span className="relative flex items-center gap-1.5">
+      {episode.title}
+      {isActive && (
+        <ChartNoAxesColumn className="absolute bottom-1 left-1/2 h-8 w-8 -translate-x-1/2 translate-y-1/2 text-white" />
+      )}
+    </span>
+  </Tag>
 );
-
-interface EpisodeCarouselProps {
-  episodes: Episode[];
-  activeEpisodeId: number | null;
-  onEpisodeClick: (id: number) => void;
-}
-
-const EpisodeCarousel: React.FC<EpisodeCarouselProps> = ({
-  episodes,
-  activeEpisodeId,
-  onEpisodeClick,
-}) => {
-  const [api, setApi] = useState<CarouselApi>();
-
-  const onEpisodeClickRef = useRef(onEpisodeClick);
-  useEffect(() => {
-    onEpisodeClickRef.current = onEpisodeClick;
-  }, [onEpisodeClick]);
-
-  const handleSelectEpisode = (id: number) => {
-    onEpisodeClickRef.current(id);
-    const index = episodes.findIndex((ep) => ep.id === id);
-    if (api && index >= 0) {
-      api.scrollTo(index);
-    }
-  };
-
-  return (
-    <Carousel className="w-full" setApi={setApi}>
-      <CarouselContent className="-ml-2 flex">
-        {episodes.map((episode) => (
-          <CarouselItem key={episode.id} className="basis-auto pl-2">
-            <EpisodeItem
-              episode={episode}
-              isActive={activeEpisodeId === episode.id}
-              onClick={() => handleSelectEpisode(episode.id)}
-            />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-    </Carousel>
-  );
-};
 
 const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
   seasonTitle,
@@ -133,11 +86,16 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
           {episodes.length === 0 ? (
             <p className="text-sm text-gray-400">No episodes available.</p>
           ) : (
-            <EpisodeCarousel
-              episodes={episodes}
-              activeEpisodeId={activeEpisodeId}
-              onEpisodeClick={handleEpisodeSelect}
-            />
+            <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
+              {episodes.map((episode) => (
+                <EpisodeItem
+                  key={episode.id}
+                  episode={episode}
+                  isActive={activeEpisodeId === episode.id}
+                  onClick={() => handleEpisodeSelect(episode.id)}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>

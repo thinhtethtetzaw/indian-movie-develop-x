@@ -1,4 +1,4 @@
-import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
+import { useGetVideoRecommend } from "@/apis/app/queryGetDetailRecommendList";
 import { useGetVideoDetail } from "@/apis/app/queryGetVideoDetail";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import Loading from "@/components/common/Loading";
@@ -9,12 +9,14 @@ import RelatedMovies from "@/components/page/videos/RelatedMovies";
 import VideoInfo from "@/components/page/videos/VideoInfo";
 import VideoPlayer from "@/components/page/videos/VideoPlayer";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
 import { processEpisodes } from "@/lib/processEpisodes";
 import type { VideoResponse } from "@/types/api-schema/response";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useLiveQuery } from "dexie-react-hooks";
 import { HeartIcon } from "lucide-react";
+import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-
 export const Route = createFileRoute("/videos/$videoId")({
   component: RouteComponent,
   beforeLoad: () => {
@@ -35,8 +37,8 @@ function RouteComponent() {
 
   console.log("videoDetail", videoDetail);
   const episodes = processEpisodes(videoDetail?.vod_play_url ?? []);
-  console.log("episodes", episodes);
   const firstEpisodeUrl = episodes[0]?.url ?? "";
+
   const MOCK_MOVIE = {
     seasons: [
       {
@@ -68,39 +70,39 @@ function RouteComponent() {
         ],
       },
     ],
-    movies: [
-      {
-        id: "1",
-        title: "Superman",
-        imageUrl:
-          "https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg",
-        rating: 4.0,
-        episode: null,
-        isFavorite: false,
-      },
-      {
-        id: "2",
-        title: "The Dark Knight",
-        imageUrl:
-          "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-        rating: null,
-        episode: 10,
-        isFavorite: true,
-      },
-    ],
   };
-  const { homeRecommendList } = useGetHomeRecommendList({});
-  // console.log("homeRecommendList", homeRecommendList);
-  const mergedMovies =
-    homeRecommendList
-      ?.filter((item) =>
-        ["carousel", "topic", "list"].includes(item.type ?? ""),
-      )
-      .flatMap((item) => item.list ?? []) ?? [];
 
-  const uniqueMovies: VideoResponse[] = Array.from(
-    new Map(mergedMovies.map((m) => [m.vod_id, m])).values(),
+  const { videoRecommendList } = useGetVideoRecommend({ vod_id: videoId });
+  console.log("videoRecommendList", videoRecommendList);
+  const navigate = useNavigate();
+  const handleVideoClick = (video: VideoResponse) => {
+    navigate({
+      to: "/videos/$videoId",
+      params: {
+        videoId: video.vod_id ?? "",
+      },
+    });
+  };
+
+  const isExistingBookmark = useLiveQuery(() =>
+    db.bookmarks.get(videoId || ""),
   );
+
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    try {
+      if (!isExistingBookmark) {
+        await db.bookmarks.add({
+          id: videoId || "",
+        });
+      } else {
+        await db.bookmarks.delete(videoId || "");
+      }
+    } catch (error) {
+      console.error("Failed to toggle bookmark:", error);
+    }
+  };
 
   return (
     <>
@@ -112,8 +114,28 @@ function RouteComponent() {
             variant="ghost"
             size="icon"
             className="size-8 rounded-full bg-white/20 backdrop-blur-sm transition-all hover:bg-black/40"
+            onClick={handleFavoriteClick}
+            aria-label={
+              isExistingBookmark ? "Remove from favorites" : "Add to favorites"
+            }
           >
-            <HeartIcon className="size-4 fill-red-500 text-red-500 transition-all" />
+            <motion.div
+              animate={{
+                scale: isExistingBookmark ? [1, 1.2, 1] : 1,
+              }}
+              transition={{
+                duration: 0.3,
+                ease: "easeInOut",
+              }}
+            >
+              <HeartIcon
+                className={`size-4 transition-all ${
+                  isExistingBookmark
+                    ? "fill-red-500 text-red-500"
+                    : "text-forground hover:text-red-400"
+                }`}
+              />
+            </motion.div>
           </Button>
         }
       />
@@ -152,8 +174,8 @@ function RouteComponent() {
                 </h2>
 
                 <RelatedMovies
-                  movies={uniqueMovies}
-                  onMovieClick={(movie) => console.log("Clicked:", movie)}
+                  movies={videoRecommendList ?? []}
+                  onMovieClick={handleVideoClick}
                 />
               </>
             </div>
