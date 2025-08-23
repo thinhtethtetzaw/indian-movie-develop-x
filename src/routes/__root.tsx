@@ -31,8 +31,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       <>
         <NuqsAdapter>
           <div className="bg-background relative mx-auto flex h-dvh w-screen max-w-md flex-col overflow-hidden">
-            <div className="pointer-events-none absolute z-2 size-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-2xl"></div>
-            <div className="lighter-scrollbar z-1 flex-1 overflow-y-auto">
+            <div className="pointer-events-none absolute z-[var(--z-popover)] size-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-2xl"></div>
+            <div
+              id="scroll-container"
+              className="lighter-scrollbar flex-1 overflow-y-auto"
+            >
               <Outlet />
             </div>
             {isShowBottomNavbar && <BottomNavbar />}

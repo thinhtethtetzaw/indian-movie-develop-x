@@ -13,9 +13,7 @@
   },
   "pages": {
     "home": {
-      "popularMovies": "Popular Movies",
-      "popularTVSeries": "Popular TV Series",
-      "youMayLike": "You May Like"
+      "categories": "Categories"
     },
     "bookmarks": {
       "title": "Bookmarks",

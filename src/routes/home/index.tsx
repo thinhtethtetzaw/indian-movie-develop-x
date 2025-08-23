@@ -1,6 +1,7 @@
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
+import Sorting from "@/components/common/Sorting";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/home/")({
 function RouteComponent() {
   const navigate = useNavigate();
   const [searchState, setSearchState] = useQueryStates({
-    category: parseAsString.withDefault("0"),
+    type: parseAsString.withDefault("0"),
   });
 
   const handleVideoClick = (video: VideoResponse) => {
@@ -132,6 +133,7 @@ function RouteComponent() {
         isClickable={true}
         onClick={handleSearchClick}
       />
+      <Sorting />
       <div className="space-y-6 pb-5">
         <div className="scrollbar-hide flex items-center gap-x-1.5 overflow-auto">
           {isCategoryListLoading
@@ -146,13 +148,13 @@ function RouteComponent() {
                     "mr-4": index === allTypes.length - 1,
                   })}
                   variant={
-                    searchState.category === category.type_id?.toString()
+                    searchState.type === category.type_id?.toString()
                       ? "active"
                       : "default"
                   }
                   onClick={() =>
                     setSearchState({
-                      category: category.type_id?.toString() ?? "0",
+                      type: category.type_id?.toString() ?? "0",
                     })
                   }
                 >
