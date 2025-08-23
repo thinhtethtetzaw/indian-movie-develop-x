@@ -46,7 +46,7 @@ export function DynamicDrawer({
         </div>
       </DrawerTrigger>
 
-      <DrawerContent className="fixed right-0 bottom-0 left-0 mx-auto max-w-md !rounded-t-[32px] border-[#2B2B2B] bg-[#2B2B2B] [&>div:first-child]:hidden">
+      <DrawerContent className="fixed right-0 bottom-0 left-0 z-[var(--z-dialog)] mx-auto max-w-md !rounded-t-[32px] border-[#2B2B2B] bg-[#2B2B2B] [&>div:first-child]:hidden">
         <VisuallyHidden>
           <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>

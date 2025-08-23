@@ -110,14 +110,14 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
     return (
       <motion.div
         className={cn(
-          "bg-background sticky top-0 z-10 flex h-[var(--search-header-height)] items-center px-4 pt-6 pb-4",
+          "bg-background sticky top-0 z-[var(--z-nav-layer)] flex h-[var(--search-header-height)] items-center px-4 pt-6 pb-4",
           {
             "gap-x-2": isShowBack,
           },
         )}
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
+        transition={{ duration: 0.2, delay: 0.2 }}
       >
         <div className="relative z-10">
           {isShowBack && (
