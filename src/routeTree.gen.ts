@@ -17,7 +17,6 @@ import { Route as BookmarksIndexRouteImport } from './routes/bookmarks/index'
 import { Route as VideosVideoIdRouteImport } from './routes/videos/$videoId'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SeriesSeriesIdRouteImport } from './routes/series/$seriesId'
-import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
 import { Route as HomeNavigatorNavigatorIdRouteImport } from './routes/home/navigator/$navigatorId'
 
 const SearchRoute = SearchRouteImport.update({
@@ -60,11 +59,6 @@ const SeriesSeriesIdRoute = SeriesSeriesIdRouteImport.update({
   path: '/series/$seriesId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MoviesMovieIdRoute = MoviesMovieIdRouteImport.update({
-  id: '/movies/$movieId',
-  path: '/movies/$movieId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HomeNavigatorNavigatorIdRoute =
   HomeNavigatorNavigatorIdRouteImport.update({
     id: '/home/navigator/$navigatorId',
@@ -75,7 +69,6 @@ const HomeNavigatorNavigatorIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
-  '/movies/$movieId': typeof MoviesMovieIdRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/videos/$videoId': typeof VideosVideoIdRoute
@@ -87,7 +80,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
-  '/movies/$movieId': typeof MoviesMovieIdRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/videos/$videoId': typeof VideosVideoIdRoute
@@ -100,7 +92,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
-  '/movies/$movieId': typeof MoviesMovieIdRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/videos/$videoId': typeof VideosVideoIdRoute
@@ -114,7 +105,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/search'
-    | '/movies/$movieId'
     | '/series/$seriesId'
     | '/settings/notifications'
     | '/videos/$videoId'
@@ -126,7 +116,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/search'
-    | '/movies/$movieId'
     | '/series/$seriesId'
     | '/settings/notifications'
     | '/videos/$videoId'
@@ -138,7 +127,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/search'
-    | '/movies/$movieId'
     | '/series/$seriesId'
     | '/settings/notifications'
     | '/videos/$videoId'
@@ -151,7 +139,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SearchRoute: typeof SearchRoute
-  MoviesMovieIdRoute: typeof MoviesMovieIdRoute
   SeriesSeriesIdRoute: typeof SeriesSeriesIdRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   VideosVideoIdRoute: typeof VideosVideoIdRoute
@@ -219,13 +206,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SeriesSeriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movies/$movieId': {
-      id: '/movies/$movieId'
-      path: '/movies/$movieId'
-      fullPath: '/movies/$movieId'
-      preLoaderRoute: typeof MoviesMovieIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/home/navigator/$navigatorId': {
       id: '/home/navigator/$navigatorId'
       path: '/home/navigator/$navigatorId'
@@ -239,7 +219,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SearchRoute: SearchRoute,
-  MoviesMovieIdRoute: MoviesMovieIdRoute,
   SeriesSeriesIdRoute: SeriesSeriesIdRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   VideosVideoIdRoute: VideosVideoIdRoute,
