@@ -1,3 +1,4 @@
+import { useGetConfigList } from "@/apis/app/querygetConfig";
 import Info from "@/assets/svgs/icon-info.svg?react";
 import Notification from "@/assets/svgs/icon-notification.svg?react";
 import NavHeader from "@/components/common/layouts/NavHeader";
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/settings/")({
 
 function RouteComponent() {
   const { t } = useTranslation();
+  const { configList } = useGetConfigList({});
 
   return (
     <>
@@ -62,7 +64,9 @@ function RouteComponent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            <ShareDrawer />
+            {configList?.share_link && (
+              <ShareDrawer shareConfigLink={configList.share_link} />
+            )}
 
             <div className="px-4">
               <hr className="w-full border-white/4" />
