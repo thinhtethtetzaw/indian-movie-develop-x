@@ -1,7 +1,8 @@
 {
   "common": {
     "viewAll": "View All",
-    "viewMore": "View More"
+    "viewMore": "View More",
+    "noData": "No data"
   },
   "layout": {
     "navbar": {
@@ -61,7 +62,7 @@
         "director": "Director",
         "actors": "Actors",
         "releaseDate": "Release",
-        "overview": "Overviews",
+        "overview": "Overview",
         "expand": "expands",
         "collapse": "collapse",
         "relatedMovies": "Related Movies"

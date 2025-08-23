@@ -164,7 +164,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
   return (
     <div
       ref={playerRef}
-      className="mb-5 aspect-video w-full overflow-hidden rounded-lg bg-black"
+      className="mb-5 aspect-video w-full overflow-hidden bg-black"
     />
   );
 };

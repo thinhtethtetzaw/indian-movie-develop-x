@@ -67,10 +67,13 @@ code {
 
   --brand-red: oklch(55.72% 0.217 19.96);
 
+  --z-nav-layer: 200;
+  --z-popover: 210;
+  --z-dialog: 220;
+
   --nav-header-height: 64px;
-  --z-popover: 50;
-  --z-dialog: 60;
   --search-header-height: 82px;
+  --bottom-nav-height: 86px;
 }
 
 @theme inline {
@@ -125,7 +128,7 @@ code {
 
 @layer utilities {
   .bg-glass {
-    @apply bg-linear-to-b from-[#FFFFFF1F] to-[#FFFFFF0A];
+    @apply bg-gradient-to-r from-white/12 to-white/4;
   }
 
   /* Custom Scrollbar Styles */
