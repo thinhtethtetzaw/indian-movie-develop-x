@@ -21,6 +21,7 @@ type Props = {
   onClick?: () => void;
   autoFocus?: boolean;
   onChange?: (value: string) => void;
+  onSubmit?: (value: string) => void;
 };
 
 export interface SearchHeaderRef {
@@ -29,7 +30,14 @@ export interface SearchHeaderRef {
 
 const SearchHeader = forwardRef<SearchHeaderRef, Props>(
   (
-    { isShowBack, isClickable = false, onClick, autoFocus = false, onChange },
+    {
+      isShowBack,
+      isClickable = false,
+      onClick,
+      autoFocus = false,
+      onChange,
+      onSubmit,
+    },
     ref,
   ) => {
     const navigate = useNavigate();
@@ -94,6 +102,13 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
       onChange?.(value);
     };
 
+    // Handle search input key press
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter" && inputValue.trim()) {
+        onSubmit?.(inputValue.trim());
+      }
+    };
+
     // Handle clear search
     const handleClearSearch = useCallback(() => {
       setInputValue("");
@@ -139,6 +154,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
             placeholder={t("pages.search.placeholder")}
             value={inputValue}
             onChange={handleSearchChange}
+            onKeyPress={handleKeyPress}
             className={cn(
               "bg-glass h-13 rounded-full border border-white/20 pl-12 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
               isClickable && "cursor-pointer",
