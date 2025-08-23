@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useCanGoBack, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { ChevronLeftIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -11,12 +11,12 @@ type Props = {
 
 function NavHeader({ title, isShowBack, rightNode }: Props) {
   const router = useRouter();
-  const canGoBack = useCanGoBack();
+  // const canGoBack = useCanGoBack();
 
   return (
-    <div className="relative flex h-[var(--nav-header-height)] items-center gap-x-4">
+    <div className="bg-background sticky top-0 z-10 flex h-[var(--nav-header-height)] items-center gap-x-4">
       <div className="absolute left-4">
-        {isShowBack && canGoBack && (
+        {isShowBack && (
           <Button
             variant={"ghost"}
             size={"icon"}

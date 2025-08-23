@@ -13,14 +13,16 @@ import type { VideoResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { HeartIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-export const Route = createFileRoute("/movies/$movieId")({
+
+export const Route = createFileRoute("/videos/$videoId")({
   component: () => {
-    const { movieId } = Route.useParams();
-    console.log("movieId", movieId);
+    const { videoId } = Route.useParams();
+    console.log("videoId", videoId);
     const { t } = useTranslation();
-    const { videoDetail } = useGetVideoDetail({ vodId: movieId });
-    // console.log("videoDetail", videoDetail);
+    const { videoDetail } = useGetVideoDetail({ vodId: videoId });
+    console.log("videoDetail", videoDetail);
     const episodes = processEpisodes(videoDetail?.vod_play_url ?? []);
+    // console.log("episodes", episodes);
     const firstEpisodeUrl = episodes[0]?.url ?? "";
     const MOCK_MOVIE = {
       seasons: [

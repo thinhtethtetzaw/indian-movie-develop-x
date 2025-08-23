@@ -2,9 +2,9 @@ import { API_CLIENT } from "@/lib/openapi-api-client";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
-export const getMovieListByIdsQueryOptions = (videoIds: string[]) => {
+export const getVideoListByIdsQueryOptions = (videoIds: string[]) => {
   return queryOptions({
-    queryKey: ["movie-list-by-ids"],
+    queryKey: ["video-list-by-ids"],
     queryFn: () =>
       API_CLIENT.POST("/api/v1/video/list-by-ids", {
         body: {
@@ -14,21 +14,21 @@ export const getMovieListByIdsQueryOptions = (videoIds: string[]) => {
   });
 };
 
-type UseGetMovieListByIdsOptions = {
+type UseGetVideoListByIdsOptions = {
   videoIds: string[];
-  queryConfig?: QueryConfig<typeof getMovieListByIdsQueryOptions>;
+  queryConfig?: QueryConfig<typeof getVideoListByIdsQueryOptions>;
 };
 
-export const useGetMovieListByIds = ({
+export const useGetVideoListByIds = ({
   videoIds,
   queryConfig,
-}: UseGetMovieListByIdsOptions) => {
+}: UseGetVideoListByIdsOptions) => {
   const data = useQuery({
-    ...getMovieListByIdsQueryOptions(videoIds),
+    ...getVideoListByIdsQueryOptions(videoIds),
     ...queryConfig,
   });
 
-  const movieList = data.data?.data?.data;
+  const videoList = data.data?.data?.data;
 
-  return { ...data, movieList };
+  return { ...data, videoList };
 };

@@ -4,15 +4,15 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
+import type { CarouselVideoResponse } from "@/types/api-schema/response";
 import { useEffect, useState } from "react";
 
 interface SliderCarouselProps {
-  movies: HomeRecommendListResponseMovie[];
-  onMovieClick?: (movie: HomeRecommendListResponseMovie) => void;
+  videos: CarouselVideoResponse[];
+  onVideoClick?: (video: CarouselVideoResponse) => void;
 }
 
-const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
+const SliderCarousel = ({ videos, onVideoClick }: SliderCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -28,8 +28,8 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
     });
   }, [api]);
 
-  const handleMovieClick = (movie: HomeRecommendListResponseMovie) => {
-    onMovieClick?.(movie);
+  const handleVideoClick = (video: CarouselVideoResponse) => {
+    onVideoClick?.(video);
   };
 
   return (
@@ -43,19 +43,19 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
         }}
       >
         <CarouselContent className="ml-0">
-          {movies.map((movie, index) => (
-            <CarouselItem key={movie.vod_id} className="basis-2/3 pl-0">
+          {videos.map((video, index) => (
+            <CarouselItem key={video.vod_id} className="basis-2/3 pl-0">
               <div
                 className={`group relative cursor-pointer ${
                   index !== current - 1
                     ? "flex h-full items-center justify-center"
                     : ""
                 }`}
-                onClick={() => handleMovieClick(movie)}
+                onClick={() => handleVideoClick(video)}
               >
                 <img
-                  src={movie.vod_pic}
-                  alt={movie.vod_name}
+                  src={video.vod_pic}
+                  alt={video.vod_name}
                   className={`h-[157px] w-full transform rounded-xl border border-[#222222] object-cover transition-all duration-500 ease-in-out ${
                     index === current - 1 ? "scale-100" : "scale-90"
                   }`}
@@ -73,7 +73,7 @@ const SliderCarousel = ({ movies, onMovieClick }: SliderCarouselProps) => {
 
       {/* Pagination Dots */}
       <div className="mt-6 flex justify-center gap-1">
-        {Array.from({ length: movies.length }).map((_, index) => (
+        {Array.from({ length: videos.length }).map((_, index) => (
           <button
             key={index}
             type="button"
