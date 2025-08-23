@@ -2,6 +2,8 @@ import { useGetSearch } from "@/apis/app/queryGetSearch";
 import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
 import ArrowUpLeftIcon from "@/assets/svgs/icon-arrow-up-left.svg?react";
 import TrashIcon from "@/assets/svgs/icon-trash.svg?react";
+import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
+import { EmptyState } from "@/components/common/EmptyState";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
 import Loading from "@/components/common/Loading";
 import VideoCard from "@/components/common/VideoCard";
@@ -15,7 +17,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { t } from "i18next";
 import { AnimatePresence, motion } from "motion/react";
 import { parseAsString, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/search")({
   component: RouteComponent,
@@ -48,7 +50,6 @@ const highlightText = (text: string, searchTerm: string) => {
 };
 
 function RouteComponent() {
-  const [isSearched, setIsSearched] = useState(false);
   const [recentlySearched, setRecentlySearched] = useState([
     "Havana",
     "Archon",
@@ -64,41 +65,74 @@ function RouteComponent() {
     parseAsString.withDefault(""),
   );
 
-  // Move the hook call before any conditional returns
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
+
+  const shouldShowSearchResults =
+    submittedSearchTerm && searchTerm === submittedSearchTerm;
+
+  useEffect(() => {
+    if (searchTerm !== submittedSearchTerm) {
+      setSubmittedSearchTerm("");
+    }
+  }, [searchTerm, submittedSearchTerm]);
+
   const { suggestions, isLoading: isLoadingSuggestions } =
     useGetSearchSuggestion({
       q: searchTerm,
     });
 
   const handleRecentItemClick = (item: string) => {
-    console.log("Searching for:", item);
+    setSearchTerm(item);
+    setSubmittedSearchTerm(item);
   };
 
   const handleClearRecent = () => {
-    // Use a timeout to allow exit animations to play
     setTimeout(() => {
       setRecentlySearched([]);
-    }, 300); // Match the exit animation duration
+    }, 300);
   };
 
   const handleSuggestionClick = (suggestion: SearchSuggestionResponse) => {
-    setSearchTerm(suggestion.text || "");
-    setIsSearched(true);
+    const suggestionText = suggestion.text || "";
+    setSearchTerm(suggestionText);
+    setSubmittedSearchTerm(suggestionText);
   };
-  // Search query for when user clicks on a suggestion
+
+  const handleSearchSubmit = (term: string) => {
+    if (term.trim()) {
+      setSubmittedSearchTerm(term.trim());
+    }
+  };
+
   const { data: searchResults, isLoading: isLoadingSearch } = useGetSearch({
-    q: searchTerm,
-    enabled: isSearched && !!searchTerm,
+    q: submittedSearchTerm,
+    enabled: !!submittedSearchTerm,
   });
+
+  const shouldShowLoading =
+    isLoadingSearch ||
+    (isLoadingSuggestions && searchTerm && searchTerm.length >= 2);
+
+  const shouldShowEmptyState =
+    !isLoadingSearch &&
+    !isLoadingSuggestions &&
+    searchTerm &&
+    searchTerm.length >= 2 &&
+    ((shouldShowSearchResults && (searchResults as any)?.data?.length === 0) ||
+      (!shouldShowSearchResults && suggestions && suggestions.length === 0));
 
   console.log("searchResult", searchResults?.data);
 
   return (
-    <div>
-      <SearchHeader isShowBack={true} autoFocus={true} />
+    <div className="pb-10">
+      <SearchHeader
+        isShowBack={true}
+        autoFocus={true}
+        onSubmit={handleSearchSubmit}
+      />
 
-      {/* Recent Search */}
       <AnimatePresence mode="popLayout">
+        {/* Recent Search */}
         {!searchTerm && recentlySearched.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -157,122 +191,88 @@ function RouteComponent() {
           </motion.div>
         )}
 
-        {isLoadingSuggestions && searchTerm && searchTerm.length >= 2 && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height))]">
+        {/* Search Suggestions */}
+        {!shouldShowSearchResults &&
+          searchTerm &&
+          searchTerm.length >= 2 &&
+          suggestions &&
+          suggestions.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="px-4"
+            >
+              <div className="space-y-0">
+                {suggestions.map((suggestion, index) => {
+                  console.log("suggestion", suggestion);
+                  const { highlighted, remaining } = highlightText(
+                    suggestion.text || "",
+                    searchTerm,
+                  );
+                  return (
+                    <motion.div
+                      key={suggestion.id || suggestion.id || index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className="group flex cursor-pointer items-center justify-between border-b border-[#222222] py-4 transition-colors last:border-b-0"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      <div className="flex-1">
+                        <span className="text-brand-red text-sm font-semibold">
+                          {highlighted}
+                        </span>
+                        <span className="text-sm font-semibold text-white">
+                          {remaining}
+                        </span>
+                      </div>
+                      <ArrowUpLeftIcon className="h-4 w-4 text-white/60 transition-transform duration-300 ease-in-out group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+        {/* Search Results */}
+        {shouldShowSearchResults &&
+          (searchResults as any)?.data?.length > 0 && (
+            <section className="space-y-4 px-4">
+              <h2 className="text-forground font-semibold">Search results</h2>
+              <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+                {(searchResults as SearchResultResponse)?.data?.map(
+                  (movie: VideoResponse, index) => (
+                    <div key={movie.vod_id} className="flex-shrink-0">
+                      <VideoCard
+                        video={movie}
+                        // onClick={handleMovieClick}
+                        index={index}
+                      />
+                    </div>
+                  ),
+                )}
+              </div>
+            </section>
+          )}
+
+        {/* Shared Loading State */}
+        {shouldShowLoading && (
+          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
             <Loading />
           </div>
         )}
 
-        {/* Search Results */}
-        {/* {isSearched && searchResults && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="px-4"
-          >
-            <div className="space-y-4">
-              <h2 className="text-base font-medium text-white">
-                Search Results
-              </h2>
-              {isLoadingSearch ? (
-                <div className="flex justify-center py-8">
-                  <Loading />
-                </div>
-              ) : (searchResults as any)?.data?.videos &&
-                (searchResults as any).data.videos.length > 0 ? (
-                <div className="space-y-4">
-                  {(searchResults as any).data.videos.map(
-                    (result: any, index: number) => (
-                      <motion.div
-                        key={result.id || index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                        className="flex cursor-pointer items-center justify-between border-b border-[#222222] py-4 transition-colors last:border-b-0 hover:bg-white/5"
-                      >
-                        <div className="flex-1">
-                          <span className="text-sm font-semibold text-white">
-                            {result.title || result.name || "Untitled"}
-                          </span>
-                        </div>
-                        <ArrowUpLeftIcon className="h-4 w-4 text-white/60" />
-                      </motion.div>
-                    ),
-                  )}
-                </div>
-              ) : (
-                <div className="py-8 text-center text-white/60">
-                  No results found for "{searchTerm}"
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )} */}
-      </AnimatePresence>
-
-      {/* Search Suggestions */}
-      {!isSearched &&
-        searchTerm &&
-        searchTerm.length >= 2 &&
-        suggestions &&
-        suggestions.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="px-4"
-          >
-            <div className="space-y-0">
-              {suggestions.map((suggestion, index) => {
-                console.log("suggestion", suggestion);
-                const { highlighted, remaining } = highlightText(
-                  suggestion.text || "",
-                  searchTerm,
-                );
-                return (
-                  <motion.div
-                    key={suggestion.id || suggestion.id || index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="group flex cursor-pointer items-center justify-between border-b border-[#222222] py-4 transition-colors last:border-b-0"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    <div className="flex-1">
-                      <span className="text-brand-red text-sm font-semibold">
-                        {highlighted}
-                      </span>
-                      <span className="text-sm font-semibold text-white">
-                        {remaining}
-                      </span>
-                    </div>
-                    <ArrowUpLeftIcon className="h-4 w-4 text-white/60 transition-transform duration-300 ease-in-out group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-
-      {isSearched && searchTerm && (searchResults as any)?.data?.length > 0 && (
-        <section className="space-y-4 px-4">
-          <h2 className="text-forground font-semibold">Search results</h2>
-          <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-            {(searchResults as SearchResultResponse)?.data?.map(
-              (movie: VideoResponse, index) => (
-                <div key={movie.vod_id} className="flex-shrink-0">
-                  <VideoCard
-                    video={movie}
-                    // onClick={handleMovieClick}
-                    index={index}
-                  />
-                </div>
-              ),
-            )}
+        {/* Shared Empty State */}
+        {shouldShowEmptyState && (
+          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+            <EmptyState
+              imageSrc={<SearchEmptyImage />}
+              title="Search Result Not Found!"
+            />
           </div>
-        </section>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }
