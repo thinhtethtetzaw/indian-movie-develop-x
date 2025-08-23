@@ -4,738 +4,1172 @@
  */
 
 export interface paths {
-  "/api/v1/home/recommend/list": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/home/recommend/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get recommended home list */
+        get: operations["9e166e127a0ca3ec2d76102813629dff"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get recommended home list */
-    get: operations["9e166e127a0ca3ec2d76102813629dff"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/video/detail": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/video/detail": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get video detail by vod_id */
+        get: operations["91ce612d7b9b32feb799b233d2cd891f"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get video detail by vod_id */
-    get: operations["91ce612d7b9b32feb799b233d2cd891f"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/video/recommend": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/video/recommend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get recommended videos based on vod_id */
+        get: operations["35573ee310642d46d83e4c991e77f2db"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get recommended videos based on vod_id */
-    get: operations["35573ee310642d46d83e4c991e77f2db"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/video/list-by-ids": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/video/list-by-ids": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Get videos by multiple IDs */
+        post: operations["bd5c37c490c8ae400a01bdf3f35fd814"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Get videos by multiple IDs */
-    post: operations["bd5c37c490c8ae400a01bdf3f35fd814"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/video/topic/{navigatorId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/video/topic/{navigatorId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get videos by topic level using navigator ID */
+        get: operations["28c45982fa08f66ddaffb255a19e7040"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get videos by topic level using navigator ID */
-    get: operations["28c45982fa08f66ddaffb255a19e7040"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/type/list": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/video/popular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get most popular videos with pagination
+         * @description Retrieve the most popular videos based on weekly hits, automatically sorted by popularity with pagination support
+         */
+        get: operations["c7c09b6baa42d0c97324a555494b9f18"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get list of types for a video */
-    get: operations["a92d49f1475c4a465ce2884bcd8e416c"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/videos/search/suggestions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/type/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get list of all available video types/categories */
+        get: operations["a92d49f1475c4a465ce2884bcd8e416c"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get search suggestions for videos */
-    get: operations["8a33cd74ccf35a01d87bf9164735c2c6"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/videos/search": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/videos/search/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get search suggestions for videos */
+        get: operations["8a33cd74ccf35a01d87bf9164735c2c6"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Search videos with pagination */
-    get: operations["fd98c593e0e6e771e36285f4a9dea36e"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
+    "/api/v1/videos/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search or browse videos with pagination and filtering */
+        get: operations["fd98c593e0e6e771e36285f4a9dea36e"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/category/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get list of all video categories */
+        get: operations["cdce6778c48f7258ecd8a150f3b91d1f"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/video/topic/{navigatorId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get videos by topic level
+         * @description Retrieve videos based on the specified topic level using an encoded navigator ID
+         */
+        get: operations["50a2a6ddab666ca74da3e4015f285d1f"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/video/popular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get popular videos
+         * @description Retrieve popular videos sorted by weekly hits, score, and release time with pagination
+         */
+        get: operations["142b8ab6aa0d26432fc090c0779789d9"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /**
-     * Video Model
-     * @description Video information model
-     */
-    Video: {
-      /**
-       * @description Unique video identifier
-       * @example MS1xx411c7Xq
-       */
-      vod_id?: string;
-      /**
-       * @description Video title
-       * @example Road House
-       */
-      vod_name?: string;
-      /**
-       * @description Video title in English
-       * @example Road House
-       */
-      vod_en?: string;
-      /**
-       * @description Video subtitle
-       * @example Road House
-       */
-      vod_sub?: string;
-      /**
-       * @description Type ID
-       * @example 1
-       */
-      type_id?: number;
-      /**
-       * @description Video categories
-       * @example Action,Thriller,Movies
-       */
-      vod_class?: string;
-      /**
-       * @description Video actors
-       * @example Sample Actor 1,Sample Actor 2
-       */
-      vod_actor?: string;
-      /**
-       * @description Video director
-       * @example Doug Liman
-       */
-      vod_director?: string;
-      /**
-       * @description Video description
-       * @example Ex-UFC fighter Dalton takes a job at a Florida Keys roadhouse.
-       */
-      vod_blurb?: string;
-      /**
-       * @description Video production country
-       * @example United States
-       */
-      vod_area?: string;
-      /**
-       * @description Video language
-       * @example English
-       */
-      vod_lang?: string;
-      /**
-       * @description Video release year
-       * @example 2024
-       */
-      vod_year?: string;
-      /**
-       * @description Video timestamp
-       * @example 1752742999
-       */
-      vod_time?: number;
-      /**
-       * @description Detailed video content
-       * @example Video description content here.
-       */
-      vod_content?: string;
-      /**
-       * @description Video rating score
-       * @example 3.0
-       */
-      vod_score?: string;
-      /**
-       * @description Video poster image
-       * @example https://via.placeholder.com/380x562.png
-       */
-      vod_pic?: string;
-      /**
-       * @description Video quality remarks
-       * @example 1080p
-       */
-      vod_remarks?: string;
-      /** @description Video play URLs */
-      vod_play_url?: {
-        /** @example  */
-        NO1?: string;
-      }[];
-    };
-    /**
-     * Video List Response
-     * @description Response model for video list endpoints
-     */
-    VideoList: {
-      /**
-       * @description Response status
-       * @example true
-       */
-      status?: boolean;
-      /**
-       * @description Response message
-       * @example Success
-       */
-      message?: string;
-      /** @description List of videos */
-      data?: components["schemas"]["Video"][];
-    };
-    /**
-     * Video Detail Response
-     * @description Response model for video detail endpoint
-     */
-    VideoDetail: {
-      /**
-       * @description Response status
-       * @example true
-       */
-      status?: boolean;
-      /**
-       * @description Response message
-       * @example Success
-       */
-      message?: string;
-      data?: components["schemas"]["Video"];
-    };
-    /**
-     * Type Model
-     * @description Video type/category model
-     */
-    Type: {
-      /**
-       * @description Unique type identifier
-       * @example 1
-       */
-      type_id?: number;
-      /**
-       * @description Type name
-       * @example Action
-       */
-      type_name?: string;
-      /**
-       * @description Type name in English
-       * @example Action
-       */
-      type_en?: string;
-      /**
-       * @description Type icon image
-       * @example https://via.placeholder.com/150x150.png
-       */
-      type_pic?: string;
-      /**
-       * @description Additional type information
-       * @example
-       */
-      type_extend?: string;
-    };
-    /**
-     * Type List Response
-     * @description Response model for type list endpoint
-     */
-    TypeList: {
-      /**
-       * @description Response status
-       * @example true
-       */
-      status?: boolean;
-      /**
-       * @description Response message
-       * @example Success
-       */
-      message?: string;
-      /** @description List of types */
-      data?: components["schemas"]["Type"][];
-    };
-    /**
-     * Search Suggestion Model
-     * @description Search suggestion model
-     */
-    SearchSuggestion: {
-      /**
-       * @description Search suggestion type
-       * @example video_name
-       */
-      type?: string;
-      /**
-       * @description Search suggestion text
-       * @example Spider-Man: Far from Home
-       */
-      text?: string;
-      /**
-       * @description Associated video ID
-       * @example 777
-       */
-      id?: number;
-      /**
-       * @description Search suggestion category
-       * @example Video Title
-       */
-      category?: string;
-      /**
-       * @description Legacy search suggestion text
-       * @example Action Movie
-       */
-      suggestion?: string;
-      /**
-       * @description Legacy associated video ID
-       * @example MS1xx411c7Xq
-       */
-      vod_id?: string;
-    };
-    /**
-     * Search Suggestion List Response
-     * @description Response model for search suggestions endpoint
-     */
-    SearchSuggestionList: {
-      /**
-       * @description Response status
-       * @example true
-       */
-      status?: boolean;
-      /**
-       * @description Response message
-       * @example Success
-       */
-      message?: string;
-      /** @description List of search suggestions */
-      data?: components["schemas"]["SearchSuggestion"][];
-    };
-    /**
-     * Search Result Response
-     * @description Response model for search endpoint with pagination
-     */
-    SearchResult: {
-      /**
-       * @description Response status
-       * @example true
-       */
-      status?: boolean;
-      /**
-       * @description Response message
-       * @example Success
-       */
-      message?: string;
-      data?: {
+    schemas: {
         /**
-         * @description Current page number
-         * @example 1
+         * Video Model
+         * @description Video information model
          */
-        current_page?: number;
+        Video: {
+            /**
+             * @description Unique video identifier
+             * @example MS1xx411c7Xq
+             */
+            vod_id?: string;
+            /**
+             * @description Video title
+             * @example Road House
+             */
+            vod_name?: string;
+            /**
+             * @description Video title in English
+             * @example Road House
+             */
+            vod_en?: string;
+            /**
+             * @description Video subtitle
+             * @example Road House
+             */
+            vod_sub?: string;
+            /**
+             * @description Type ID
+             * @example 1
+             */
+            type_id?: number;
+            /**
+             * @description Video categories
+             * @example Action,Thriller,Movies
+             */
+            vod_class?: string;
+            /**
+             * @description Video actors
+             * @example Sample Actor 1,Sample Actor 2
+             */
+            vod_actor?: string;
+            /**
+             * @description Video director
+             * @example Doug Liman
+             */
+            vod_director?: string;
+            /**
+             * @description Video description
+             * @example Ex-UFC fighter Dalton takes a job at a Florida Keys roadhouse.
+             */
+            vod_blurb?: string;
+            /**
+             * @description Video production country
+             * @example United States
+             */
+            vod_area?: string;
+            /**
+             * @description Video language
+             * @example English
+             */
+            vod_lang?: string;
+            /**
+             * @description Video release year
+             * @example 2024
+             */
+            vod_year?: string;
+            /**
+             * @description Video timestamp
+             * @example 1752742999
+             */
+            vod_time?: number;
+            /**
+             * @description Detailed video content
+             * @example Video description content here.
+             */
+            vod_content?: string;
+            /**
+             * @description Video rating score
+             * @example 3.0
+             */
+            vod_score?: string;
+            /**
+             * @description Video poster image
+             * @example https://via.placeholder.com/380x562.png
+             */
+            vod_pic?: string;
+            /**
+             * @description Video quality remarks
+             * @example 1080p
+             */
+            vod_remarks?: string;
+            /** @description Video play URLs */
+            vod_play_url?: {
+                /** @example  */
+                NO1?: string;
+            }[];
+        };
         /**
-         * @description Items per page
-         * @example 10
+         * Video List Response
+         * @description Response model for video list endpoints
          */
-        per_page?: number;
+        VideoList: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of videos */
+            data?: components["schemas"]["Video"][];
+        };
         /**
-         * @description Total number of items
-         * @example 100
+         * Video Detail Response
+         * @description Response model for video detail endpoint
          */
-        total?: number;
-        /** @description List of videos */
-        videos?: components["schemas"]["Video"][];
-      };
+        VideoDetail: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            data?: components["schemas"]["Video"];
+        };
+        /**
+         * Type Model
+         * @description Video type/category model
+         */
+        Type: {
+            /**
+             * @description Unique type identifier
+             * @example 1
+             */
+            type_id?: number;
+            /**
+             * @description Type name
+             * @example Action
+             */
+            type_name?: string;
+            /**
+             * @description Type name in English
+             * @example Action
+             */
+            type_en?: string;
+        };
+        /**
+         * Type List Response
+         * @description Response model for type list endpoint
+         */
+        TypeList: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of types */
+            data?: components["schemas"]["Type"][];
+        };
+        /**
+         * Search Suggestion Model
+         * @description Search suggestion model
+         */
+        SearchSuggestion: {
+            /**
+             * @description Suggestion type (video_name, actor, director, year)
+             * @example video_name
+             */
+            type?: string;
+            /**
+             * @description Search suggestion text
+             * @example Action Movie
+             */
+            text?: string;
+            /**
+             * @description Associated video ID (null for non-video suggestions)
+             * @example MS1xx411c7Xq
+             */
+            id?: string | null;
+            /**
+             * @description Suggestion category
+             * @example Video Title
+             */
+            category?: string;
+        };
+        /**
+         * Category Model
+         * @description Video category model
+         */
+        Category: {
+            /**
+             * @description Unique category identifier
+             * @example action
+             */
+            category_id?: string;
+            /**
+             * @description Category name
+             * @example Action
+             */
+            category_name?: string;
+        };
+        /**
+         * Category List Response
+         * @description Response model for category list endpoint
+         */
+        CategoryList: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of categories */
+            data?: components["schemas"]["Category"][];
+        };
+        /**
+         * Search Suggestion List Response
+         * @description Response model for search suggestions endpoint
+         */
+        SearchSuggestionList: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of search suggestions */
+            data?: components["schemas"]["SearchSuggestion"][];
+        };
+        /**
+         * Search Result Response
+         * @description Response model for search endpoint with pagination
+         */
+        SearchResult: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example success
+             */
+            message?: string;
+            /** @description List of videos */
+            data?: components["schemas"]["Video"][];
+            /** @description Pagination information */
+            pagination?: {
+                /**
+                 * @description Total number of items
+                 * @example 532
+                 */
+                total?: number;
+                /**
+                 * @description Items per page
+                 * @example 10
+                 */
+                per_page?: number;
+                /**
+                 * @description Current page number
+                 * @example 1
+                 */
+                current_page?: number;
+                /**
+                 * @description Last page number
+                 * @example 54
+                 */
+                last_page?: number;
+            };
+        };
+        /**
+         * Carousel Item Model
+         * @description Carousel item model for home page
+         */
+        CarouselItem: {
+            /**
+             * @description Item type
+             * @example carousel
+             */
+            type?: string;
+            /**
+             * @description Section title
+             * @example Carousel
+             */
+            title?: string;
+            /** @description List of videos in carousel */
+            list?: components["schemas"]["CarouselVideo"][];
+        };
+        /**
+         * Carousel Video Model
+         * @description Video model for carousel display
+         */
+        CarouselVideo: {
+            /**
+             * @description Unique video identifier
+             * @example MS1xx411c7Xq
+             */
+            vod_id?: string;
+            /**
+             * @description Video title
+             * @example Road House
+             */
+            vod_name?: string;
+            /**
+             * @description Video poster image
+             * @example https://via.placeholder.com/380x562.png
+             */
+            vod_pic?: string;
+            /**
+             * @description Video quality remarks
+             * @example 1080p
+             */
+            vod_remarks?: string;
+            /**
+             * @description Video categories
+             * @example Action,Thriller
+             */
+            vod_class?: string;
+            /**
+             * @description Video release year
+             * @example 2024
+             */
+            vod_year?: string;
+            /**
+             * @description Video slide image
+             * @example https://via.placeholder.com/800x400.png
+             */
+            vod_pic_slide?: string;
+        };
+        /**
+         * Topic Video Model
+         * @description Video model for topic sections
+         */
+        TopicVideo: {
+            /**
+             * @description Unique video identifier
+             * @example MS1xx411c7Xq
+             */
+            vod_id?: string;
+            /**
+             * @description Video title
+             * @example Road House
+             */
+            vod_name?: string;
+            /**
+             * @description Video poster image
+             * @example https://via.placeholder.com/380x562.png
+             */
+            vod_pic?: string;
+            /**
+             * @description Video quality remarks
+             * @example 1080p
+             */
+            vod_remarks?: string;
+            /**
+             * @description Video categories
+             * @example Action,Thriller
+             */
+            vod_class?: string;
+            /**
+             * @description Video release year
+             * @example 2024
+             */
+            vod_year?: string;
+            /**
+             * @description Video timestamp
+             * @example 1752742999
+             */
+            vod_time?: number;
+            /**
+             * @description Weekly view count
+             * @example 1500
+             */
+            vod_hits_week?: number;
+            /**
+             * @description Video rating score
+             * @example 3.0
+             */
+            vod_score?: string;
+            /**
+             * @description Type ID
+             * @example 1
+             */
+            type_id?: number;
+        };
+        /**
+         * Topic Item Model
+         * @description Topic section item model for home page
+         */
+        TopicItem: {
+            /**
+             * @description Topic type
+             * @example action
+             */
+            type?: string;
+            /**
+             * @description Section title
+             * @example Action Movies
+             */
+            title?: string;
+            /** @description List of videos in topic */
+            list?: components["schemas"]["TopicVideo"][];
+            /** @description Navigation information */
+            navigator?: {
+                /**
+                 * @description Navigation button text
+                 * @example View More
+                 */
+                title?: string;
+                /**
+                 * @description Encoded navigator ID
+                 * @example k5
+                 */
+                id?: string;
+            };
+        };
+        /**
+         * Home Recommend Response
+         * @description Response model for home recommend endpoint
+         */
+        HomeRecommendResponse: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of carousel and topic items */
+            data?: (components["schemas"]["CarouselItem"] | components["schemas"]["TopicItem"])[];
+        };
+        /**
+         * Video IDs Request
+         * @description Request model for getting videos by IDs
+         */
+        VideoIdsRequest: {
+            /**
+             * @description Array of video IDs
+             * @example [
+             *       "MS1xx411c7Xq",
+             *       "MS1xx411c7Xy"
+             *     ]
+             */
+            video_ids?: string[];
+        };
+        /**
+         * Topic Videos Response
+         * @description Response model for getting videos by topic level
+         */
+        TopicVideosResponse: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description Paginated data */
+            data?: {
+                /**
+                 * @description Name of the topic
+                 * @example Action Movies
+                 */
+                topic_name?: string;
+                /** @description List of videos */
+                videos?: components["schemas"]["Video"][];
+                /** @description Pagination information */
+                pagination?: {
+                    /**
+                     * @description Current page number
+                     * @example 1
+                     */
+                    current_page?: number;
+                    /**
+                     * @description Items per page
+                     * @example 20
+                     */
+                    per_page?: number;
+                    /**
+                     * @description Total number of items
+                     * @example 100
+                     */
+                    total?: number;
+                    /**
+                     * @description Last page number
+                     * @example 5
+                     */
+                    last_page?: number;
+                };
+            };
+        };
+        /**
+         * Popular Video Response
+         * @description Response model for popular videos endpoint with pagination
+         */
+        PopularVideoResponse: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description Paginated data */
+            data?: {
+                /** @description List of popular videos sorted by weekly hits */
+                videos?: components["schemas"]["Video"][];
+                /** @description Pagination information */
+                pagination?: {
+                    /**
+                     * @description Current page number
+                     * @example 1
+                     */
+                    current_page?: number;
+                    /**
+                     * @description Items per page
+                     * @example 20
+                     */
+                    per_page?: number;
+                    /**
+                     * @description Total number of popular videos
+                     * @example 150
+                     */
+                    total?: number;
+                    /**
+                     * @description Last page number
+                     * @example 8
+                     */
+                    last_page?: number;
+                };
+            };
+        };
+        /**
+         * Error Response
+         * @description Standard error response model
+         */
+        ErrorResponse: {
+            /**
+             * @description Response status
+             * @example false
+             */
+            status?: boolean;
+            /**
+             * @description Error description
+             * @example Error message
+             */
+            message?: string;
+            /** @description Validation errors if any */
+            errors?: Record<string, never>;
+        };
     };
-    /**
-     * Carousel Item Model
-     * @description Carousel item model for home page
-     */
-    CarouselItem: {
-      /**
-       * @description Item type
-       * @example carousel
-       */
-      type?: string;
-      /**
-       * @description Section title
-       * @example Carousel
-       */
-      title?: string;
-      /** @description List of videos in carousel */
-      list?: components["schemas"]["Video"][];
-    };
-    /**
-     * Home Recommend Response
-     * @description Response model for home recommend endpoint
-     */
-    HomeRecommendResponse: {
-      /**
-       * @description Response status
-       * @example true
-       */
-      status?: boolean;
-      /**
-       * @description Response message
-       * @example Success
-       */
-      message?: string;
-      /** @description List of carousel items */
-      data?: components["schemas"]["CarouselItem"][];
-    };
-    /**
-     * Video IDs Request
-     * @description Request model for getting videos by IDs
-     */
-    VideoIdsRequest: {
-      /**
-       * @description Array of video IDs
-       * @example [
-       *       "MS1xx411c7Xq",
-       *       "MS1xx411c7Xy"
-       *     ]
-       */
-      video_ids?: string[];
-    };
-    /**
-     * Error Response
-     * @description Standard error response model
-     */
-    ErrorResponse: {
-      /**
-       * @description Response status
-       * @example false
-       */
-      status?: boolean;
-      /**
-       * @description Error description
-       * @example Error message
-       */
-      message?: string;
-      /** @description Validation errors if any */
-      errors?: Record<string, never>;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  "9e166e127a0ca3ec2d76102813629dff": {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["HomeRecommendResponse"];
-        };
-      };
-    };
-  };
-  "91ce612d7b9b32feb799b233d2cd891f": {
-    parameters: {
-      query: {
-        /** @description Video ID */
-        vod_id: string;
-      };
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["VideoDetail"];
-        };
-      };
-    };
-  };
-  "35573ee310642d46d83e4c991e77f2db": {
-    parameters: {
-      query: {
-        /** @description Video ID to get recommendations for */
-        vod_id: string;
-      };
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["VideoList"];
-        };
-      };
-    };
-  };
-  bd5c37c490c8ae400a01bdf3f35fd814: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VideoIdsRequest"];
-      };
-    };
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["VideoList"];
-        };
-      };
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
-  "28c45982fa08f66ddaffb255a19e7040": {
-    parameters: {
-      query?: {
-        /** @description Page number for pagination */
-        page?: number;
-      };
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path: {
-        /** @description Navigator ID from home page (e.g., k5, mO) */
-        navigatorId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response with paginated videos */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            /** @example true */
-            status?: boolean;
-            /** @example Success */
-            message?: string;
-            data?: {
-              data?: components["schemas"]["Video"][];
-              /** @example 1 */
-              current_page?: number;
-              /** @example 20 */
-              per_page?: number;
-              /** @example 100 */
-              total?: number;
-              /** @example 5 */
-              last_page?: number;
+    "9e166e127a0ca3ec2d76102813629dff": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
             };
-          };
+            path?: never;
+            cookie?: never;
         };
-      };
-      /** @description Navigator ID not found or invalid */
-      404: {
-        headers: {
-          [name: string]: unknown;
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HomeRecommendResponse"];
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
     };
-  };
-  a92d49f1475c4a465ce2884bcd8e416c: {
-    parameters: {
-      query: {
-        /** @description Video ID to get types for */
-        vod_id: string;
-      };
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    "91ce612d7b9b32feb799b233d2cd891f": {
+        parameters: {
+            query: {
+                /** @description Video ID */
+                vod_id: string;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["TypeList"];
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VideoDetail"];
+                };
+            };
         };
-      };
     };
-  };
-  "8a33cd74ccf35a01d87bf9164735c2c6": {
-    parameters: {
-      query: {
-        /** @description Search query string */
-        q: string;
-        /** @description Maximum number of suggestions to return */
-        limit?: number;
-      };
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    "35573ee310642d46d83e4c991e77f2db": {
+        parameters: {
+            query: {
+                /** @description Video ID to get recommendations for */
+                vod_id: string;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["SearchSuggestionList"];
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VideoList"];
+                };
+            };
         };
-      };
     };
-  };
-  fd98c593e0e6e771e36285f4a9dea36e: {
-    parameters: {
-      query: {
-        /** @description Search query string */
-        q: string;
-        /** @description Number of results per page */
-        per_page?: number;
-        /** @description Page number */
-        page?: number;
-        /** @description Filter by type ID */
-        type_id?: number;
-      };
-      header: {
-        /** @description Language code (en, cn, tw, ko, ja) */
-        "Accept-Language": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    bd5c37c490c8ae400a01bdf3f35fd814: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["SearchResult"];
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VideoIdsRequest"];
+            };
         };
-      };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VideoList"];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
     };
-  };
+    "28c45982fa08f66ddaffb255a19e7040": {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: number;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path: {
+                /** @description Navigator ID from home page (e.g., k5, mO) */
+                navigatorId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response with paginated videos */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TopicVideosResponse"];
+                };
+            };
+            /** @description Navigator ID not found or invalid */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    c7c09b6baa42d0c97324a555494b9f18: {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination (default: 1) */
+                page?: number;
+                /** @description Number of items per page (default: 20, max: 50) */
+                per_page?: number;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response with paginated popular videos */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PopularVideoResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    a92d49f1475c4a465ce2884bcd8e416c: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TypeList"];
+                };
+            };
+        };
+    };
+    "8a33cd74ccf35a01d87bf9164735c2c6": {
+        parameters: {
+            query: {
+                /** @description Search query string */
+                q: string;
+                /** @description Maximum number of suggestions to return */
+                limit?: number;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchSuggestionList"];
+                };
+            };
+        };
+    };
+    fd98c593e0e6e771e36285f4a9dea36e: {
+        parameters: {
+            query?: {
+                /** @description Search query string (optional - if not provided, returns all videos) */
+                q?: string;
+                /** @description Number of results per page */
+                per_page?: number;
+                /** @description Page number */
+                page?: number;
+                /** @description Filter by type ID */
+                type_id?: number;
+                /** @description Filter by release year */
+                year?: string;
+                /** @description Filter by video class/category */
+                class?: string;
+                /** @description Sort field (vod_time, vod_score, vod_hits_week) */
+                sort_by?: string;
+                /** @description Sort order (asc, desc) */
+                sort_order?: string;
+            };
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchResult"];
+                };
+            };
+        };
+    };
+    cdce6778c48f7258ecd8a150f3b91d1f: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryList"];
+                };
+            };
+        };
+    };
+    "50a2a6ddab666ca74da3e4015f285d1f": {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Encoded navigator ID representing the topic level */
+                navigatorId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully retrieved videos for the topic */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TopicVideosResponse"];
+                };
+            };
+            /** @description Invalid navigator ID or topic not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example false */
+                        status?: boolean;
+                        /** @example Invalid ID */
+                        message?: string;
+                        /** @example null */
+                        data?: null;
+                    };
+                };
+            };
+        };
+    };
+    "142b8ab6aa0d26432fc090c0779789d9": {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: number;
+                /** @description Number of items per page */
+                per_page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully retrieved popular videos */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PopularVideoResponse"];
+                };
+            };
+        };
+    };
 }
