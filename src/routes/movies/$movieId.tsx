@@ -1,3 +1,4 @@
+import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
 import { useGetVideoDetail } from "@/apis/app/queryGetVideoDetail";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import EpisodeAccordion from "@/components/page/movies/EpisodeAccordion";
@@ -6,19 +7,21 @@ import Overview from "@/components/page/movies/Overview";
 import RelatedMovies from "@/components/page/movies/RelatedMovies";
 import VideoInfo from "@/components/page/movies/VideoInfo";
 import VideoPlayer from "@/components/page/movies/VideoPlayer";
+import { Button } from "@/components/ui/button";
 import { processEpisodes } from "@/lib/processEpisodes";
 import type { HomeRecommendListResponseMovie } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
+import { HeartIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
 export const Route = createFileRoute("/movies/$movieId")({
   component: () => {
     const { movieId } = Route.useParams();
-    console.log("movieId", movieId);
+    // console.log("movieId", movieId);
     const { t } = useTranslation();
     const { videoDetail } = useGetVideoDetail({ vodId: movieId });
-    console.log("videoDetail", videoDetail);
+    // console.log("videoDetail", videoDetail);
     const episodes = processEpisodes(videoDetail?.vod_play_url ?? []);
+    // console.log("episodes", episodes);
     const firstEpisodeUrl = episodes[0]?.url ?? "";
     const MOCK_MOVIE = {
       seasons: [
@@ -72,10 +75,33 @@ export const Route = createFileRoute("/movies/$movieId")({
         },
       ],
     };
+    const { homeRecommendList } = useGetHomeRecommendList({});
+    // console.log("homeRecommendList", homeRecommendList);
+    const mergedMovies =
+      homeRecommendList
+        ?.filter((item) =>
+          ["carousel", "topic", "list"].includes(item.type ?? ""),
+        )
+        .flatMap((item) => item.list ?? []) ?? [];
 
+    const uniqueMovies: HomeRecommendListResponseMovie[] = Array.from(
+      new Map(mergedMovies.map((m) => [m.vod_id, m])).values(),
+    );
     return (
       <>
-        <NavHeader isShowBack title={t("pages.movies.movieDetails.title")} />
+        <NavHeader
+          isShowBack
+          title={t("pages.movies.movieDetails.title")}
+          rightNode={
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-full bg-white/20 backdrop-blur-sm transition-all hover:bg-black/40"
+            >
+              <HeartIcon className="size-4 fill-red-500 text-red-500 transition-all" />
+            </Button>
+          }
+        />
         <div className="space-y-6 p-4">
           <VideoPlayer
             url={firstEpisodeUrl}
@@ -120,12 +146,16 @@ export const Route = createFileRoute("/movies/$movieId")({
               collapse: t("pages.movies.movieDetails.collapse"),
             }}
           />
+          <>
+            <h2 className="font-semibold text-white">
+              {t("pages.movies.movieDetails.relatedMovies")}
+            </h2>
 
-          <RelatedMovies
-            movies={MOCK_MOVIE.movies as HomeRecommendListResponseMovie[]}
-            onMovieClick={(movie) => console.log("Clicked:", movie)}
-            title={t("pages.movies.movieDetails.relatedMovies")}
-          />
+            <RelatedMovies
+              movies={uniqueMovies}
+              onMovieClick={(movie) => console.log("Clicked:", movie)}
+            />
+          </>
         </div>
       </>
     );
