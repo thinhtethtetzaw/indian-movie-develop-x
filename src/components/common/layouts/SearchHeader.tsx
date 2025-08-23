@@ -103,7 +103,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
     };
 
     // Handle search input key press
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && inputValue.trim()) {
         onSubmit?.(inputValue.trim());
       }
@@ -154,7 +154,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
             placeholder={t("pages.search.placeholder")}
             value={inputValue}
             onChange={handleSearchChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
             className={cn(
               "bg-glass h-13 rounded-full border border-white/20 pl-12 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
               isClickable && "cursor-pointer",

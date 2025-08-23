@@ -15,7 +15,7 @@ import type {
 } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
-import { parseAsString, useQueryState } from "nuqs";
+import { parseAsString, useQueryState, useQueryStates } from "nuqs";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/search")({
@@ -44,6 +44,12 @@ function RouteComponent() {
     "q",
     parseAsString.withDefault(""),
   );
+  // const [sortOrder] = useQueryState("sort", parseAsString.withDefault("asc"));
+  // const [year] = useQueryState("year", parseAsString.withDefault(""));
+  const [filters] = useQueryStates({
+    sort_order: parseAsString.withDefault("asc"),
+    year: parseAsString.withDefault(""),
+  });
 
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
 
@@ -85,7 +91,11 @@ function RouteComponent() {
   };
 
   const { data: searchResults, isLoading: isLoadingSearch } = useGetSearch({
-    q: submittedSearchTerm,
+    params: {
+      q: submittedSearchTerm,
+      year: filters.year,
+      sort_order: filters.sort_order,
+    },
     enabled: !!submittedSearchTerm,
   });
 
