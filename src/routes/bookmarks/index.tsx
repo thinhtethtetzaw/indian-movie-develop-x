@@ -412,7 +412,6 @@ function RouteComponent() {
   return (
     <div className="relative h-full">
       <NavHeader
-        isShowBack={false}
         title={t("pages.bookmarks.title")}
         rightNode={
           <Button

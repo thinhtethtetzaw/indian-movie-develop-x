@@ -2,6 +2,7 @@ import { useGetVideoRecommend } from "@/apis/app/queryGetDetailRecommendList";
 import { useGetVideoDetail } from "@/apis/app/queryGetVideoDetail";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import Loading from "@/components/common/Loading";
+import PageTransition from "@/components/common/PageTransition";
 import EpisodeAccordion from "@/components/page/videos/EpisodeAccordion";
 import GenresList from "@/components/page/videos/GenresList";
 import Overview from "@/components/page/videos/Overview";
@@ -105,9 +106,11 @@ function RouteComponent() {
   };
 
   return (
-    <>
+    <PageTransition direction="right">
       <NavHeader
-        isShowBack
+        backRoute={{
+          to: "/home",
+        }}
         title={t("pages.movies.movieDetails.title")}
         rightNode={
           <Button
@@ -186,6 +189,6 @@ function RouteComponent() {
           <Loading />
         </div>
       )}
-    </>
+    </PageTransition>
   );
 }

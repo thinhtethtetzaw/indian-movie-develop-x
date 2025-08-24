@@ -41,7 +41,12 @@ function RouteComponent() {
 
   return (
     <>
-      <NavHeader isShowBack={true} title={pageTitle || ""} />
+      <NavHeader
+        backRoute={{
+          to: "/home",
+        }}
+        title={pageTitle || ""}
+      />
 
       <section className="mt-5 space-y-4 px-4">
         <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">

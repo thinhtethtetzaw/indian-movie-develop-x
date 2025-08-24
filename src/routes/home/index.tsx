@@ -14,6 +14,7 @@ import type {
 } from "@/types/api-schema/response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { parseAsString, useQueryStates } from "nuqs";
 import React, { useCallback } from "react";
 
@@ -161,101 +162,118 @@ function RouteComponent() {
                 </Tag>
               ))}
         </div>
-        {searchState.type !== "0" && (
-          <div className="px-4">
-            <Filter />
-          </div>
-        )}
-        <div className="space-y-10">
-          {isRecommendListLoading ? (
-            <HomeSkeleton />
-          ) : (
-            homeRecommendList?.map((item) => {
-              return (
-                <React.Fragment key={item.title}>
-                  {item.type === "carousel" &&
-                    item.list &&
-                    item.list.length > 0 && (
-                      <section>
-                        <SliderCarousel
-                          videos={item.list as CarouselVideoResponse[]}
-                          onVideoClick={handleVideoClick}
-                        />
-                      </section>
-                    )}
-                  {item.type === "list" &&
-                    item.list &&
-                    item.list.length > 0 && (
-                      <section className="space-y-4">
-                        <div className="flex items-center justify-between px-4">
+        {searchState.type === "0" ? (
+          <div className="space-y-10">
+            {isRecommendListLoading ? (
+              <HomeSkeleton />
+            ) : (
+              homeRecommendList?.map((item) => {
+                return (
+                  <React.Fragment key={item.title}>
+                    {item.type === "carousel" &&
+                      item.list &&
+                      item.list.length > 0 && (
+                        <section>
+                          <SliderCarousel
+                            videos={item.list as CarouselVideoResponse[]}
+                            onVideoClick={handleVideoClick}
+                          />
+                        </section>
+                      )}
+                    {item.type === "list" &&
+                      item.list &&
+                      item.list.length > 0 && (
+                        <section className="space-y-4">
+                          <div className="flex items-center justify-between px-4">
+                            <h2 className="text-forground font-semibold">
+                              {item.title}
+                            </h2>
+                            <Button
+                              variant="link"
+                              className="text-forground text-sm font-medium"
+                              onClick={() => {
+                                "navigator" in item &&
+                                  navigate({
+                                    to: "/home/navigator/$navigatorId",
+                                    params: {
+                                      navigatorId: item.navigator?.id ?? "",
+                                    },
+                                  });
+                              }}
+                            >
+                              {"navigator" in item && item.navigator?.title}{" "}
+                              <ChevronRightIcon />
+                            </Button>
+                          </div>
+                          <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
+                            {item.list.map((video, index) => (
+                              <div
+                                key={video.vod_id}
+                                className="flex-shrink-0 last:pr-4"
+                              >
+                                <VideoCard
+                                  video={video}
+                                  onClick={handleVideoClick}
+                                  index={index}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
+                    {item.type === "topic" &&
+                      item.list &&
+                      item.list.length > 0 && (
+                        <section className="space-y-4 px-4">
                           <h2 className="text-forground font-semibold">
                             {item.title}
                           </h2>
+                          <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+                            {item.list.map((video, index) => (
+                              <div key={video.vod_id} className="flex-shrink-0">
+                                <VideoCard
+                                  video={video}
+                                  onClick={handleVideoClick}
+                                  index={index}
+                                />
+                              </div>
+                            ))}
+                          </div>
                           <Button
-                            variant="link"
-                            className="text-forground text-sm font-medium"
-                            onClick={() => {
-                              "navigator" in item &&
-                                navigate({
-                                  to: "/home/navigator/$navigatorId",
-                                  params: {
-                                    navigatorId: item.navigator?.id ?? "",
-                                  },
-                                });
-                            }}
+                            variant="default"
+                            className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
                           >
-                            {"navigator" in item && item.navigator?.title}{" "}
-                            <ChevronRightIcon />
+                            {"navigator" in item && item.navigator?.title}
+                            <ChevronDownIcon />
                           </Button>
-                        </div>
-                        <div className="scrollbar-hide flex gap-3 overflow-x-auto pl-4">
-                          {item.list.map((video, index) => (
-                            <div
-                              key={video.vod_id}
-                              className="flex-shrink-0 last:pr-4"
-                            >
-                              <VideoCard
-                                video={video}
-                                onClick={handleVideoClick}
-                                index={index}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </section>
-                    )}
-                  {item.type === "topic" &&
-                    item.list &&
-                    item.list.length > 0 && (
-                      <section className="space-y-4 px-4">
-                        <h2 className="text-forground font-semibold">
-                          {item.title}
-                        </h2>
-                        <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-                          {item.list.map((video, index) => (
-                            <div key={video.vod_id} className="flex-shrink-0">
-                              <VideoCard
-                                video={video}
-                                onClick={handleVideoClick}
-                                index={index}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                        <Button
-                          variant="default"
-                          className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
-                        >
-                          {"navigator" in item && item.navigator?.title}
-                          <ChevronDownIcon />
-                        </Button>
-                      </section>
-                    )}
-                </React.Fragment>
-              );
-            })
-          )}
-        </div>
+                        </section>
+                      )}
+                  </React.Fragment>
+                );
+              })
+            )}
+          </div>
+        ) : (
+          <>
+            <AnimatePresence mode="wait">
+              {searchState.type !== "0" && (
+                <motion.div
+                  className="px-4"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{
+                    duration: 0.2,
+                    ease: [0.4, 0.0, 0.2, 1],
+                    opacity: { duration: 0.15 },
+                  }}
+                >
+                  <Filter />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
+        )}
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import NotificationEmptyImage from "@/assets/svgs/image-notification-empty.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
 import NavHeader from "@/components/common/layouts/NavHeader";
+import PageTransition from "@/components/common/PageTransition";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
@@ -9,9 +10,11 @@ export const Route = createFileRoute("/settings/notifications")({
     const { t } = useTranslation();
 
     return (
-      <>
+      <PageTransition direction="right">
         <NavHeader
-          isShowBack={true}
+          backRoute={{
+            to: "/settings",
+          }}
           title={t("pages.settings.notifications.title")}
         />
         <EmptyState
@@ -19,7 +22,7 @@ export const Route = createFileRoute("/settings/notifications")({
           title={t("pages.settings.notifications.emptyTitle")}
           description={t("pages.settings.notifications.emptyDescription")}
         />
-      </>
+      </PageTransition>
     );
   },
 });

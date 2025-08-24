@@ -19,7 +19,7 @@ function RouteComponent() {
 
   return (
     <>
-      <NavHeader isShowBack={false} title={t("pages.settings.title")} />
+      <NavHeader title={t("pages.settings.title")} />
       <motion.div
         className="mx-auto mt-5 px-4 text-white"
         initial={{ opacity: 0 }}

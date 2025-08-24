@@ -11,6 +11,7 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import Dialog from "@/components/common/Dialog";
 import BottomNavbar from "@/components/common/layouts/BottomNavbar";
 import type { QueryClient } from "@tanstack/react-query";
+import { AnimatePresence } from "motion/react";
 import { NuqsAdapter } from "nuqs/adapters/react";
 
 interface MyRouterContext {
@@ -36,7 +37,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
               id="scroll-container"
               className="lighter-scrollbar flex-1 overflow-y-auto"
             >
-              <Outlet />
+              <AnimatePresence mode="wait" initial={false}>
+                <Outlet key={routerState.location.pathname} />
+              </AnimatePresence>
             </div>
             {isShowBottomNavbar && <BottomNavbar />}
             <Dialog />
