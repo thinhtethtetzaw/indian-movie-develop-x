@@ -51,7 +51,7 @@ function Tag({
       }}
     >
       <Comp
-        data-slot="badge"
+        data-slot="tag"
         className={cn(tagVariants({ variant, size }), className)}
         {...props}
       />

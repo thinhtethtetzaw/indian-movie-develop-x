@@ -13,6 +13,7 @@ import BottomNavbar from "@/components/common/layouts/BottomNavbar";
 import type { QueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { NuqsAdapter } from "nuqs/adapters/react";
+import { Toaster } from "sonner";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -42,6 +43,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
               </AnimatePresence>
             </div>
             {isShowBottomNavbar && <BottomNavbar />}
+            <Toaster />
             <Dialog />
           </div>
           <TanstackDevtools

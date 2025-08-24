@@ -2,6 +2,7 @@ import { useGetVideoListByNavigatorId } from "@/apis/app/queryGetVideoListByNavi
 import NavHeader from "@/components/common/layouts/NavHeader";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import type { VideoResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback } from "react";
@@ -12,8 +13,22 @@ export const Route = createFileRoute("/home/navigator/$navigatorId")({
 
 function RouteComponent() {
   const { navigatorId } = Route.useParams();
-  const { pageTitle, videoList, isPending } = useGetVideoListByNavigatorId({
+  const {
+    pageTitle,
+    videoList,
+    isPending,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useGetVideoListByNavigatorId({
     navigatorId,
+  });
+
+  const { scrollRooms, viewportRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage,
+    isFetchingNextPage: isFetchingNextPage,
+    fetchNextPage: fetchNextPage,
+    checkPosition: "bottom",
   });
 
   const renderVideoCardSkeleton = useCallback(
@@ -48,7 +63,7 @@ function RouteComponent() {
         title={pageTitle || ""}
       />
 
-      <section className="mt-5 space-y-4 px-4">
+      <section ref={viewportRef} className="mt-5 space-y-4 px-4">
         <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
           {videoList?.map(
             (video, index) =>

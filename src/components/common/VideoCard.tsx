@@ -8,6 +8,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { HeartIcon, Star } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useCallback, useMemo } from "react";
+import { toast } from "sonner";
 
 interface VideoCardProps {
   video: VideoResponse;
@@ -38,6 +39,12 @@ const VideoCard: React.FC<VideoCardProps> = ({
       e.stopPropagation();
 
       try {
+        const totalBookmarks = await db.bookmarks.count();
+        if (totalBookmarks >= 100) {
+          toast.error("You have reached the maximum number of bookmarks");
+          return;
+        }
+
         if (!isExistingBookmark) {
           await db.bookmarks.add({
             id: video.vod_id || "",

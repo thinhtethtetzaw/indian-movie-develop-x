@@ -13,6 +13,34 @@ const decryptEpisodeUrl = (encryptedHex: string) => {
   }
 };
 
+export const groupEpisodes = (
+  episodes: { [key: string]: string }[],
+  itemsPerGroup: number,
+) => {
+  const processedEpisodes = processEpisodes(episodes).map((e, index) => ({
+    id: index + 1,
+    title: e.episode,
+    url: e.url,
+  }));
+
+  const seasons = [];
+  for (let i = 0; i < processedEpisodes.length; i += itemsPerGroup) {
+    const seasonEpisodes = processedEpisodes.slice(i, i + itemsPerGroup);
+    const seasonNumber = Math.floor(i / itemsPerGroup) + 1;
+
+    seasons.push({
+      id: seasonNumber,
+      title: `Season ${seasonNumber.toString().padStart(2, "0")}`,
+      episodes: seasonEpisodes.map((episode, episodeIndex) => ({
+        id: episodeIndex + 1,
+        title: episode.title,
+        url: episode.url || "",
+      })),
+    });
+  }
+  return seasons;
+};
+
 // Process your vod_play_url data
 export const processEpisodes = (vodPlayUrl: { [key: string]: string }[]) => {
   return vodPlayUrl.map((episode) => {

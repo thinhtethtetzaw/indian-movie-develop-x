@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 type Props = {
   title: string;
-  backRoute?: { to: string; params?: Record<string, string> };
+  backRoute?: "back" | { to: string; params?: Record<string, string> };
   rightNode?: ReactNode | ((...args: Array<unknown>) => ReactNode);
 };
 
@@ -21,13 +21,13 @@ function NavHeader({ title, backRoute, rightNode }: Props) {
             variant={"ghost"}
             size={"icon"}
             onClick={() => {
-              if (backRoute) {
+              if (backRoute === "back") {
+                router.history.back();
+              } else if (backRoute) {
                 router.navigate({
                   to: backRoute.to,
                   params: backRoute.params,
                 });
-              } else {
-                router.history.back();
               }
             }}
           >

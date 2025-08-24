@@ -11,12 +11,13 @@ import VideoInfo from "@/components/page/videos/VideoInfo";
 import VideoPlayer from "@/components/page/videos/VideoPlayer";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { processEpisodes } from "@/lib/processEpisodes";
+import { groupEpisodes } from "@/lib/processEpisodes";
 import type { VideoResponse } from "@/types/api-schema/response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
 import { HeartIcon } from "lucide-react";
 import { motion } from "motion/react";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
 export const Route = createFileRoute("/videos/$videoId")({
   component: RouteComponent,
@@ -31,51 +32,25 @@ export const Route = createFileRoute("/videos/$videoId")({
 
 function RouteComponent() {
   const { videoId } = Route.useParams();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const [activeEpisodeId] = useQueryState(
+    "epId",
+    parseAsInteger.withDefault(1),
+  );
+
   const { videoDetail, isLoading: isLoadingVideoDetail } = useGetVideoDetail({
     vodId: videoId,
   });
 
-  console.log("videoDetail", videoDetail);
-  const episodes = processEpisodes(videoDetail?.vod_play_url ?? []);
-  const firstEpisodeUrl = episodes[0]?.url ?? "";
-
-  const MOCK_MOVIE = {
-    seasons: [
-      {
-        id: 1,
-        title: "Season 01",
-        episodes: [
-          { id: 1, title: "Episode 1", isActive: false },
-          { id: 2, title: "Episode 2", isActive: false },
-          { id: 3, title: "Episode 3", isActive: false },
-        ],
-      },
-      {
-        id: 2,
-        title: "Season 02",
-        episodes: [
-          { id: 1, title: "Episode 1", isActive: true },
-          { id: 2, title: "Episode 2", isActive: false },
-          { id: 3, title: "Episode 3", isActive: false },
-          { id: 4, title: "Episode 4", isActive: false },
-          { id: 5, title: "Episode 5", isActive: false },
-        ],
-      },
-      {
-        id: 3,
-        title: "Season 03",
-        episodes: [
-          { id: 1, title: "Episode 1", isActive: false },
-          { id: 2, title: "Episode 2", isActive: false },
-        ],
-      },
-    ],
-  };
+  const groupedEpisodes = groupEpisodes(videoDetail?.vod_play_url ?? [], 10);
+  const currentEpisodeUrl =
+    groupedEpisodes[0]?.episodes?.find(
+      (episode) => episode.id === activeEpisodeId,
+    )?.url ?? "";
 
   const { videoRecommendList } = useGetVideoRecommend({ vod_id: videoId });
-  console.log("videoRecommendList", videoRecommendList);
-  const navigate = useNavigate();
+
   const handleVideoClick = (video: VideoResponse) => {
     navigate({
       to: "/videos/$videoId",
@@ -108,9 +83,7 @@ function RouteComponent() {
   return (
     <PageTransition direction="right">
       <NavHeader
-        backRoute={{
-          to: "/home",
-        }}
+        backRoute={"back"}
         title={t("pages.movies.movieDetails.title")}
         rightNode={
           <Button
@@ -146,7 +119,7 @@ function RouteComponent() {
       {!isLoadingVideoDetail ? (
         <div className="space-y-6">
           <VideoPlayer
-            url={firstEpisodeUrl}
+            url={currentEpisodeUrl}
             poster={videoDetail?.vod_pic ?? ""}
           />
 
@@ -158,7 +131,7 @@ function RouteComponent() {
               />
               <Overview vod_content={videoDetail?.vod_content} />
               <div className="space-y-2">
-                {MOCK_MOVIE.seasons.map((season) => (
+                {groupedEpisodes.map((season) => (
                   <EpisodeAccordion
                     key={season.id}
                     seasonTitle={season.title}

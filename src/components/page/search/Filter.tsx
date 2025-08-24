@@ -173,7 +173,7 @@ export function Filter() {
             />
 
             {isDropdownOpen.year && (
-              <div className="absolute top-full left-0 z-50 mt-1 w-48 rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
+              <div className="absolute top-full right-0 z-50 mt-1 w-48 rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
                 <div className="grid grid-cols-2 gap-2">
                   {years.map((yearValue) => (
                     <YearOptionButton

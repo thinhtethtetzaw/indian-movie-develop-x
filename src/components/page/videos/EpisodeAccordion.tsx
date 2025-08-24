@@ -1,11 +1,14 @@
-import { ChartNoAxesColumn, ChevronUp } from "lucide-react";
+import EpisodeIcon from "@/assets/svgs/icon-episode.svg?react";
+import { ChevronUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { Tag } from "@/components/common/Tag";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 interface Episode {
   id: number;
   title: string;
+  url: string;
 }
 
 interface EpisodeAccordionProps {
@@ -20,18 +23,15 @@ const EpisodeItem: React.FC<{
   onClick: () => void;
 }> = ({ episode, isActive, onClick }) => (
   <Tag
-    asChild
     variant={isActive ? "active" : "default"}
     size="lg"
-    className="relative cursor-pointer"
+    className="relative cursor-pointer [&>svg]:size-4"
     onClick={onClick}
   >
-    <span className="relative flex items-center gap-1.5">
-      {episode.title}
-      {isActive && (
-        <ChartNoAxesColumn className="absolute bottom-1 left-1/2 h-8 w-8 -translate-x-1/2 translate-y-1/2 text-white" />
-      )}
-    </span>
+    <span className="relative flex items-center gap-1.5">{episode.title}</span>
+    {isActive && (
+      <EpisodeIcon className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-white" />
+    )}
   </Tag>
 );
 
@@ -41,10 +41,12 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
   onEpisodeSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeEpisodeId, setActiveEpisodeId] = useState<number | null>(null);
+  const [activeEpisodeId, setActiveEpisodeId] = useQueryState(
+    "epId",
+    parseAsInteger.withDefault(1),
+  );
 
   useEffect(() => {
-    // default active: first episode
     if (episodes.length > 0 && activeEpisodeId === null) {
       setActiveEpisodeId(episodes[0]?.id ?? 0);
     }

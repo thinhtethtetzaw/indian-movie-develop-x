@@ -94,6 +94,7 @@ function RouteComponent() {
 
   const { videoList, isLoading: isVideoListLoading } = useGetVideoListByIds({
     videoIds: allBookmarks.map((bookmark) => bookmark.id ?? ""),
+    typeId: Number(searchState.category),
     queryConfig: {
       enabled: allBookmarks.length > 0,
     },
@@ -388,17 +389,30 @@ function RouteComponent() {
   const renderVideoGrid = useCallback(
     () => (
       <div className="mt-5 px-4 pb-32">
-        <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
-          {isVideoListLoading ? (
-            renderVideoSkeletons()
-          ) : (
-            <AnimatePresence mode="popLayout">
-              {bookmarkedVideos?.map((video, index) =>
-                renderVideoCard(video, index),
-              )}
-            </AnimatePresence>
-          )}
-        </div>
+        {isVideoListLoading ? (
+          <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+            {renderVideoSkeletons()}
+          </div>
+        ) : (
+          <>
+            {bookmarkedVideos && bookmarkedVideos.length > 0 ? (
+              <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+                <AnimatePresence mode="popLayout">
+                  {bookmarkedVideos?.map((video, index) =>
+                    renderVideoCard(video, index),
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <EmptyState
+                imageSrc={<BookmarksEmptyImage className="size-33" />}
+                title={t("pages.bookmarks.emptyTitle")}
+                description={t("pages.bookmarks.emptyDescription")}
+                className="translate-y-1/2"
+              />
+            )}
+          </>
+        )}
       </div>
     ),
     [
@@ -432,16 +446,7 @@ function RouteComponent() {
 
       <div className="mt-5">
         {renderTags()}
-        {allBookmarks.length > 0 ? (
-          renderVideoGrid()
-        ) : (
-          <EmptyState
-            imageSrc={<BookmarksEmptyImage className="size-33" />}
-            title={t("pages.bookmarks.emptyTitle")}
-            description={t("pages.bookmarks.emptyDescription")}
-            className="translate-y-1/2"
-          />
-        )}
+        {renderVideoGrid()}
       </div>
 
       {renderBottomDrawer()}
