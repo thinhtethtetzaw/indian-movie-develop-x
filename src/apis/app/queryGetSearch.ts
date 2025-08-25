@@ -1,11 +1,10 @@
 import i18n from "@/config/i18n";
 import { LANGUAGES_API_HEADER } from "@/constants/common";
 import { API_CLIENT } from "@/lib/openapi-api-client";
-import { queryOptions, useQuery } from "@tanstack/react-query";
+import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
-// Query options for fetching search results
-export const getSearchQueryOptions = (
+export const getSearchInfiniteQueryOptions = (
   params: {
     q: string;
     year?: string;
@@ -13,20 +12,19 @@ export const getSearchQueryOptions = (
     sort_by?: string;
     sort_order?: string;
   },
-  page: number = 1,
   per_page: number = 10,
   type_id?: number,
 ) => {
   const selectedLanguage = i18n.language;
 
-  return queryOptions({
-    queryKey: ["search", params, page, per_page, type_id],
-    queryFn: () =>
+  return infiniteQueryOptions({
+    queryKey: ["search-infinite", params, per_page, type_id],
+    queryFn: ({ pageParam }) =>
       API_CLIENT.GET("/api/v1/videos/search", {
         params: {
           query: {
             q: params.q,
-            page,
+            page: pageParam ?? 1,
             per_page,
             ...(type_id && { type_id }),
             ...(params.year && { year: params.year }),
@@ -42,15 +40,22 @@ export const getSearchQueryOptions = (
           },
         },
       }),
-    select: (data) => data.data,
     enabled: !!params.q && params.q.length >= 1, // Enable for queries with 1+ characters
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     retry: 1, // Only retry once
+    initialPageParam: 1,
+    getNextPageParam: (page: any) => {
+      const totalPages = page?.data?.pagination?.last_page ?? 0;
+      const currentPage = page?.data?.pagination?.current_page || 1;
+      const nextPage = currentPage + 1;
+
+      return nextPage <= totalPages ? nextPage : undefined;
+    },
   });
 };
 
-type UseGetSearchOptions = {
+type UseGetSearchInfiniteOptions = {
   params: {
     q: string;
     year?: string;
@@ -58,20 +63,30 @@ type UseGetSearchOptions = {
     sort_by?: string;
     sort_order?: string;
   };
-  page?: number;
   per_page?: number;
   type_id?: number;
-} & QueryConfig<typeof getSearchQueryOptions>;
+  queryConfig?: QueryConfig<typeof getSearchInfiniteQueryOptions>;
+};
 
-export const useGetSearch = ({
+export const useGetSearchInfinite = ({
   params,
-  page = 1,
   per_page = 10,
   type_id,
-  ...queryConfig
-}: UseGetSearchOptions) => {
-  return useQuery({
-    ...getSearchQueryOptions(params, page, per_page, type_id),
+  queryConfig,
+}: UseGetSearchInfiniteOptions) => {
+  const data = useInfiniteQuery({
+    ...getSearchInfiniteQueryOptions(params, per_page, type_id),
     ...queryConfig,
+    enabled: !!params.q && params.q.length >= 1,
   });
+
+  const searchResults = data.data?.pages.flatMap(
+    (page) => page?.data?.data || [],
+  );
+
+  return {
+    ...data,
+    searchResults,
+    totalItems: data.data?.pages[0]?.data?.pagination?.total,
+  };
 };

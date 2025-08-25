@@ -1,4 +1,4 @@
-import { useGetSearch } from "@/apis/app/queryGetSearch";
+import { useGetSearchInfinite } from "@/apis/app/queryGetSearch";
 import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
 import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -9,10 +9,8 @@ import {
   SearchResults,
   SearchSuggestions,
 } from "@/components/page/search";
-import type {
-  SearchResultResponse,
-  SearchSuggestionResponse,
-} from "@/types/api-schema/response";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import type { SearchSuggestionResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { parseAsString, useQueryState, useQueryStates } from "nuqs";
@@ -50,6 +48,7 @@ function RouteComponent() {
     sort_order: parseAsString.withDefault("asc"),
     year: parseAsString.withDefault(""),
     class: parseAsString.withDefault(""),
+    type: parseAsString.withDefault("0"),
   });
 
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
@@ -91,14 +90,27 @@ function RouteComponent() {
     }
   };
 
-  const { data: searchResults, isLoading: isLoadingSearch } = useGetSearch({
+  const {
+    searchResults,
+    isLoading: isLoadingSearch,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useGetSearchInfinite({
     params: {
       q: submittedSearchTerm,
       year: filters.year,
       sort_order: filters.sort_order,
       class: filters.class,
     },
-    enabled: !!submittedSearchTerm,
+    type_id: filters.type ? parseInt(filters.type) : undefined,
+  });
+
+  const { scrollRooms, viewportRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage,
+    isFetchingNextPage: isFetchingNextPage,
+    fetchNextPage: fetchNextPage,
+    checkPosition: "bottom",
   });
 
   const shouldShowLoading =
@@ -110,8 +122,7 @@ function RouteComponent() {
     !isLoadingSuggestions &&
     searchTerm &&
     searchTerm.length >= 2 &&
-    ((shouldShowSearchResults &&
-      (searchResults as SearchResultResponse)?.data?.length === 0) ||
+    ((shouldShowSearchResults && searchResults?.length === 0) ||
       (!shouldShowSearchResults && suggestions && suggestions.length === 0));
 
   return (
@@ -126,6 +137,7 @@ function RouteComponent() {
         {/* Recent Search */}
         {!searchTerm && (
           <RecentSearch
+            key="recent-search"
             recentlySearched={recentlySearched}
             onItemClick={handleRecentItemClick}
             onClearRecent={handleClearRecent}
@@ -139,6 +151,7 @@ function RouteComponent() {
           suggestions &&
           suggestions.length > 0 && (
             <SearchSuggestions
+              key="search-suggestions"
               suggestions={suggestions}
               searchTerm={searchTerm}
               onSuggestionClick={handleSuggestionClick}
@@ -148,20 +161,30 @@ function RouteComponent() {
         {/* Search Results */}
         {shouldShowSearchResults && (
           <SearchResults
-            searchResults={searchResults as SearchResultResponse}
+            key="search-results"
+            searchResults={{ data: searchResults || [] }}
+            isFetchingNextPage={isFetchingNextPage}
+            viewportRef={viewportRef}
+            scrollRooms={scrollRooms}
           />
         )}
 
         {/* Shared Loading State */}
         {shouldShowLoading && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+          <div
+            key="loading"
+            className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]"
+          >
             <Loading />
           </div>
         )}
 
         {/* Shared Empty State */}
         {shouldShowEmptyState && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+          <div
+            key="empty-state"
+            className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]"
+          >
             <EmptyState
               imageSrc={<SearchEmptyImage />}
               title="Search Result Not Found!"
