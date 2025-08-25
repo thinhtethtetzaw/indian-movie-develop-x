@@ -50,6 +50,7 @@ function RouteComponent() {
     sort_order: parseAsString.withDefault("asc"),
     year: parseAsString.withDefault(""),
     class: parseAsString.withDefault(""),
+    type: parseAsString.withDefault("0"),
   });
 
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
@@ -98,6 +99,7 @@ function RouteComponent() {
       sort_order: filters.sort_order,
       class: filters.class,
     },
+    type_id: filters.type ? parseInt(filters.type) : undefined,
     enabled: !!submittedSearchTerm,
   });
 
@@ -126,6 +128,7 @@ function RouteComponent() {
         {/* Recent Search */}
         {!searchTerm && (
           <RecentSearch
+            key="recent-search"
             recentlySearched={recentlySearched}
             onItemClick={handleRecentItemClick}
             onClearRecent={handleClearRecent}
@@ -139,6 +142,7 @@ function RouteComponent() {
           suggestions &&
           suggestions.length > 0 && (
             <SearchSuggestions
+              key="search-suggestions"
               suggestions={suggestions}
               searchTerm={searchTerm}
               onSuggestionClick={handleSuggestionClick}
@@ -148,20 +152,27 @@ function RouteComponent() {
         {/* Search Results */}
         {shouldShowSearchResults && (
           <SearchResults
+            key="search-results"
             searchResults={searchResults as SearchResultResponse}
           />
         )}
 
         {/* Shared Loading State */}
         {shouldShowLoading && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+          <div
+            key="loading"
+            className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]"
+          >
             <Loading />
           </div>
         )}
 
         {/* Shared Empty State */}
         {shouldShowEmptyState && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+          <div
+            key="empty-state"
+            className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]"
+          >
             <EmptyState
               imageSrc={<SearchEmptyImage />}
               title="Search Result Not Found!"
