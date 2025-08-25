@@ -20,10 +20,6 @@ export function RecentSearch({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{
-        opacity: 0,
-        transition: { duration: 0.3, delay: 0.5 },
-      }}
       transition={{ duration: 0.3, delay: 0.1 }}
     >
       <div>
@@ -46,15 +42,6 @@ export function RecentSearch({
                 transition={{
                   duration: 0.3,
                   delay: Number(index) * 0.07,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -10,
-                  rotateX: -5,
-                  transition: {
-                    duration: 0.3,
-                    delay: (recentlySearched.length - 1 - index) * 0.07,
-                  },
                 }}
                 layout
                 key={item || index}

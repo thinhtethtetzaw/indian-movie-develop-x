@@ -1,4 +1,4 @@
-import { useGetSearch } from "@/apis/app/queryGetSearch";
+import { useGetSearchInfinite } from "@/apis/app/queryGetSearch";
 import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
 import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -9,10 +9,8 @@ import {
   SearchResults,
   SearchSuggestions,
 } from "@/components/page/search";
-import type {
-  SearchResultResponse,
-  SearchSuggestionResponse,
-} from "@/types/api-schema/response";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import type { SearchSuggestionResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { parseAsString, useQueryState, useQueryStates } from "nuqs";
@@ -92,7 +90,13 @@ function RouteComponent() {
     }
   };
 
-  const { data: searchResults, isLoading: isLoadingSearch } = useGetSearch({
+  const {
+    searchResults,
+    isLoading: isLoadingSearch,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useGetSearchInfinite({
     params: {
       q: submittedSearchTerm,
       year: filters.year,
@@ -100,7 +104,13 @@ function RouteComponent() {
       class: filters.class,
     },
     type_id: filters.type ? parseInt(filters.type) : undefined,
-    enabled: !!submittedSearchTerm,
+  });
+
+  const { scrollRooms, viewportRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage,
+    isFetchingNextPage: isFetchingNextPage,
+    fetchNextPage: fetchNextPage,
+    checkPosition: "bottom",
   });
 
   const shouldShowLoading =
@@ -112,8 +122,7 @@ function RouteComponent() {
     !isLoadingSuggestions &&
     searchTerm &&
     searchTerm.length >= 2 &&
-    ((shouldShowSearchResults &&
-      (searchResults as SearchResultResponse)?.data?.length === 0) ||
+    ((shouldShowSearchResults && searchResults?.length === 0) ||
       (!shouldShowSearchResults && suggestions && suggestions.length === 0));
 
   return (
@@ -153,7 +162,10 @@ function RouteComponent() {
         {shouldShowSearchResults && (
           <SearchResults
             key="search-results"
-            searchResults={searchResults as SearchResultResponse}
+            searchResults={{ data: searchResults || [] }}
+            isFetchingNextPage={isFetchingNextPage}
+            viewportRef={viewportRef}
+            scrollRooms={scrollRooms}
           />
         )}
 
