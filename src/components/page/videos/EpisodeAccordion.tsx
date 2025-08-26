@@ -1,9 +1,9 @@
 import EpisodeIcon from "@/assets/svgs/icon-episode.svg?react";
 import { ChevronUp } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Tag } from "@/components/common/Tag";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { parseAsString, useQueryState } from "nuqs";
 
 interface Episode {
   id: number;
@@ -14,7 +14,7 @@ interface Episode {
 interface EpisodeAccordionProps {
   seasonTitle: string;
   episodes?: Episode[];
-  onEpisodeSelect?: (id: number) => void;
+  onEpisodeSelect?: (title: string) => void;
 }
 
 const EpisodeItem: React.FC<{
@@ -41,20 +41,15 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
   onEpisodeSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeEpisodeId, setActiveEpisodeId] = useQueryState(
-    "epId",
-    parseAsInteger.withDefault(1),
+  const [activeEpisode, setActiveEpisode] = useQueryState(
+    "episode",
+    parseAsString.withDefault(""),
   );
 
-  useEffect(() => {
-    if (episodes.length > 0 && activeEpisodeId === null) {
-      setActiveEpisodeId(episodes[0]?.id ?? 0);
-    }
-  }, [episodes, activeEpisodeId]);
-
-  const handleEpisodeSelect = (id: number) => {
-    setActiveEpisodeId(id);
-    onEpisodeSelect?.(id);
+  const handleEpisodeSelect = (title: string) => {
+    setActiveEpisode(title);
+    // Call the parent's onEpisodeSelect function if provided
+    onEpisodeSelect?.(title);
   };
 
   return (
@@ -93,8 +88,8 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
                 <EpisodeItem
                   key={episode.id}
                   episode={episode}
-                  isActive={activeEpisodeId === episode.id}
-                  onClick={() => handleEpisodeSelect(episode.id)}
+                  isActive={activeEpisode === episode.title}
+                  onClick={() => handleEpisodeSelect(episode.title)}
                 />
               ))}
             </div>

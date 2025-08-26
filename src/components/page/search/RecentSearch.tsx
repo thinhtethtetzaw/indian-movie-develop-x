@@ -58,7 +58,7 @@ export function RecentSearch({
                 }}
                 layout
                 key={item}
-                className="flex-shrink-0 rounded-md bg-white/10 px-4 py-2.5 text-sm font-medium whitespace-nowrap text-gray-300 transition-colors hover:bg-white/20"
+                className="flex-shrink-0 cursor-pointer rounded-md bg-white/10 px-4 py-2.5 text-sm font-medium whitespace-nowrap text-gray-300 transition-colors hover:bg-white/20"
                 onClick={() => onItemClick(item)}
               >
                 {item}

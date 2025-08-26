@@ -1,7 +1,8 @@
 import i18n from "@/config/i18n";
 import { LANGUAGES_API_HEADER } from "@/constants/common";
 import { API_CLIENT } from "@/lib/openapi-api-client";
-import { queryOptions, useQuery } from "@tanstack/react-query";
+import type { SearchResultResponse } from "@/types/api-schema/response";
+import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
 // Query options for fetching search results
@@ -12,23 +13,22 @@ export const getSearchQueryOptions = (
     class?: string;
     sort_by?: string;
     sort_order?: string;
+    type_id?: number;
   },
-  page: number = 1,
   per_page: number = 10,
-  type_id?: number,
 ) => {
   const selectedLanguage = i18n.language;
 
-  return queryOptions({
-    queryKey: ["search", params, page, per_page, type_id],
-    queryFn: () =>
+  return infiniteQueryOptions({
+    queryKey: ["search", params, per_page],
+    queryFn: ({ pageParam }) =>
       API_CLIENT.GET("/api/v1/videos/search", {
         params: {
           query: {
             q: params.q,
-            page,
+            page: pageParam ?? 1,
             per_page,
-            ...(type_id && { type_id }),
+            ...(params.type_id && { type_id: params.type_id }),
             ...(params.year && { year: params.year }),
             ...(params.class && { class: params.class }),
             ...(params.sort_by && { sort_by: params.sort_by }),
@@ -42,11 +42,25 @@ export const getSearchQueryOptions = (
           },
         },
       }),
-    select: (data) => data.data,
     enabled: !!params.q && params.q.length >= 1, // Enable for queries with 1+ characters
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     retry: 1, // Only retry once
+    initialPageParam: 1,
+    getNextPageParam: (page) => {
+      const pagination = page.data?.pagination;
+
+      if (!pagination) {
+        return undefined;
+      }
+
+      const currentPage = pagination.current_page || 1;
+      const lastPage = pagination.last_page || 0;
+      const nextPage = currentPage + 1;
+
+      // Stop when we've reached or exceeded the last page
+      return nextPage <= lastPage ? nextPage : undefined;
+    },
   });
 };
 
@@ -57,21 +71,33 @@ type UseGetSearchOptions = {
     class?: string;
     sort_by?: string;
     sort_order?: string;
+    type_id?: number;
   };
-  page?: number;
   per_page?: number;
-  type_id?: number;
-} & QueryConfig<typeof getSearchQueryOptions>;
+  queryConfig?: QueryConfig<typeof getSearchQueryOptions>;
+};
 
 export const useGetSearch = ({
   params,
-  page = 1,
   per_page = 10,
-  type_id,
-  ...queryConfig
+  queryConfig,
 }: UseGetSearchOptions) => {
-  return useQuery({
-    ...getSearchQueryOptions(params, page, per_page, type_id),
+  const data = useInfiniteQuery({
+    ...getSearchQueryOptions(params, per_page),
     ...queryConfig,
   });
+
+  const searchResults: SearchResultResponse["data"] | undefined =
+    data.data?.pages
+      .flatMap((page) => page.data?.data ?? [])
+      .filter((item): item is NonNullable<typeof item> => item !== undefined);
+
+  const currentPage = data.data?.pages[0]?.data?.pagination?.current_page;
+
+  return {
+    ...data,
+    searchResults,
+    currentPage,
+    totalItems: data.data?.pages[0]?.data?.pagination?.total,
+  };
 };

@@ -2,6 +2,7 @@ import { useGetConfigList } from "@/apis/app/querygetConfig";
 import Info from "@/assets/svgs/icon-info.svg?react";
 import Notification from "@/assets/svgs/icon-notification.svg?react";
 import NavHeader from "@/components/common/layouts/NavHeader";
+import Loading from "@/components/common/Loading";
 import { LanguageDrawer } from "@/components/settings/LanguageDrawer";
 import { ShareDrawer } from "@/components/settings/ShareDrawer";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -15,78 +16,87 @@ export const Route = createFileRoute("/settings/")({
 
 function RouteComponent() {
   const { t } = useTranslation();
-  const { configList } = useGetConfigList({});
+  const { configList, isLoading: isConfigListLoading } = useGetConfigList({});
 
   return (
     <>
       <NavHeader title={t("pages.settings.title")} />
-      <motion.div
-        className="mx-auto mt-5 px-4 text-white"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="space-y-4">
+
+      <section className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] overflow-y-auto px-4 py-5 text-white">
+        {!isConfigListLoading ? (
           <motion.div
-            className="rounded-2xl bg-white/12"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+            className="space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <Link
-              to="/settings/notifications"
-              className="flex w-full items-center justify-between p-4 shadow-md transition"
-            >
-              <div className="flex items-center gap-3">
-                <motion.div
-                  className="relative"
-                  whileHover={{ rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+            <div className="space-y-4">
+              <motion.div
+                className="rounded-2xl bg-white/12"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
+                <Link
+                  to="/settings/notifications"
+                  className="flex w-full items-center justify-between p-4 shadow-md transition"
                 >
-                  <Notification className="size-6 text-white" />
-                </motion.div>
-                <p className="text-sm">
-                  {t("pages.settings.notifications.title")}
-                </p>
-              </div>
-              <ChevronRightIcon className="size-6 text-white" />
-            </Link>
+                  <div className="flex items-center gap-3">
+                    <motion.div
+                      className="relative"
+                      whileHover={{ rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <Notification className="size-6 text-white" />
+                    </motion.div>
+                    <p className="text-sm">
+                      {t("pages.settings.notifications.title")}
+                    </p>
+                  </div>
+                  <ChevronRightIcon className="size-6 text-white" />
+                </Link>
 
-            <div className="px-4">
-              <hr className="w-full border-white/4" />
+                <div className="px-4">
+                  <hr className="w-full border-white/4" />
+                </div>
+                <LanguageDrawer />
+              </motion.div>
+
+              <motion.div
+                className="rounded-2xl bg-white/12"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                {configList?.share_link && (
+                  <ShareDrawer shareConfigLink={configList.share_link} />
+                )}
+
+                <div className="px-4">
+                  <hr className="w-full border-white/4" />
+                </div>
+
+                <div className="flex w-full items-center justify-between p-4 shadow-md">
+                  <div className="flex items-center gap-3">
+                    <motion.div
+                      whileHover={{ rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <Info className="size-6 text-white" />
+                    </motion.div>
+                    <p className="text-sm">
+                      {t("pages.settings.version.title")}
+                    </p>
+                  </div>
+                  <p className="text-sm text-white">V1.0.1</p>
+                </div>
+              </motion.div>
             </div>
-            <LanguageDrawer />
           </motion.div>
-
-          <motion.div
-            className="rounded-2xl bg-white/12"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            {configList?.share_link && (
-              <ShareDrawer shareConfigLink={configList.share_link} />
-            )}
-
-            <div className="px-4">
-              <hr className="w-full border-white/4" />
-            </div>
-
-            <div className="flex w-full items-center justify-between p-4 shadow-md">
-              <div className="flex items-center gap-3">
-                <motion.div
-                  whileHover={{ rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <Info className="size-6 text-white" />
-                </motion.div>
-                <p className="text-sm">{t("pages.settings.version.title")}</p>
-              </div>
-              <p className="text-sm text-white">V1.0.1</p>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
+        ) : (
+          <Loading />
+        )}
+      </section>
     </>
   );
 }

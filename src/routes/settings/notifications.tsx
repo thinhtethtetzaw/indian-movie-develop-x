@@ -17,11 +17,13 @@ export const Route = createFileRoute("/settings/notifications")({
           }}
           title={t("pages.settings.notifications.title")}
         />
-        <EmptyState
-          imageSrc={<NotificationEmptyImage className="size-33" />}
-          title={t("pages.settings.notifications.emptyTitle")}
-          description={t("pages.settings.notifications.emptyDescription")}
-        />
+        <section className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height))]">
+          <EmptyState
+            imageSrc={<NotificationEmptyImage className="size-33" />}
+            title={t("pages.settings.notifications.emptyTitle")}
+            description={t("pages.settings.notifications.emptyDescription")}
+          />
+        </section>
       </PageTransition>
     );
   },

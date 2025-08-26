@@ -398,7 +398,7 @@ function RouteComponent() {
         isClickable={true}
         onClick={handleSearchClick}
       />
-      <div className="space-y-6 pb-5">
+      <div className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-var(--bottom-nav-height))] space-y-6 overflow-y-auto pb-5">
         <CategoryTags
           allTypes={allTypes}
           isLoading={isCategoryListLoading}

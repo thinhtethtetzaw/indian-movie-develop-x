@@ -9,10 +9,8 @@ import {
   SearchResults,
   SearchSuggestions,
 } from "@/components/page/search";
-import type {
-  SearchResultResponse,
-  SearchSuggestionResponse,
-} from "@/types/api-schema/response";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import type { SearchSuggestionResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { parseAsString, useQueryState, useQueryStates } from "nuqs";
@@ -91,14 +89,27 @@ function RouteComponent() {
     }
   };
 
-  const { data: searchResults, isLoading: isLoadingSearch } = useGetSearch({
+  const {
+    searchResults,
+    isLoading: isLoadingSearch,
+    hasNextPage,
+    fetchNextPage,
+    currentPage,
+    isFetchingNextPage,
+  } = useGetSearch({
     params: {
       q: submittedSearchTerm,
       year: filters.year,
       sort_order: filters.sort_order,
       class: filters.class,
     },
-    enabled: !!submittedSearchTerm,
+  });
+
+  const { scrollRooms, viewportRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage,
+    isFetchingNextPage: isFetchingNextPage,
+    fetchNextPage: fetchNextPage,
+    checkPosition: "bottom",
   });
 
   const shouldShowLoading =
@@ -110,65 +121,71 @@ function RouteComponent() {
     !isLoadingSuggestions &&
     searchTerm &&
     searchTerm.length >= 2 &&
-    ((shouldShowSearchResults &&
-      (searchResults as SearchResultResponse)?.data?.length === 0) ||
+    ((shouldShowSearchResults && searchResults?.length === 0) ||
       (!shouldShowSearchResults && suggestions && suggestions.length === 0));
 
   return (
-    <div className="pb-10">
+    <>
       <SearchHeader
         isShowBack={true}
         autoFocus={true}
         onSubmit={handleSearchSubmit}
       />
 
-      <AnimatePresence mode="popLayout">
-        {/* Recent Search */}
-        {!searchTerm && (
-          <RecentSearch
-            recentlySearched={recentlySearched}
-            onItemClick={handleRecentItemClick}
-            onClearRecent={handleClearRecent}
-          />
-        )}
-
-        {/* Search Suggestions */}
-        {!shouldShowSearchResults &&
-          searchTerm &&
-          searchTerm.length >= 2 &&
-          suggestions &&
-          suggestions.length > 0 && (
-            <SearchSuggestions
-              suggestions={suggestions}
-              searchTerm={searchTerm}
-              onSuggestionClick={handleSuggestionClick}
+      <section
+        ref={viewportRef}
+        onScroll={scrollRooms}
+        className="lighter-scrollbar h-[calc(100vh-var(--search-header-height))] overflow-y-auto pb-5"
+      >
+        <AnimatePresence key={currentPage ?? 1} mode="popLayout">
+          {/* Recent Search */}
+          {!searchTerm && (
+            <RecentSearch
+              recentlySearched={recentlySearched}
+              onItemClick={handleRecentItemClick}
+              onClearRecent={handleClearRecent}
             />
           )}
 
-        {/* Search Results */}
-        {shouldShowSearchResults && (
-          <SearchResults
-            searchResults={searchResults as SearchResultResponse}
-          />
-        )}
+          {/* Search Suggestions */}
+          {!shouldShowSearchResults &&
+            searchTerm &&
+            searchTerm.length >= 2 &&
+            suggestions &&
+            suggestions.length > 0 && (
+              <SearchSuggestions
+                suggestions={suggestions}
+                searchTerm={searchTerm}
+                onSuggestionClick={handleSuggestionClick}
+              />
+            )}
 
-        {/* Shared Loading State */}
-        {shouldShowLoading && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
-            <Loading />
-          </div>
-        )}
-
-        {/* Shared Empty State */}
-        {shouldShowEmptyState && (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
-            <EmptyState
-              imageSrc={<SearchEmptyImage />}
-              title="Search Result Not Found!"
+          {/* Search Results */}
+          {shouldShowSearchResults && (
+            <SearchResults
+              searchResults={searchResults}
+              isFetchingNextPage={isFetchingNextPage}
             />
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+          )}
+
+          {/* Shared Loading State */}
+          {shouldShowLoading && (
+            <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+              <Loading />
+            </div>
+          )}
+
+          {/* Shared Empty State */}
+          {shouldShowEmptyState && (
+            <div className="m-auto h-[calc(100vh-var(--search-header-height)-40px)]">
+              <EmptyState
+                imageSrc={<SearchEmptyImage />}
+                title="Search Result Not Found!"
+              />
+            </div>
+          )}
+        </AnimatePresence>
+      </section>
+    </>
   );
 }

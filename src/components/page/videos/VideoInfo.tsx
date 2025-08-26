@@ -15,7 +15,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ videoDetail }) => {
   return (
     <div className="flex items-start justify-between">
       <div>
-        <h1 className="text-lg font-bold">
+        <h1 className="overflow-hidden text-lg font-bold break-words">
           {vod_name} ({vod_year})
         </h1>
         <div className="mt-2 flex-col space-y-6">

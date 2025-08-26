@@ -63,8 +63,12 @@ function RouteComponent() {
         title={pageTitle || ""}
       />
 
-      <section ref={viewportRef} className="mt-5 space-y-4 px-4">
-        <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+      <section
+        onScroll={scrollRooms}
+        ref={viewportRef}
+        className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto px-4 pb-5"
+      >
+        <div className="grid grid-cols-3 gap-x-3 gap-y-6">
           {videoList?.map(
             (video, index) =>
               !!video && (
@@ -77,6 +81,12 @@ function RouteComponent() {
                 </div>
               ),
           )}
+          {isFetchingNextPage &&
+            Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="flex-shrink-0">
+                {renderVideoCardSkeleton(index)}
+              </div>
+            ))}
         </div>
       </section>
     </>

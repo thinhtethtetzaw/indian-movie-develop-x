@@ -388,15 +388,15 @@ function RouteComponent() {
 
   const renderVideoGrid = useCallback(
     () => (
-      <div className="mt-5 px-4 pb-32">
+      <div className="mt-5 px-4">
         {isVideoListLoading ? (
-          <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+          <div className="grid grid-cols-3 gap-x-3 gap-y-6">
             {renderVideoSkeletons()}
           </div>
         ) : (
           <>
             {bookmarkedVideos && bookmarkedVideos.length > 0 ? (
-              <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+              <div className="grid grid-cols-3 gap-x-3 gap-y-6">
                 <AnimatePresence mode="popLayout">
                   {bookmarkedVideos?.map((video, index) =>
                     renderVideoCard(video, index),
@@ -444,7 +444,7 @@ function RouteComponent() {
         }
       />
 
-      <div className="mt-5">
+      <div className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto py-5">
         {renderTags()}
         {renderVideoGrid()}
       </div>

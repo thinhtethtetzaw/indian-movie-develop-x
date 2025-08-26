@@ -36,7 +36,8 @@ function Sorting() {
   };
 
   const handleSelectCategory = (categoryId: string) => {
-    setSelectedClass(categoryId);
+    if (!selectedClass) setSelectedClass(categoryId);
+    else setSelectedClass("");
     setTimeout(() => {
       handleClose();
     }, 300);
