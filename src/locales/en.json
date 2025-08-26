@@ -2,7 +2,8 @@
   "common": {
     "viewAll": "View All",
     "viewMore": "View More",
-    "noData": "No data"
+    "noData": "No data",
+    "continueWatching": "Continue Watching"
   },
   "layout": {
     "navbar": {

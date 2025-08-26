@@ -10,6 +10,7 @@ import RelatedMovies from "@/components/page/videos/RelatedMovies";
 import VideoInfo from "@/components/page/videos/VideoInfo";
 import VideoPlayer from "@/components/page/videos/VideoPlayer";
 import { Button } from "@/components/ui/button";
+import { PLACEHOLDER_IMAGE_HORIZONTAL } from "@/constants/common";
 import { db } from "@/lib/db";
 import { groupEpisodes } from "@/lib/processEpisodes";
 import type { VideoResponse } from "@/types/api-schema/response";
@@ -119,8 +120,9 @@ function RouteComponent() {
       {!isLoadingVideoDetail ? (
         <div className="space-y-6">
           <VideoPlayer
+            id={videoDetail?.vod_id ?? ""}
             url={currentEpisodeUrl}
-            poster={videoDetail?.vod_pic ?? ""}
+            poster={videoDetail?.vod_pic ?? PLACEHOLDER_IMAGE_HORIZONTAL}
           />
 
           {videoDetail && (

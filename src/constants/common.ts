@@ -15,3 +15,8 @@ export enum LANGUAGES_API_HEADER {
   ko = "ko",
   ja = "ja",
 }
+
+export const PLACEHOLDER_IMAGE_VERTICAL =
+  "https://placehold.co/300x450/2B2B2B/FFF?text=No+Preview";
+export const PLACEHOLDER_IMAGE_HORIZONTAL =
+  "https://placehold.co/1600x900/2B2B2B/FFF?text=No+Preview";

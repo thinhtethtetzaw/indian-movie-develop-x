@@ -4,6 +4,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { PLACEHOLDER_IMAGE_HORIZONTAL } from "@/constants/common";
 import type { CarouselVideoResponse } from "@/types/api-schema/response";
 import { useEffect, useState } from "react";
 
@@ -61,8 +62,7 @@ const SliderCarousel = ({ videos, onVideoClick }: SliderCarouselProps) => {
                   }`}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src =
-                      "https://via.placeholder.com/800x400/1f2937/ffffff?text=No+Image";
+                    target.src = PLACEHOLDER_IMAGE_HORIZONTAL;
                   }}
                 />
               </div>

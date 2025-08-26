@@ -1,21 +1,27 @@
 import Backward from "@/assets/svgs/icon-backward.svg?react";
 import Forward from "@/assets/svgs/icon-forward.svg?react";
+import { db } from "@/lib/db";
 import Artplayer from "artplayer";
+import { useLiveQuery } from "dexie-react-hooks";
 import { Pause, Play } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 
 interface VideoPlayerProps {
-  url?: string;
-  poster?: string;
+  id: string;
+  url: string;
+  poster: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
   const playerRef = useRef<HTMLDivElement>(null);
   const artRef = useRef<Artplayer | null>(null);
 
+  const curretWishlist = useLiveQuery(() => db.watchList.get(id));
+
   useEffect(() => {
     if (!playerRef.current || !url) return;
+
     artRef.current = new Artplayer({
       container: playerRef.current,
       url,
@@ -32,6 +38,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
       plugins: [
         function centerControls(art: Artplayer) {
           art.on("ready", () => {
+            // art.currentTime = curretWishlist?.play_head_in_sec ?? 0;
+
             // Create center control overlay
             const centerControls = document.createElement("div");
             centerControls.className = "art-center-controls";
@@ -144,11 +152,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
             art.template.$player.addEventListener("mousemove", showControls);
             art.template.$player.addEventListener("mouseleave", hideControls);
 
-            art.on("destroy", () => {
-              backwardRoot.unmount();
-              playPauseRoot.unmount();
-              forwardRoot.unmount();
-              clearTimeout(hideTimeout);
+            art.on("destroy", async () => {
+              // Use the art parameter directly instead of artRef.current
+              const currentTime = art.currentTime || 0;
+              console.log(art.currentTime);
+              db.watchList.update(id, {
+                play_head_in_sec: currentTime,
+                created_at: new Date(),
+              });
+
+              setTimeout(() => {
+                backwardRoot.unmount();
+                playPauseRoot.unmount();
+                forwardRoot.unmount();
+
+                clearTimeout(hideTimeout);
+              }, 0);
             });
           });
         },
@@ -159,7 +178,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, poster }) => {
       artRef.current?.destroy();
       artRef.current = null;
     };
-  }, [url, poster]);
+  }, [id, url, poster, curretWishlist]);
 
   return (
     <div
