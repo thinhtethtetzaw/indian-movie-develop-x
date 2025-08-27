@@ -10,11 +10,12 @@ import {
   SearchSuggestions,
 } from "@/components/page/search";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import { db } from "@/lib/db";
 import type { SearchSuggestionResponse } from "@/types/api-schema/response";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { parseAsString, useQueryState, useQueryStates } from "nuqs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/search")({
   component: RouteComponent,
@@ -28,16 +29,6 @@ export const Route = createFileRoute("/search")({
 });
 
 function RouteComponent() {
-  const [recentlySearched, setRecentlySearched] = useState([
-    "Havana",
-    "Archon",
-    "Novaria",
-    "Angela",
-    "The Dark Knight",
-    "Inception",
-    "Interstellar",
-    "The Matrix",
-  ]);
   const [searchTerm, setSearchTerm] = useQueryState(
     "q",
     parseAsString.withDefault(""),
@@ -74,17 +65,24 @@ function RouteComponent() {
     setSearchTerm(item);
     setSubmittedSearchTerm(item);
   };
-
-  const handleClearRecent = () => {
-    setTimeout(() => {
-      setRecentlySearched([]);
-    }, 300);
-  };
-
-  const handleSuggestionClick = (suggestion: SearchSuggestionResponse) => {
+  const handleSuggestionClick = async (
+    suggestion: SearchSuggestionResponse,
+  ) => {
     const suggestionText = suggestion.text || "";
     setSearchTerm(suggestionText);
     setSubmittedSearchTerm(suggestionText);
+
+    const recentSearchCount = db.recentSearch.count();
+    try {
+      if ((await recentSearchCount) < 10) {
+        await db.recentSearch.add({
+          search: suggestionText,
+          created_at: new Date(),
+        });
+      }
+    } catch (error) {
+      console.error("Failed to toggle bookmark:", error);
+    }
   };
 
   const handleSearchSubmit = (term: string) => {
@@ -148,9 +146,7 @@ function RouteComponent() {
           {!searchTerm && (
             <RecentSearch
               key="recent-search"
-              recentlySearched={recentlySearched}
               onItemClick={handleRecentItemClick}
-              onClearRecent={handleClearRecent}
             />
           )}
 

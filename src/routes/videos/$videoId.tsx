@@ -41,6 +41,8 @@ function RouteComponent() {
     parseAsString.withDefault(""),
   );
   const [currentEpURL, setCurrentEpURL] = useState("");
+  const [currentPlayhead, setCurrentPlayhead] = useState(0);
+  const [isIndexDbLoading, setIndexDbLoading] = useState(true);
 
   const { videoDetail, isLoading: isLoadingVideoDetail } = useGetVideoDetail({
     vodId: videoId,
@@ -71,6 +73,43 @@ function RouteComponent() {
     [groupedEpisodes],
   );
 
+  function handleWatchList() {
+    // Check if entry exists with the same id and ep_id
+    db.watchList
+      .where("id")
+      .equals(videoId || "")
+      .filter((item) => item.ep_id === activeEpisode)
+      .first()
+      .then((existingEntry) => {
+        if (!existingEntry) {
+          // Only add if no existing entry found
+          const newEntry = {
+            id: videoId || "",
+            ep_id: activeEpisode,
+            play_head_in_sec: 0,
+            created_at: new Date(),
+          };
+
+          db.watchList
+            .add(newEntry)
+            .then((id) => {
+              console.log("Successfully added to watchlist with id:", id);
+            })
+            .catch((error) => {
+              console.error("Failed to add to watchlist:", error);
+            });
+        } else {
+          setCurrentPlayhead(existingEntry.play_head_in_sec);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking existing entry:", error);
+      })
+      .finally(() => {
+        setIndexDbLoading(false);
+      });
+  }
+
   // Set initial episode when video detail loads
   useEffect(() => {
     if (!videoDetail || groupedEpisodes.length === 0) return;
@@ -87,6 +126,8 @@ function RouteComponent() {
       const episodeURL = findEpisodeURL(activeEpisode);
       setCurrentEpURL(episodeURL);
     }
+
+    handleWatchList();
   }, [
     videoDetail,
     groupedEpisodes,
@@ -113,7 +154,7 @@ function RouteComponent() {
 
       try {
         if (!isExistingBookmark) {
-          await db.bookmarks.add({ id: videoId || "" });
+          await db.bookmarks.add({ id: videoId || "", created_at: new Date() });
         } else {
           await db.bookmarks.delete(videoId || "");
         }
@@ -196,7 +237,7 @@ function RouteComponent() {
     );
   };
 
-  if (isLoadingVideoDetail || !currentEpURL) {
+  if (isLoadingVideoDetail || !currentEpURL || isIndexDbLoading) {
     return (
       <PageTransition direction="right">
         <div className="h-[calc(100vh-var(--nav-header-height))]">
@@ -219,6 +260,7 @@ function RouteComponent() {
           key={`${videoDetail?.vod_id}-${currentEpURL}`}
           id={videoDetail?.vod_id ?? ""}
           url={currentEpURL}
+          currentPlayhead={currentPlayhead}
           poster={videoDetail?.vod_pic ?? PLACEHOLDER_IMAGE_HORIZONTAL}
         />
         {renderVideoContent()}

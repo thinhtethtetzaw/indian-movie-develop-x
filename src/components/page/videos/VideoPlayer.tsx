@@ -1,8 +1,6 @@
 import Backward from "@/assets/svgs/icon-backward.svg?react";
 import Forward from "@/assets/svgs/icon-forward.svg?react";
-import { db } from "@/lib/db";
 import Artplayer from "artplayer";
-import { useLiveQuery } from "dexie-react-hooks";
 import Hls from "hls.js";
 import { Pause, Play } from "lucide-react";
 import React, { useEffect, useRef } from "react";
@@ -11,15 +9,19 @@ import { createRoot } from "react-dom/client";
 interface VideoPlayerProps {
   id: string;
   url: string;
+  currentPlayhead: number;
   poster: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  id,
+  url,
+  currentPlayhead,
+  poster,
+}) => {
   const playerRef = useRef<HTMLDivElement>(null);
   const artRef = useRef<Artplayer | null>(null);
   const hlsRef = useRef<Hls | null>(null);
-
-  const currentWishlist = useLiveQuery(() => db.watchList.get(id));
 
   // Helper function to create HLS configuration
   const createHLSConfig = (baseConfig: any) => ({
@@ -70,9 +72,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
   const createCenterControlsPlugin = () => {
     return function centerControls(art: Artplayer) {
       art.on("ready", () => {
-        // Set initial time if available
-        if (currentWishlist?.play_head_in_sec) {
-          art.currentTime = currentWishlist.play_head_in_sec;
+        // Set initial time if available - prioritize currentPlayhead prop over database value
+        if (currentPlayhead > 0) {
+          art.currentTime = currentPlayhead;
         }
 
         // Create center control overlay
@@ -123,12 +125,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
 
         // Cleanup on destroy
         art.on("destroy", async () => {
-          const currentTime = art.currentTime || 0;
-          await db.watchList.update(id, {
-            play_head_in_sec: currentTime,
-            created_at: new Date(),
-          });
-
           setTimeout(() => {
             backwardRoot.unmount();
             playPauseRoot.unmount();
@@ -231,7 +227,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
 
   // Force destroy existing player and clean up all resources
   const destroyPlayer = () => {
-    console.log("Force destroying player and cleaning up resources");
+    const currentTime = artRef.current?.currentTime || 0;
+    console.log(
+      "Force destroying player and cleaning up resources",
+      currentTime,
+    );
 
     // Stop and pause the video element directly
     if (playerRef.current) {

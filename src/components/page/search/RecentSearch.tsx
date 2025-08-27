@@ -1,25 +1,52 @@
 import TrashIcon from "@/assets/svgs/icon-trash.svg?react";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { useLiveQuery } from "dexie-react-hooks";
 import { t } from "i18next";
 import { motion } from "motion/react";
+import { useState } from "react";
 
 interface RecentSearchProps {
-  recentlySearched: string[];
   onItemClick: (item: string) => void;
-  onClearRecent: () => void;
 }
 
-export function RecentSearch({
-  recentlySearched,
-  onItemClick,
-  onClearRecent,
-}: RecentSearchProps) {
-  if (recentlySearched.length === 0) return null;
+export function RecentSearch({ onItemClick }: RecentSearchProps) {
+  // Data fetching
+  const recentlySearched =
+    useLiveQuery(() =>
+      db.recentSearch
+        .orderBy("created_at")
+        .reverse()
+        .toArray()
+        .catch((err) => {
+          console.error("Dexie query error:", err);
+          return [];
+        }),
+    ) ?? [];
+
+  // Add state to control animation
+  const [isClearing, setIsClearing] = useState(false);
+
+  if (recentlySearched?.length === 0) return null;
+
+  async function handleClearRecent() {
+    setIsClearing(true);
+
+    // Wait for exit animation to complete before clearing data
+    setTimeout(async () => {
+      await db.recentSearch.clear();
+      setIsClearing(false);
+    }, 300); // Match the animation duration
+  }
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{
+        opacity: isClearing ? 0 : 1,
+        y: isClearing ? -20 : 0,
+      }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3, delay: 0.1 }}
     >
       <div>
@@ -29,7 +56,7 @@ export function RecentSearch({
               {t("pages.search.recent")}
             </p>
 
-            <Button variant="ghost" size="icon" onClick={onClearRecent}>
+            <Button variant="ghost" size="icon" onClick={handleClearRecent}>
               <TrashIcon />
             </Button>
           </div>
@@ -44,11 +71,11 @@ export function RecentSearch({
                   delay: Number(index) * 0.07,
                 }}
                 layout
-                key={item || index}
+                key={item.search || index}
                 className="flex-shrink-0 cursor-pointer rounded-md bg-white/10 px-4 py-2.5 text-sm font-medium whitespace-nowrap text-gray-300 transition-colors hover:bg-white/20"
-                onClick={() => onItemClick(item)}
+                onClick={() => onItemClick(item.search)}
               >
-                {item}
+                {item.search}
               </motion.div>
             ))}
           </div>

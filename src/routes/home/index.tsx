@@ -20,7 +20,7 @@ import type {
 } from "@/types/api-schema/response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
-import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { parseAsString, useQueryStates } from "nuqs";
 import React, { useCallback, useMemo } from "react";
@@ -216,9 +216,11 @@ const ListSection = ({
 const TopicSection = ({
   item,
   onVideoClick,
+  navigate,
 }: {
   item: any & NavigatorItem;
   onVideoClick: (video: VideoResponse) => void;
+  navigate: any;
 }) => (
   <section className="space-y-4 px-4">
     <h2 className="text-forground font-semibold">{item.title}</h2>
@@ -232,9 +234,19 @@ const TopicSection = ({
     <Button
       variant="default"
       className="text-forground w-full bg-white/10 py-6 hover:bg-white/20"
+      onClick={() => {
+        if ("navigator" in item && item.navigator) {
+          navigate({
+            to: "/home/navigator/$navigatorId",
+            params: {
+              navigatorId: item.navigator.id ?? "",
+            },
+          });
+        }
+      }}
     >
       {"navigator" in item && item.navigator?.title}
-      <ChevronDownIcon />
+      <ChevronRightIcon />
     </Button>
   </section>
 );
@@ -376,7 +388,11 @@ function RouteComponent() {
           )}
 
           {item.type === "topic" && hasList && (
-            <TopicSection item={item} onVideoClick={handleVideoClick} />
+            <TopicSection
+              item={item}
+              onVideoClick={handleVideoClick}
+              navigate={navigate}
+            />
           )}
         </React.Fragment>
       );
