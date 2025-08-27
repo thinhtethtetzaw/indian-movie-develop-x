@@ -1,6 +1,7 @@
 import { useGetConfigList } from "@/apis/app/querygetConfig";
 import Info from "@/assets/svgs/icon-info.svg?react";
 import Notification from "@/assets/svgs/icon-notification.svg?react";
+import AdsList from "@/components/common/ads/AdsList";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import Loading from "@/components/common/Loading";
 import { LanguageDrawer } from "@/components/settings/LanguageDrawer";
@@ -30,6 +31,7 @@ function RouteComponent() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
+            <AdsList currentPage="settings" />
             <div className="space-y-4">
               <motion.div
                 className="rounded-2xl bg-white/12"
