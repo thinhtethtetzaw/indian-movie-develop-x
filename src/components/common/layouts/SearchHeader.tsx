@@ -45,8 +45,11 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
       "q",
       parseAsString.withDefault(""),
     );
+    const [, setSubmittedSearchTerm] = useQueryState(
+      "isSearched",
+      parseAsString.withDefault(""),
+    );
     const [inputValue, setInputValue] = useState(searchTerm || "");
-    const [isResultLoading, setIsResultLoading] = useState(false);
     const debouncedSearchTerm = useDebounce(inputValue, 500);
 
     // Expose focus method to parent component
@@ -83,18 +86,6 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
       setSearchTerm(debouncedSearchTerm || null);
     }, [debouncedSearchTerm, setSearchTerm]);
 
-    // Trigger search when debounced value changes
-    useEffect(() => {
-      if (debouncedSearchTerm) {
-        setIsResultLoading(true);
-        setTimeout(() => {
-          setIsResultLoading(false);
-        }, 500);
-      } else {
-        setIsResultLoading(false);
-      }
-    }, [debouncedSearchTerm]);
-
     // Handle search input change
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -113,7 +104,8 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
     const handleClearSearch = useCallback(() => {
       setInputValue("");
       setSearchTerm(null);
-    }, [setSearchTerm]);
+      setSubmittedSearchTerm(null);
+    }, [setSearchTerm, setSubmittedSearchTerm]);
 
     // Handle click on the search container
     const handleContainerClick = () => {
@@ -160,6 +152,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
               isClickable && "cursor-pointer",
             )}
             readOnly={isClickable}
+            autoComplete="off"
           />
           <SearchIcon className="absolute top-1/2 left-4 size-5 -translate-y-1/2" />
           {searchTerm && !isClickable && (

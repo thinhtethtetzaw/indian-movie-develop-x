@@ -51,16 +51,19 @@ function RouteComponent() {
     type: parseAsString.withDefault("0"),
   });
 
-  const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useQueryState(
+    "isSearched",
+    parseAsString.withDefault(""),
+  );
 
   const shouldShowSearchResults =
     submittedSearchTerm && searchTerm === submittedSearchTerm;
 
   useEffect(() => {
     if (searchTerm !== submittedSearchTerm) {
-      setSubmittedSearchTerm("");
+      setSubmittedSearchTerm(null);
     }
-  }, [searchTerm, submittedSearchTerm]);
+  }, [searchTerm, submittedSearchTerm, setSubmittedSearchTerm]);
 
   const { suggestions, isLoading: isLoadingSuggestions } =
     useGetSearchSuggestion({
@@ -99,7 +102,7 @@ function RouteComponent() {
     isFetchingNextPage,
   } = useGetSearchInfinite({
     params: {
-      q: submittedSearchTerm,
+      q: submittedSearchTerm || "",
       year: filters.year,
       sort_order: filters.sort_order,
       class: filters.class,
