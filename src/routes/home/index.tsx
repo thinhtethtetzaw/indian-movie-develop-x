@@ -5,9 +5,9 @@ import SearchHeader from "@/components/common/layouts/SearchHeader";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import {
+  WatchListSection,
   WatchListSectionSkeleton,
-  WishListSection,
-} from "@/components/common/WishlistSection";
+} from "@/components/common/WatchlistSection";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
 import { Filter } from "@/components/page/search";
 import { Button } from "@/components/ui/button";
@@ -358,7 +358,7 @@ function RouteComponent() {
                 <WatchListSectionSkeleton />
               ) : (
                 watchListData.length > 0 && (
-                  <WishListSection
+                  <WatchListSection
                     watchListFromIndexDB={watchListFromIndexDB}
                     watchListVideos={watchListVideos ?? []}
                   />

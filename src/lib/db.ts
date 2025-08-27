@@ -25,7 +25,7 @@ const db = new Dexie("IndiaMovie") as Dexie & {
 // Schema declaration:
 db.version(1).stores({
   bookmarks: "++id", // primary key "id"
-  watchList: "++id, play_head_in_sec, created_at", // primary key "id" (not auto-incrementing)
+  watchList: "++id, epId, play_head_in_sec, created_at", // primary key "id" (not auto-incrementing)
 });
 
 export { db };

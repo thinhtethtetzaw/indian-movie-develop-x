@@ -10,7 +10,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export const WISHLIST_ANIMATION_DELAY_MULTIPLIER = 0.05;
 
-function WishListSection({
+function WatchListSection({
   watchListFromIndexDB,
   watchListVideos,
 }: {
@@ -115,4 +115,4 @@ const WatchListSectionSkeleton = () => {
   );
 };
 
-export { WatchListSectionSkeleton, WishListSection };
+export { WatchListSection, WatchListSectionSkeleton };
