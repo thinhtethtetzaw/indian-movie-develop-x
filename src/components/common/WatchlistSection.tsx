@@ -38,12 +38,12 @@ function WatchListSection({
       </h2>
       <div className="scrollbar-hide flex gap-3 overflow-x-auto">
         {watchListVideos?.map((video, index) => {
-          const totalVideoTime = Number(video?.vod_time ?? 0);
-          const currentVideoTime = Number(
-            watchListFromIndexDB.find(
-              (watchList) => watchList.id === video.vod_id,
-            )?.play_head_in_sec ?? 0,
+          const currentVideo = watchListFromIndexDB.find(
+            (watchList) => watchList.id === video.vod_id,
           );
+          const totalVideoTime = currentVideo?.duration ?? 0;
+          const currentVideoTime = currentVideo?.play_head_in_sec ?? 0;
+
           const progress = () =>
             Number(((currentVideoTime / totalVideoTime) * 100).toFixed(2));
 

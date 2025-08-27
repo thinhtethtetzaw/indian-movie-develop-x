@@ -2,7 +2,6 @@ import { useGetVideoRecommend } from "@/apis/app/queryGetDetailRecommendList";
 import { useGetVideoDetail } from "@/apis/app/queryGetVideoDetail";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import Loading from "@/components/common/Loading";
-import PageTransition from "@/components/common/PageTransition";
 import EpisodeAccordion from "@/components/page/videos/EpisodeAccordion";
 import GenresList from "@/components/page/videos/GenresList";
 import Overview from "@/components/page/videos/Overview";
@@ -40,9 +39,9 @@ function RouteComponent() {
     "episode",
     parseAsString.withDefault(""),
   );
-  const [currentEpURL, setCurrentEpURL] = useState("");
-  const [currentPlayhead, setCurrentPlayhead] = useState(0);
-  const [isIndexDbLoading, setIndexDbLoading] = useState(true);
+  const [currentEpURL, setCurrentEpURL] = useState<string>("");
+  const [currentPlayhead, setCurrentPlayhead] = useState<number>(0);
+  const [isIndexDbLoading, setIndexDbLoading] = useState<boolean>(true);
 
   const { videoDetail, isLoading: isLoadingVideoDetail } = useGetVideoDetail({
     vodId: videoId,
@@ -82,12 +81,14 @@ function RouteComponent() {
       .first()
       .then((existingEntry) => {
         if (!existingEntry) {
+          if (!activeEpisode) return;
           // Only add if no existing entry found
           const newEntry = {
             id: videoId || "",
             ep_id: activeEpisode,
             play_head_in_sec: 0,
-            created_at: new Date(),
+            updated_at: new Date(),
+            duration: 0,
           };
 
           db.watchList
@@ -99,6 +100,7 @@ function RouteComponent() {
               console.error("Failed to add to watchlist:", error);
             });
         } else {
+          console.log("hi there");
           setCurrentPlayhead(existingEntry.play_head_in_sec);
         }
       })
@@ -126,8 +128,6 @@ function RouteComponent() {
       const episodeURL = findEpisodeURL(activeEpisode);
       setCurrentEpURL(episodeURL);
     }
-
-    handleWatchList();
   }, [
     videoDetail,
     groupedEpisodes,
@@ -135,6 +135,12 @@ function RouteComponent() {
     setActiveEpisode,
     findEpisodeURL,
   ]);
+
+  useEffect(() => {
+    if (activeEpisode && videoId) {
+      handleWatchList();
+    }
+  }, [activeEpisode, videoId]);
 
   const handleVideoClick = useCallback(
     (video: VideoResponse) => {
@@ -154,7 +160,7 @@ function RouteComponent() {
 
       try {
         if (!isExistingBookmark) {
-          await db.bookmarks.add({ id: videoId || "", created_at: new Date() });
+          await db.bookmarks.add({ id: videoId || "", updated_at: new Date() });
         } else {
           await db.bookmarks.delete(videoId || "");
         }
@@ -239,16 +245,26 @@ function RouteComponent() {
 
   if (isLoadingVideoDetail || !currentEpURL || isIndexDbLoading) {
     return (
-      <PageTransition direction="right">
-        <div className="h-[calc(100vh-var(--nav-header-height))]">
-          <Loading />
-        </div>
-      </PageTransition>
+      <div className="h-[calc(100vh-var(--nav-header-height))]">
+        <Loading />
+      </div>
     );
   }
 
   return (
-    <PageTransition direction="right">
+    <motion.div
+      key={videoId}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        duration: 0.4,
+      }}
+      className="h-full"
+    >
       <NavHeader
         backRoute="back"
         title={t("pages.movies.movieDetails.title")}
@@ -265,6 +281,6 @@ function RouteComponent() {
         />
         {renderVideoContent()}
       </div>
-    </PageTransition>
+    </motion.div>
   );
 }

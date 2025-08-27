@@ -281,7 +281,7 @@ function RouteComponent() {
   // Data fetching
   const watchListFromIndexDB = useLiveQuery(() =>
     db.watchList
-      .orderBy("created_at")
+      .orderBy("updated_at")
       .reverse()
       .toArray()
       .catch((err) => {
@@ -308,13 +308,11 @@ function RouteComponent() {
   const { allAds } = useGetAds({
     uniqueLabel: "home_page_ads",
   });
-
-  console.log(allAds);
   // Computed values
   const watchListVideos = useMemo(
     () =>
       videoList?.filter((video) =>
-        watchListData.some((bookmark) => bookmark.id === video.vod_id),
+        watchListData.some((watchlist) => watchlist.id === video.vod_id),
       ),
     [watchListData, videoList],
   );

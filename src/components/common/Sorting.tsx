@@ -21,18 +21,10 @@ function Sorting() {
 
   const handleSortClick = () => {
     setIsOpen(true);
-    const scrollContainer = document.getElementById("scroll-container");
-    if (scrollContainer) {
-      scrollContainer.style.overflow = "hidden";
-    }
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    const scrollContainer = document.getElementById("scroll-container");
-    if (scrollContainer) {
-      scrollContainer.style.overflow = "";
-    }
   };
 
   const handleSelectCategory = (categoryId: string) => {

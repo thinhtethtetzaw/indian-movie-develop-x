@@ -1,8 +1,10 @@
 import Backward from "@/assets/svgs/icon-backward.svg?react";
 import Forward from "@/assets/svgs/icon-forward.svg?react";
+import { db } from "@/lib/db";
 import Artplayer from "artplayer";
 import Hls from "hls.js";
 import { Pause, Play } from "lucide-react";
+import { parseAsString, useQueryState } from "nuqs";
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -19,6 +21,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   currentPlayhead,
   poster,
 }) => {
+  const [activeEpisode] = useQueryState(
+    "episode",
+    parseAsString.withDefault(""),
+  );
+
   const playerRef = useRef<HTMLDivElement>(null);
   const artRef = useRef<Artplayer | null>(null);
   const hlsRef = useRef<Hls | null>(null);
@@ -220,12 +227,23 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   // Force destroy existing player and clean up all resources
-  const destroyPlayer = () => {
+  const destroyPlayer = async () => {
     const currentTime = artRef.current?.currentTime || 0;
-    console.log(
-      "Force destroying player and cleaning up resources",
-      currentTime,
-    );
+    const duration = artRef.current?.duration || 0;
+
+    if (currentTime > 0) {
+      await db.watchList
+        .put({
+          id: id,
+          ep_id: activeEpisode,
+          play_head_in_sec: Math.floor(currentTime),
+          duration: Math.floor(duration),
+          updated_at: new Date(),
+        })
+        .catch((error) => {
+          console.error("Failed to update watchlist:", error);
+        });
+    }
 
     // Stop and pause the video element directly
     if (playerRef.current) {

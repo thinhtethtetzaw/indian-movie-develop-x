@@ -77,7 +77,7 @@ function RouteComponent() {
       if ((await recentSearchCount) < 10) {
         await db.recentSearch.add({
           search: suggestionText,
-          created_at: new Date(),
+          updated_at: new Date(),
         });
       }
     } catch (error) {
