@@ -9,3 +9,4 @@ export type VideoResponse = components["schemas"]["Video"];
 export type SearchSuggestionResponse =
   components["schemas"]["SearchSuggestion"];
 export type SearchResultResponse = components["schemas"]["SearchResult"];
+export type SingleAds = components["schemas"]["Advert"];

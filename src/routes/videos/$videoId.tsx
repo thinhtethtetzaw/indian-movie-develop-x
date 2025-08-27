@@ -1,5 +1,7 @@
+import { useGetAds } from "@/apis/app/queryGetAds";
 import { useGetVideoRecommend } from "@/apis/app/queryGetDetailRecommendList";
 import { useGetVideoDetail } from "@/apis/app/queryGetVideoDetail";
+import { AdsSection } from "@/components/common/AdsSection";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import Loading from "@/components/common/Loading";
 import EpisodeAccordion from "@/components/page/videos/EpisodeAccordion";
@@ -243,7 +245,17 @@ function RouteComponent() {
     );
   };
 
-  if (isLoadingVideoDetail || !currentEpURL || isIndexDbLoading) {
+  // Ads list
+  const { allAds, isLoading: isAdsLoading } = useGetAds({
+    uniqueLabel: "detail_page_ads",
+  });
+
+  if (
+    isLoadingVideoDetail ||
+    !currentEpURL ||
+    isIndexDbLoading ||
+    isAdsLoading
+  ) {
     return (
       <div className="h-[calc(100vh-var(--nav-header-height))]">
         <Loading />
@@ -279,6 +291,16 @@ function RouteComponent() {
           currentPlayhead={currentPlayhead}
           poster={videoDetail?.vod_pic ?? PLACEHOLDER_IMAGE_HORIZONTAL}
         />
+        {allAds.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="px-4"
+          >
+            <AdsSection allAds={allAds} />
+          </motion.div>
+        )}
         {renderVideoContent()}
       </div>
     </motion.div>

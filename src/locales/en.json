@@ -3,7 +3,8 @@
     "viewAll": "View All",
     "viewMore": "View More",
     "noData": "No data",
-    "continueWatching": "Continue Watching"
+    "continueWatching": "Continue Watching",
+    "popularApps": "Popular Apps"
   },
   "layout": {
     "navbar": {

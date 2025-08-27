@@ -4,6 +4,7 @@ import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
 import { useGetSearchInfinite } from "@/apis/app/queryGetSearch";
 import { useGetVideoListByIds } from "@/apis/app/queryGetVideoListByIds";
 import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
+import { AdsSection, AdsSectionSkeleton } from "@/components/common/AdsSection";
 import { EmptyState } from "@/components/common/EmptyState";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
 import Loading from "@/components/common/Loading";
@@ -310,9 +311,10 @@ function RouteComponent() {
 
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
 
-  const { allAds } = useGetAds({
+  const { allAds, isLoading: isAdsLoading } = useGetAds({
     uniqueLabel: "home_page_ads",
   });
+
   // Computed values
   const watchListVideos = useMemo(
     () =>
@@ -375,6 +377,17 @@ function RouteComponent() {
 
           {index === 0 && (
             <>
+              {isAdsLoading ? (
+                <>
+                  <AdsSectionSkeleton />
+                </>
+              ) : (
+                allAds.length > 0 && (
+                  <div className="px-4">
+                    <AdsSection allAds={allAds} />
+                  </div>
+                )
+              )}
               {isVideoListLoading || isIndexDBLoading ? (
                 <WatchListSectionSkeleton />
               ) : (
@@ -446,54 +459,65 @@ function RouteComponent() {
         onClick={handleSearchClick}
       />
       <div className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-var(--bottom-nav-height))] space-y-6 overflow-y-auto pb-5">
-        <CategoryTags
-          allTypes={allTypes}
-          isLoading={isCategoryListLoading}
-          searchState={searchState}
-          setSearchState={setSearchState}
-          renderTagSkeletons={renderTagSkeletons}
-        />
-
-        {searchState.type === "0" ? (
-          <div className="space-y-10">
-            {isRecommendListLoading ? (
-              <HomeSkeleton renderVideoCardSkeleton={renderVideoCardSkeleton} />
-            ) : (
-              homeRecommendList?.map(renderRecommendationItem)
-            )}
-          </div>
+        {isCategoryListLoading ||
+        isRecommendListLoading ||
+        isVideoListLoading ||
+        isAdsLoading ? (
+          <Loading />
         ) : (
-          <section
-            ref={viewportRef}
-            onScroll={scrollRooms}
-            className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-200px)] overflow-y-auto pb-5"
-          >
-            <FilterSection searchState={searchState} />
-            <AnimatePresence key={currentPage ?? 1} mode="popLayout">
-              {isLoadingSearch && (
-                <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
-                  <Loading />
-                </div>
-              )}
-              {!!searchResults && searchResults.length > 0 ? (
-                <div className="mt-5">
-                  <SearchResults
-                    key="search-results"
-                    searchResults={searchResults}
-                    isFetchingNextPage={isFetchingNextPage}
-                    isHomePage={true}
+          <>
+            <CategoryTags
+              allTypes={allTypes}
+              isLoading={isCategoryListLoading}
+              searchState={searchState}
+              setSearchState={setSearchState}
+              renderTagSkeletons={renderTagSkeletons}
+            />
+
+            {searchState.type === "0" ? (
+              <div className="space-y-10">
+                {isRecommendListLoading ? (
+                  <HomeSkeleton
+                    renderVideoCardSkeleton={renderVideoCardSkeleton}
                   />
-                </div>
-              ) : (
-                <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
-                  <EmptyState
-                    imageSrc={<SearchEmptyImage />}
-                    title="Search Result Not Found!"
-                  />
-                </div>
-              )}
-            </AnimatePresence>
-          </section>
+                ) : (
+                  homeRecommendList?.map(renderRecommendationItem)
+                )}
+              </div>
+            ) : (
+              <section
+                ref={viewportRef}
+                onScroll={scrollRooms}
+                className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-200px)] overflow-y-auto pb-5"
+              >
+                <FilterSection searchState={searchState} />
+                <AnimatePresence key={currentPage ?? 1} mode="popLayout">
+                  {isLoadingSearch && (
+                    <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
+                      <Loading />
+                    </div>
+                  )}
+                  {!!searchResults && searchResults.length > 0 ? (
+                    <div className="mt-5">
+                      <SearchResults
+                        key="search-results"
+                        searchResults={searchResults}
+                        isFetchingNextPage={isFetchingNextPage}
+                        isHomePage={true}
+                      />
+                    </div>
+                  ) : (
+                    <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
+                      <EmptyState
+                        imageSrc={<SearchEmptyImage />}
+                        title="Search Result Not Found!"
+                      />
+                    </div>
+                  )}
+                </AnimatePresence>
+              </section>
+            )}
+          </>
         )}
       </div>
     </>

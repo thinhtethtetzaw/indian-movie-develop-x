@@ -1,6 +1,7 @@
 import { COMMON_ANIMATION_CONFIG } from "@/config/animation";
 import { PLACEHOLDER_IMAGE_HORIZONTAL } from "@/constants/common";
 import type { WatchList } from "@/lib/db";
+import { cn } from "@/lib/utils";
 import type { VideoResponse } from "@/types/api-schema/response";
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
@@ -13,9 +14,11 @@ export const WISHLIST_ANIMATION_DELAY_MULTIPLIER = 0.05;
 function WatchListSection({
   watchListFromIndexDB,
   watchListVideos,
+  isIncludePaddings = true,
 }: {
   watchListFromIndexDB: WatchList[];
   watchListVideos: VideoResponse[];
+  isIncludePaddings?: boolean;
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -33,7 +36,11 @@ function WatchListSection({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-forground px-4 font-semibold">
+      <h2
+        className={cn("text-forground font-semibold", {
+          "px-4": isIncludePaddings,
+        })}
+      >
         {t("common.continueWatching")}
       </h2>
       <div className="scrollbar-hide flex gap-3 overflow-x-auto">
@@ -51,7 +58,9 @@ function WatchListSection({
             <div
               key={video.vod_id}
               onClick={() => handleVideoCLick(video)}
-              className="flex-shrink-0 cursor-pointer first:pl-4 last:pr-4"
+              className={cn("flex-shrink-0 cursor-pointer", {
+                "first:pl-4 last:pr-4": isIncludePaddings,
+              })}
             >
               <motion.div
                 key={index}

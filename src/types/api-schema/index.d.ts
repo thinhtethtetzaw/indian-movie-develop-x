@@ -64,7 +64,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Get videos by multiple IDs */
+        /**
+         * Get videos by multiple IDs with optional type filtering
+         * @description Retrieve multiple videos by their encoded IDs. Optionally filter by type_id to get only videos from a specific category. Results are cached for 2 hours for improved performance.
+         */
         post: operations["bd5c37c490c8ae400a01bdf3f35fd814"];
         delete?: never;
         options?: never;
@@ -169,6 +172,26 @@ export interface paths {
         };
         /** Get list of all video categories */
         get: operations["cdce6778c48f7258ecd8a150f3b91d1f"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/adverts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get adverts by location and channel
+         * @description Retrieve active advertisements based on location unique label and channel
+         */
+        get: operations["6de27ce83210cbf79da83f113a87da9d"];
         put?: never;
         post?: never;
         delete?: never;
@@ -687,6 +710,11 @@ export interface components {
              *     ]
              */
             video_ids?: string[];
+            /**
+             * @description Optional type ID to filter videos by category
+             * @example 1
+             */
+            type_id?: number | null;
         };
         /**
          * Topic Videos Response
@@ -799,6 +827,50 @@ export interface components {
             /** @description Validation errors if any */
             errors?: Record<string, never>;
         };
+        /**
+         * Advert Model
+         * @description Advertisement information model
+         */
+        Advert: {
+            /**
+             * @description Unique advert identifier
+             * @example 007047b6-b5ee-4ec4-bb71-a3591af99cf2
+             */
+            id?: string;
+            /**
+             * @description Advert title/remarks
+             * @example 开元棋牌
+             */
+            title?: string;
+            /**
+             * @description Advert image URL
+             * @example https://example.com/advert.jpg
+             */
+            image?: string | null;
+            /**
+             * @description Advert click-through URL
+             * @example https://example.com/advert-link
+             */
+            url?: string | null;
+        };
+        /**
+         * Advert List Response
+         * @description Response model for advert list endpoint
+         */
+        AdvertList: {
+            /**
+             * @description Response status
+             * @example true
+             */
+            status?: boolean;
+            /**
+             * @description Response message
+             * @example Success
+             */
+            message?: string;
+            /** @description List of adverts */
+            data?: components["schemas"]["Advert"][];
+        };
     };
     responses: never;
     parameters: never;
@@ -886,17 +958,33 @@ export interface operations {
     bd5c37c490c8ae400a01bdf3f35fd814: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
             path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["VideoIdsRequest"];
+                "application/json": {
+                    /**
+                     * @description List of encoded video IDs
+                     * @example [
+                     *       "MS1xx411c7bz"
+                     *     ]
+                     */
+                    video_ids?: string[];
+                    /**
+                     * @description Optional filter by video type/category
+                     * @example 1
+                     */
+                    type_id?: number;
+                };
             };
         };
         responses: {
-            /** @description Successful response */
+            /** @description Successful response with filtered videos */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -907,6 +995,15 @@ export interface operations {
             };
             /** @description Bad request */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1101,6 +1198,49 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CategoryList"];
+                };
+            };
+        };
+    };
+    "6de27ce83210cbf79da83f113a87da9d": {
+        parameters: {
+            query: {
+                /** @description Unique label of the advert location (e.g., 'home_banner', 'sidebar') */
+                unique_label: string;
+                /** @description Channel identifier for the advert (e.g., 'web', 'mobile', 'app') */
+                channel: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response with list of adverts */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdvertList"];
+                };
+            };
+            /** @description Location not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
         };

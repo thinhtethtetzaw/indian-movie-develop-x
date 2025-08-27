@@ -1,6 +1,8 @@
+import { useGetAds } from "@/apis/app/queryGetAds";
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetVideoListByIds } from "@/apis/app/queryGetVideoListByIds";
 import BookmarksEmptyImage from "@/assets/svgs/image-bookmarks-empty.svg?react";
+import { AdsSection, AdsSectionSkeleton } from "@/components/common/AdsSection";
 import { EmptyState } from "@/components/common/EmptyState";
 import NavHeader from "@/components/common/layouts/NavHeader";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
@@ -101,6 +103,11 @@ function RouteComponent() {
   });
 
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
+
+  // Ads list
+  const { allAds, isLoading: isAdsLoading } = useGetAds({
+    uniqueLabel: "bookmark_page_ads",
+  });
 
   // Local state
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -388,7 +395,7 @@ function RouteComponent() {
 
   const renderVideoGrid = useCallback(
     () => (
-      <div className="mt-5 px-4">
+      <div className="px-4">
         {isVideoListLoading ? (
           <div className="grid grid-cols-3 gap-x-3 gap-y-6">
             {renderVideoSkeletons()}
@@ -408,7 +415,6 @@ function RouteComponent() {
                 imageSrc={<BookmarksEmptyImage className="size-33" />}
                 title={t("pages.bookmarks.emptyTitle")}
                 description={t("pages.bookmarks.emptyDescription")}
-                className="translate-y-1/2"
               />
             )}
           </>
@@ -446,6 +452,17 @@ function RouteComponent() {
 
       <div className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto py-5">
         {renderTags()}
+        {isAdsLoading ? (
+          <>
+            <AdsSectionSkeleton />
+          </>
+        ) : (
+          allAds.length > 0 && (
+            <div className="px-4">
+              <AdsSection allAds={allAds} />
+            </div>
+          )
+        )}
         {renderVideoGrid()}
       </div>
 

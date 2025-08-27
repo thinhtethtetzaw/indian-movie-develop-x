@@ -15,7 +15,7 @@ export function RecentSearch({ onItemClick }: RecentSearchProps) {
   const recentlySearched =
     useLiveQuery(() =>
       db.recentSearch
-        .orderBy("created_at")
+        .orderBy("updated_at")
         .reverse()
         .toArray()
         .catch((err) => {
@@ -41,12 +41,12 @@ export function RecentSearch({ onItemClick }: RecentSearchProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: -20 }}
       animate={{
         opacity: isClearing ? 0 : 1,
-        y: isClearing ? -20 : 0,
+        y: isClearing ? 20 : 0,
       }}
-      exit={{ opacity: 0, y: -20 }}
+      exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3, delay: 0.1 }}
     >
       <div>
@@ -64,13 +64,13 @@ export function RecentSearch({ onItemClick }: RecentSearchProps) {
           <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-2 pl-4 last:pr-4">
             {recentlySearched.map((item, index) => (
               <motion.div
-                initial={{ opacity: 0, rotateX: -5 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  duration: 0.3,
-                  delay: Number(index) * 0.07,
-                }}
-                layout
+                // initial={{ opacity: 0, rotateX: -5 }}
+                // animate={{ opacity: 1 }}
+                // transition={{
+                //   duration: 0.3,
+                //   delay: Number(index) * 0.07,
+                // }}
+                // layout
                 key={item.search || index}
                 className="flex-shrink-0 cursor-pointer rounded-md bg-white/10 px-4 py-2.5 text-sm font-medium whitespace-nowrap text-gray-300 transition-colors hover:bg-white/20"
                 onClick={() => onItemClick(item.search)}

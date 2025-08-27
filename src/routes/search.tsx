@@ -1,6 +1,8 @@
+import { useGetAds } from "@/apis/app/queryGetAds";
 import { useGetSearchInfinite } from "@/apis/app/queryGetSearch";
 import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
 import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
+import { AdsSection, AdsSectionSkeleton } from "@/components/common/AdsSection";
 import { EmptyState } from "@/components/common/EmptyState";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
 import Loading from "@/components/common/Loading";
@@ -115,6 +117,11 @@ function RouteComponent() {
     checkPosition: "bottom",
   });
 
+  // Ads list
+  const { allAds, isLoading: isAdsLoading } = useGetAds({
+    uniqueLabel: "search_page_ads",
+  });
+
   const shouldShowLoading =
     isLoadingSearch ||
     (isLoadingSuggestions && searchTerm && searchTerm.length >= 2);
@@ -144,10 +151,25 @@ function RouteComponent() {
         <AnimatePresence key={currentPage ?? 1} mode="popLayout">
           {/* Recent Search */}
           {!searchTerm && (
-            <RecentSearch
-              key="recent-search"
-              onItemClick={handleRecentItemClick}
-            />
+            <>
+              <div className="my-5">
+                {isAdsLoading ? (
+                  <>
+                    <AdsSectionSkeleton />
+                  </>
+                ) : (
+                  allAds.length > 0 && (
+                    <div className="px-4">
+                      <AdsSection allAds={allAds} />
+                    </div>
+                  )
+                )}
+              </div>
+              <RecentSearch
+                key="recent-search"
+                onItemClick={handleRecentItemClick}
+              />
+            </>
           )}
 
           {/* Search Suggestions */}
