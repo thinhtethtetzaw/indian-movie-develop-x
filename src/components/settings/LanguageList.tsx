@@ -23,7 +23,7 @@ export function LanguageList({ onSelect }: Props) {
           <button
             key={code}
             onClick={() => !isSelected && onSelect(code)}
-            className="flex w-full justify-between border-b border-gray-700 p-4 text-left transition-colors last:border-b-0 hover:bg-gray-700/50"
+            className="flex w-full items-center justify-between border-b border-gray-700 p-4 text-left transition-colors last:border-b-0 hover:bg-gray-700/50"
           >
             <div className="flex flex-col">
               <span className="text-base font-medium text-white">{name}</span>
