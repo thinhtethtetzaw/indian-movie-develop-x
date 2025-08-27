@@ -17,7 +17,10 @@ export function ShareDrawer({ shareConfigLink }: { shareConfigLink?: any }) {
       triggerIcon={<ShareApp className="size-6 text-white" />}
       triggerLabel={t("pages.settings.shareApp.title")}
     >
-      <DrawerHeaderBar title="Share To Social Media" onClose={hideDrawer} />
+      <DrawerHeaderBar
+        title={t("pages.settings.shareApp.shareToSocialMedia")}
+        onClose={hideDrawer}
+      />
       <ShareSocialList url={shareConfigLink} />
     </DynamicDrawer>
   );

@@ -48,7 +48,8 @@
         "title": "언어"
       },
       "shareApp": {
-        "title": "앱 공유하기"
+        "title": "앱 공유하기",
+        "shareToSocialMedia": "소셜 미디어에서 공유"
       },
       "version": {
         "title": "버전"

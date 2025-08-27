@@ -47,7 +47,8 @@
         "title": "Language"
       },
       "shareApp": {
-        "title": "Share our app"
+        "title": "Share our app",
+        "shareToSocialMedia": "Share To Social Media"
       },
       "version": {
         "title": "Version"

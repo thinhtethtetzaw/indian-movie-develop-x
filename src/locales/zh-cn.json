@@ -48,7 +48,8 @@
         "title": "语言"
       },
       "shareApp": {
-        "title": "分享我们的应用"
+        "title": "分享我们的应用",
+        "shareToSocialMedia": "分享到社交媒体"
       },
       "version": {
         "title": "版本"

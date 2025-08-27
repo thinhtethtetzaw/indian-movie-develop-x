@@ -48,7 +48,8 @@
         "title": "言語"
       },
       "shareApp": {
-        "title": "アプリを共有"
+        "title": "アプリを共有",
+        "shareToSocialMedia": "ソーシャルメディアで共有"
       },
       "version": {
         "title": "バージョン"
