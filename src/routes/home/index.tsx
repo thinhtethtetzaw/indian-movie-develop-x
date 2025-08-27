@@ -1,3 +1,4 @@
+import { useGetAds } from "@/apis/app/queryGetAds";
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
 import { useGetVideoListByIds } from "@/apis/app/queryGetVideoListByIds";
@@ -304,6 +305,11 @@ function RouteComponent() {
 
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
 
+  const { allAds } = useGetAds({
+    uniqueLabel: "home_page_ads",
+  });
+
+  console.log(allAds);
   // Computed values
   const watchListVideos = useMemo(
     () =>
