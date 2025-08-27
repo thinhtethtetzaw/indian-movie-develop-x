@@ -454,7 +454,7 @@ function RouteComponent() {
         }
       />
 
-      <div className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto py-5">
+      <div className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-6 overflow-y-auto py-5">
         {renderTags()}
         {isAdsLoading ? (
           <>

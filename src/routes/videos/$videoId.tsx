@@ -221,18 +221,20 @@ function RouteComponent() {
         <GenresList vod_class={(videoDetail?.vod_class ?? "").split(",")} />
         <Overview vod_content={videoDetail?.vod_content} />
 
-        <div className="space-y-2">
-          {groupedEpisodes.map((season) => (
-            <EpisodeAccordion
-              key={season.id}
-              seasonTitle={season.title}
-              episodes={season.episodes}
-              onEpisodeSelect={handleEpisodeSelect}
-            />
-          ))}
-        </div>
+        {groupedEpisodes.flatMap((season) => season.episodes).length > 1 && (
+          <div className="space-y-2">
+            {groupedEpisodes.map((season) => (
+              <EpisodeAccordion
+                key={season.id}
+                seasonTitle={season.title}
+                episodes={season.episodes}
+                onEpisodeSelect={handleEpisodeSelect}
+              />
+            ))}
+          </div>
+        )}
 
-        <section>
+        <section className="space-y-4">
           <h2 className="font-semibold text-white">
             {t("pages.movies.movieDetails.relatedMovies")}
           </h2>

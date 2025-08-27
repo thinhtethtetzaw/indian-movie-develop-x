@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/carousel";
 import { PLACEHOLDER_IMAGE_HORIZONTAL } from "@/constants/common";
 import type { CarouselVideoResponse } from "@/types/api-schema/response";
+import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from "react";
 
 interface SliderCarouselProps {
@@ -42,6 +43,11 @@ const SliderCarousel = ({ videos, onVideoClick }: SliderCarouselProps) => {
           align: "center",
           loop: true,
         }}
+        plugins={[
+          Autoplay({
+            delay: 5000,
+          }),
+        ]}
       >
         <CarouselContent className="ml-0">
           {videos.map((video, index) => (

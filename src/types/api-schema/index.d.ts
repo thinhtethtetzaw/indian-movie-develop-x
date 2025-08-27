@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+    "/api/v1/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * User login
+         * @description Authenticate user and return JWT token
+         */
+        post: operations["335a78e6fb10f67f490fe4ff0d89ae37"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/home/recommend/list": {
         parameters: {
             query?: never;
@@ -180,6 +200,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/config/data": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get application configuration data
+         * @description Retrieve application configuration settings and metadata
+         */
+        get: operations["97ce4b782346c648e041e49ef73127b0"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/adverts": {
         parameters: {
             query?: never;
@@ -200,7 +240,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/video/topic/{navigatorId}": {
+    "/api/v1/video/you-may-like": {
         parameters: {
             query?: never;
             header?: never;
@@ -208,30 +248,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get videos by topic level
-         * @description Retrieve videos based on the specified topic level using an encoded navigator ID
+         * Get personalized videos (You may like)
+         * @description Retrieve a personalized selection of videos with pagination. Each request returns different videos for variety.
          */
-        get: operations["50a2a6ddab666ca74da3e4015f285d1f"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/video/popular": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get popular videos
-         * @description Retrieve popular videos sorted by weekly hits, score, and release time with pagination
-         */
-        get: operations["142b8ab6aa0d26432fc090c0779789d9"];
+        get: operations["2e8cdd59633982f00f39bb51aa9e8277"];
         put?: never;
         post?: never;
         delete?: never;
@@ -780,33 +800,30 @@ export interface components {
              * @example Success
              */
             message?: string;
-            /** @description Paginated data */
-            data?: {
-                /** @description List of popular videos sorted by weekly hits */
-                videos?: components["schemas"]["Video"][];
-                /** @description Pagination information */
-                pagination?: {
-                    /**
-                     * @description Current page number
-                     * @example 1
-                     */
-                    current_page?: number;
-                    /**
-                     * @description Items per page
-                     * @example 20
-                     */
-                    per_page?: number;
-                    /**
-                     * @description Total number of popular videos
-                     * @example 150
-                     */
-                    total?: number;
-                    /**
-                     * @description Last page number
-                     * @example 8
-                     */
-                    last_page?: number;
-                };
+            /** @description List of popular videos sorted by weekly hits */
+            data?: components["schemas"]["Video"][];
+            /** @description Pagination information */
+            pagination?: {
+                /**
+                 * @description Total number of popular videos
+                 * @example 150
+                 */
+                total?: number;
+                /**
+                 * @description Items per page
+                 * @example 20
+                 */
+                per_page?: number;
+                /**
+                 * @description Current page number
+                 * @example 1
+                 */
+                current_page?: number;
+                /**
+                 * @description Last page number
+                 * @example 8
+                 */
+                last_page?: number;
             };
         };
         /**
@@ -880,6 +897,82 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    "335a78e6fb10f67f490fe4ff0d89ae37": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description User email
+                     * @example user@example.com
+                     */
+                    email: string;
+                    /**
+                     * @description User password
+                     * @example password123
+                     */
+                    password: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Login successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        status?: boolean;
+                        /** @example Login successful */
+                        message?: string;
+                        data?: {
+                            /**
+                             * @description JWT token
+                             * @example eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+                             */
+                            token?: string;
+                            user?: {
+                                /** @example 1 */
+                                id?: number;
+                                /** @example user@example.com */
+                                email?: string;
+                                /** @example John Doe */
+                                name?: string;
+                            };
+                        };
+                    };
+                };
+            };
+            /** @description Invalid credentials */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     "9e166e127a0ca3ec2d76102813629dff": {
         parameters: {
             query?: never;
@@ -1074,7 +1167,23 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PopularVideoResponse"];
+                    "application/json": {
+                        /** @example true */
+                        status?: boolean;
+                        /** @example Success */
+                        message?: string;
+                        data?: components["schemas"]["Video"][];
+                        pagination?: {
+                            /** @example 150 */
+                            total?: number;
+                            /** @example 20 */
+                            per_page?: number;
+                            /** @example 1 */
+                            current_page?: number;
+                            /** @example 8 */
+                            last_page?: number;
+                        };
+                    };
                 };
             };
             /** @description Validation error */
@@ -1202,6 +1311,36 @@ export interface operations {
             };
         };
     };
+    "97ce4b782346c648e041e49ef73127b0": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response with configuration data */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        status?: boolean;
+                        /** @example Success */
+                        message?: string;
+                        /** @description Configuration data */
+                        data?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
     "6de27ce83210cbf79da83f113a87da9d": {
         parameters: {
             query: {
@@ -1210,7 +1349,10 @@ export interface operations {
                 /** @description Channel identifier for the advert (e.g., 'web', 'mobile', 'app') */
                 channel: string;
             };
-            header?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1245,49 +1387,7 @@ export interface operations {
             };
         };
     };
-    "50a2a6ddab666ca74da3e4015f285d1f": {
-        parameters: {
-            query?: {
-                /** @description Page number for pagination */
-                page?: number;
-            };
-            header?: never;
-            path: {
-                /** @description Encoded navigator ID representing the topic level */
-                navigatorId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successfully retrieved videos for the topic */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TopicVideosResponse"];
-                };
-            };
-            /** @description Invalid navigator ID or topic not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example false */
-                        status?: boolean;
-                        /** @example Invalid ID */
-                        message?: string;
-                        /** @example null */
-                        data?: null;
-                    };
-                };
-            };
-        };
-    };
-    "142b8ab6aa0d26432fc090c0779789d9": {
+    "2e8cdd59633982f00f39bb51aa9e8277": {
         parameters: {
             query?: {
                 /** @description Page number for pagination */
@@ -1295,19 +1395,38 @@ export interface operations {
                 /** @description Number of items per page */
                 per_page?: number;
             };
-            header?: never;
+            header: {
+                /** @description Language code (en, cn, tw, ko, ja) */
+                "Accept-Language": string;
+            };
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Successfully retrieved popular videos */
+            /** @description Successfully retrieved personalized videos */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PopularVideoResponse"];
+                    "application/json": {
+                        /** @example true */
+                        status?: boolean;
+                        /** @example Success */
+                        message?: string;
+                        data?: components["schemas"]["Video"][];
+                        pagination?: {
+                            /** @example 5649 */
+                            total?: number;
+                            /** @example 12 */
+                            per_page?: number;
+                            /** @example 1 */
+                            current_page?: number;
+                            /** @example 471 */
+                            last_page?: number;
+                        };
+                    };
                 };
             };
         };

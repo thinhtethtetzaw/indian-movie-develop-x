@@ -1,7 +1,11 @@
 {
   "common": {
     "viewAll": "すべて表示",
-    "viewMore": "もっと見る"
+    "viewMore": "もっと見る",
+    "noData": "データなし",
+    "continueWatching": "視聴を続ける",
+    "popularApps": "人気アプリ",
+    "popularSearches": "人気の検索"
   },
   "layout": {
     "navbar": {
@@ -12,6 +16,7 @@
   },
   "pages": {
     "home": {
+      "categories": "カテゴリー",
       "popularMovies": "人気の映画",
       "popularTVSeries": "人気のテレビシリーズ",
       "youMayLike": "おすすめ"

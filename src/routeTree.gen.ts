@@ -17,6 +17,7 @@ import { Route as BookmarksIndexRouteImport } from './routes/bookmarks/index'
 import { Route as VideosVideoIdRouteImport } from './routes/videos/$videoId'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SeriesSeriesIdRouteImport } from './routes/series/$seriesId'
+import { Route as HomeRecommendedVideosRouteImport } from './routes/home/recommended-videos'
 import { Route as HomeNavigatorNavigatorIdRouteImport } from './routes/home/navigator/$navigatorId'
 
 const SearchRoute = SearchRouteImport.update({
@@ -59,6 +60,11 @@ const SeriesSeriesIdRoute = SeriesSeriesIdRouteImport.update({
   path: '/series/$seriesId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeRecommendedVideosRoute = HomeRecommendedVideosRouteImport.update({
+  id: '/home/recommended-videos',
+  path: '/home/recommended-videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeNavigatorNavigatorIdRoute =
   HomeNavigatorNavigatorIdRouteImport.update({
     id: '/home/navigator/$navigatorId',
@@ -69,6 +75,7 @@ const HomeNavigatorNavigatorIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/home/recommended-videos': typeof HomeRecommendedVideosRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/videos/$videoId': typeof VideosVideoIdRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/home/recommended-videos': typeof HomeRecommendedVideosRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/videos/$videoId': typeof VideosVideoIdRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/home/recommended-videos': typeof HomeRecommendedVideosRoute
   '/series/$seriesId': typeof SeriesSeriesIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/videos/$videoId': typeof VideosVideoIdRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/search'
+    | '/home/recommended-videos'
     | '/series/$seriesId'
     | '/settings/notifications'
     | '/videos/$videoId'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/search'
+    | '/home/recommended-videos'
     | '/series/$seriesId'
     | '/settings/notifications'
     | '/videos/$videoId'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/search'
+    | '/home/recommended-videos'
     | '/series/$seriesId'
     | '/settings/notifications'
     | '/videos/$videoId'
@@ -139,6 +151,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SearchRoute: typeof SearchRoute
+  HomeRecommendedVideosRoute: typeof HomeRecommendedVideosRoute
   SeriesSeriesIdRoute: typeof SeriesSeriesIdRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   VideosVideoIdRoute: typeof VideosVideoIdRoute
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SeriesSeriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home/recommended-videos': {
+      id: '/home/recommended-videos'
+      path: '/home/recommended-videos'
+      fullPath: '/home/recommended-videos'
+      preLoaderRoute: typeof HomeRecommendedVideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/home/navigator/$navigatorId': {
       id: '/home/navigator/$navigatorId'
       path: '/home/navigator/$navigatorId'
@@ -219,6 +239,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SearchRoute: SearchRoute,
+  HomeRecommendedVideosRoute: HomeRecommendedVideosRoute,
   SeriesSeriesIdRoute: SeriesSeriesIdRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   VideosVideoIdRoute: VideosVideoIdRoute,

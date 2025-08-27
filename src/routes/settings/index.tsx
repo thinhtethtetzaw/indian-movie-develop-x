@@ -1,5 +1,5 @@
 import { useGetAds } from "@/apis/app/queryGetAds";
-import { useGetConfigList } from "@/apis/app/querygetConfig";
+import { useGetAppConfig } from "@/apis/app/queryGetAppConfig";
 import { useGetVideoListByIds } from "@/apis/app/queryGetVideoListByIds";
 import Info from "@/assets/svgs/icon-info.svg?react";
 import Notification from "@/assets/svgs/icon-notification.svg?react";
@@ -52,7 +52,7 @@ function RouteComponent() {
   );
 
   // Configlist
-  const { configList, isLoading: isConfigListLoading } = useGetConfigList({});
+  const { appConfig, isLoading: isConfigListLoading } = useGetAppConfig({});
 
   // Ads list
   const { allAds, isLoading: isAdsLoading } = useGetAds({
@@ -131,8 +131,8 @@ function RouteComponent() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.2 }}
                 >
-                  {configList?.share_link && (
-                    <ShareDrawer shareConfigLink={configList.share_link} />
+                  {appConfig?.share_link && (
+                    <ShareDrawer shareConfigLink={appConfig.share_link} />
                   )}
 
                   <div className="px-4">

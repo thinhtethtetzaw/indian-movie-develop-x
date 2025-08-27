@@ -26,7 +26,7 @@ function AdsSection({
           {t("common.popularApps")}
         </h2>
       )}
-      <div className="grid grid-cols-5 gap-5">
+      <div className="grid grid-cols-5 gap-3">
         {allAds.map((ad, index) => (
           <motion.div
             key={`${ad.id}-${index}`}
@@ -56,7 +56,7 @@ function AdsSectionSkeleton() {
   return (
     <section className="space-y-4">
       <Skeleton className="mx-4 h-6 w-32" />
-      <div className="grid grid-cols-5 gap-5 px-4">
+      <div className="grid grid-cols-5 gap-3 px-4">
         {Array.from({ length: 10 }).map((_, index) => (
           <motion.div
             key={index}
@@ -66,10 +66,10 @@ function AdsSectionSkeleton() {
               ...COMMON_ANIMATION_CONFIG.videoCard.transition,
               delay: index * ADS_ANIMATION_DELAY_MULTIPLIER,
             }}
-            className="flex w-full cursor-pointer flex-col items-center justify-center space-y-1"
+            className="flex w-full cursor-pointer flex-col items-center justify-center space-y-1.5"
           >
             <Skeleton className="aspect-square w-full overflow-hidden rounded-lg" />
-            <Skeleton className="mt-1.5 h-6 w-3/4" />
+            <Skeleton className="h-6 w-3/4" />
           </motion.div>
         ))}
       </div>

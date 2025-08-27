@@ -80,7 +80,7 @@ type UseGetSearchInfiniteOptions = {
 
 export const useGetSearchInfinite = ({
   params,
-  per_page = 10,
+  per_page = 15,
   isHomePage = false,
   queryConfig,
 }: UseGetSearchInfiniteOptions) => {

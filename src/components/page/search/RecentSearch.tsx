@@ -50,7 +50,7 @@ export function RecentSearch({ onItemClick }: RecentSearchProps) {
       transition={{ duration: 0.3, delay: 0.1 }}
     >
       <div>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-2">
           <div className="flex items-center justify-between px-4">
             <p className="text-base font-semibold text-white">
               {t("pages.search.recent")}

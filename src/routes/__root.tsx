@@ -1,12 +1,8 @@
-import { TanstackDevtools } from "@tanstack/react-devtools";
 import {
   Outlet,
   createRootRouteWithContext,
   useRouterState,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-
-import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
 import Dialog from "@/components/common/Dialog";
 import BottomNavbar from "@/components/common/layouts/BottomNavbar";
@@ -43,7 +39,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             <Toaster />
             <Dialog />
           </div>
-          <TanstackDevtools
+          {/* <TanstackDevtools
             config={{
               position: "top-right",
             }}
@@ -54,7 +50,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
               },
               TanStackQueryDevtools,
             ]}
-          />
+          /> */}
         </NuqsAdapter>
       </>
     );

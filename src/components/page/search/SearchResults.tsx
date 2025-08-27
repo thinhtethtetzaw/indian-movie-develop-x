@@ -111,6 +111,7 @@ export function SearchResults({
                   video={video}
                   onClick={handleVideoClick}
                   index={index}
+                  className="w-full"
                 />
               </div>
             ))}

@@ -15,6 +15,7 @@ import {
   WatchListSectionSkeleton,
 } from "@/components/common/WatchlistSection";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
+import YouMayLike from "@/components/page/home/YouMayLike";
 import { Filter, SearchResults } from "@/components/page/search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,6 +32,7 @@ import { ChevronRightIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { parseAsString, useQueryStates } from "nuqs";
 import React, { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/home/")({
   component: RouteComponent,
@@ -234,7 +236,12 @@ const TopicSection = ({
     <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
       {item.list.map((video: VideoResponse, index: number) => (
         <div key={video.vod_id} className="flex-shrink-0">
-          <VideoCard video={video} onClick={onVideoClick} index={index} />
+          <VideoCard
+            video={video}
+            onClick={onVideoClick}
+            index={index}
+            className="w-full"
+          />
         </div>
       ))}
     </div>
@@ -280,11 +287,16 @@ const FilterSection = ({ searchState }: { searchState: { type: string } }) => (
 
 function RouteComponent() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchState, setSearchState] = useQueryStates({
     type: parseAsString.withDefault("0"),
   });
 
   // Data fetching
+  const { allAds, isLoading: isAdsLoading } = useGetAds({
+    uniqueLabel: "home_page_ads",
+  });
+
   const watchListFromIndexDB = useLiveQuery(() =>
     db.watchList
       .orderBy("updated_at")
@@ -310,10 +322,6 @@ function RouteComponent() {
     useGetHomeRecommendList({});
 
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
-
-  const { allAds, isLoading: isAdsLoading } = useGetAds({
-    uniqueLabel: "home_page_ads",
-  });
 
   // Computed values
   const watchListVideos = useMemo(
@@ -374,33 +382,27 @@ function RouteComponent() {
               onVideoClick={handleVideoClick}
             />
           )}
-
-          {index === 0 && (
-            <>
-              {isAdsLoading ? (
-                <>
-                  <AdsSectionSkeleton />
-                </>
-              ) : (
-                allAds.length > 0 && (
-                  <div className="px-4">
-                    <AdsSection allAds={allAds} />
-                  </div>
-                )
-              )}
-              {isVideoListLoading || isIndexDBLoading ? (
-                <WatchListSectionSkeleton />
-              ) : (
-                watchListData.length > 0 && (
-                  <WatchListSection
-                    watchListFromIndexDB={watchListFromIndexDB}
-                    watchListVideos={watchListVideos ?? []}
-                  />
-                )
-              )}
-            </>
-          )}
-
+          {index === 0 &&
+            (isVideoListLoading || isIndexDBLoading ? (
+              <WatchListSectionSkeleton />
+            ) : (
+              watchListData.length > 0 && (
+                <WatchListSection
+                  watchListFromIndexDB={watchListFromIndexDB}
+                  watchListVideos={watchListVideos ?? []}
+                />
+              )
+            ))}
+          {index === 0 &&
+            (isAdsLoading ? (
+              <AdsSectionSkeleton />
+            ) : (
+              allAds.length > 0 && (
+                <div className="px-4">
+                  <AdsSection allAds={allAds} />
+                </div>
+              )
+            ))}
           {item.type === "list" && hasList && (
             <ListSection
               item={item}
@@ -408,7 +410,6 @@ function RouteComponent() {
               navigate={navigate}
             />
           )}
-
           {item.type === "topic" && hasList && (
             <TopicSection
               item={item}
@@ -425,6 +426,8 @@ function RouteComponent() {
       isIndexDBLoading,
       watchListData.length,
       watchListVideos,
+      allAds,
+      isAdsLoading,
       navigate,
     ],
   );
@@ -483,6 +486,9 @@ function RouteComponent() {
                 ) : (
                   homeRecommendList?.map(renderRecommendationItem)
                 )}
+                <div className="px-4">
+                  <YouMayLike title={t("pages.home.youMayLike")} />
+                </div>
               </div>
             ) : (
               <section

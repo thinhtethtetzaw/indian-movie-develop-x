@@ -165,7 +165,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         ...COMMON_ANIMATION_CONFIG.videoCard.transition,
         delay: animationDelay,
       }}
-      className={cn("min-h-46 w-31", className, {
+      className={cn("w-28", className, {
         "cursor-pointer": !!onClick,
       })}
       onClick={handleCardClick}

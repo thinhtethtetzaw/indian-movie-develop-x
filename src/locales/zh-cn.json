@@ -1,7 +1,11 @@
 {
   "common": {
     "viewAll": "查看全部",
-    "viewMore": "查看更多"
+    "viewMore": "查看更多",
+    "noData": "暂无数据",
+    "continueWatching": "继续观看",
+    "popularApps": "热门应用",
+    "popularSearches": "热门搜索"
   },
   "layout": {
     "navbar": {
@@ -12,6 +16,7 @@
   },
   "pages": {
     "home": {
+      "categories": "分类",
       "popularMovies": "热门电影",
       "popularTVSeries": "热门电视剧",
       "youMayLike": "你可能喜欢"

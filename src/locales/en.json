@@ -4,7 +4,8 @@
     "viewMore": "View More",
     "noData": "No data",
     "continueWatching": "Continue Watching",
-    "popularApps": "Popular Apps"
+    "popularApps": "Popular Apps",
+    "popularSearches": "Popular Searches"
   },
   "layout": {
     "navbar": {
@@ -15,7 +16,8 @@
   },
   "pages": {
     "home": {
-      "categories": "Categories"
+      "categories": "Categories",
+      "youMayLike": "You May Like"
     },
     "bookmarks": {
       "title": "Bookmarks",

@@ -11,6 +11,7 @@ import {
   SearchResults,
   SearchSuggestions,
 } from "@/components/page/search";
+import PopularSearch from "@/components/page/search/PopularSearch";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { db } from "@/lib/db";
 import type { SearchSuggestionResponse } from "@/types/api-schema/response";
@@ -151,8 +152,8 @@ function RouteComponent() {
         <AnimatePresence key={currentPage ?? 1} mode="popLayout">
           {/* Recent Search */}
           {!searchTerm && (
-            <>
-              <div className="my-5">
+            <div className="space-y-5">
+              <div>
                 {isAdsLoading ? (
                   <>
                     <AdsSectionSkeleton />
@@ -169,7 +170,8 @@ function RouteComponent() {
                 key="recent-search"
                 onItemClick={handleRecentItemClick}
               />
-            </>
+              <PopularSearch />
+            </div>
           )}
 
           {/* Search Suggestions */}
