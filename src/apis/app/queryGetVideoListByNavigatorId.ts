@@ -4,7 +4,13 @@ import { API_CLIENT } from "@/lib/openapi-api-client";
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
-export const getVideoListByNavigatorIdQueryOptions = (navigatorId: string) => {
+export const getVideoListByNavigatorIdQueryOptions = ({
+  navigatorId,
+  per_page,
+}: {
+  navigatorId: string;
+  per_page?: number;
+}) => {
   const selectedLanguage = i18n.language;
 
   return infiniteQueryOptions({
@@ -23,6 +29,7 @@ export const getVideoListByNavigatorIdQueryOptions = (navigatorId: string) => {
           },
           query: {
             page: pageParam ?? 1,
+            per_page,
           },
         },
       }),
@@ -38,15 +45,17 @@ export const getVideoListByNavigatorIdQueryOptions = (navigatorId: string) => {
 
 type UseGetVideoListByIdsOptions = {
   navigatorId: string;
+  per_page?: number;
   queryConfig?: QueryConfig<typeof getVideoListByNavigatorIdQueryOptions>;
 };
 
 export const useGetVideoListByNavigatorId = ({
   navigatorId,
+  per_page,
   queryConfig,
 }: UseGetVideoListByIdsOptions) => {
   const data = useInfiniteQuery({
-    ...getVideoListByNavigatorIdQueryOptions(navigatorId),
+    ...getVideoListByNavigatorIdQueryOptions({ navigatorId, per_page }),
     ...queryConfig,
   });
 
@@ -56,6 +65,9 @@ export const useGetVideoListByNavigatorId = ({
     ...data,
     videoList,
     pageTitle: data.data?.pages[0]?.data?.data?.topic_name,
+    currentPage:
+      data.data?.pages[data.data.pages.length - 1]?.data?.data?.pagination
+        ?.current_page,
     totalItems: data.data?.pages[0]?.data?.data?.pagination?.total,
   };
 };

@@ -40,10 +40,12 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
   episodes = [],
   onEpisodeSelect,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [activeEpisode, setActiveEpisode] = useQueryState(
     "episode",
     parseAsString.withDefault(""),
+  );
+  const [isOpen, setIsOpen] = useState(
+    episodes.some((episode) => episode.title === activeEpisode),
   );
 
   const handleEpisodeSelect = (title: string) => {

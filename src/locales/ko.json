@@ -5,7 +5,8 @@
     "noData": "데이터 없음",
     "continueWatching": "계속 시청",
     "popularApps": "인기 앱",
-    "popularSearches": "인기 검색"
+    "popularSearches": "인기 검색",
+    "clearFilter": "필터 지우기"
   },
   "layout": {
     "navbar": {

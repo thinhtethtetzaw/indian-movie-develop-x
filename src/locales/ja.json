@@ -5,7 +5,8 @@
     "noData": "データなし",
     "continueWatching": "視聴を続ける",
     "popularApps": "人気アプリ",
-    "popularSearches": "人気の検索"
+    "popularSearches": "人気の検索",
+    "clearFilter": "フィルターをクリア"
   },
   "layout": {
     "navbar": {

@@ -28,8 +28,7 @@ function Sorting() {
   };
 
   const handleSelectCategory = (categoryId: string) => {
-    if (!selectedClass) setSelectedClass(categoryId);
-    else setSelectedClass("");
+    setSelectedClass(categoryId);
     setTimeout(() => {
       handleClose();
     }, 300);
@@ -73,15 +72,29 @@ function Sorting() {
                   </Button>
                 </motion.div>
 
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-full px-6 text-left text-lg font-bold"
-                >
-                  {t("pages.home.categories")}
-                </motion.h2>
+                <div className="flex w-full items-center justify-between px-6">
+                  <motion.h2
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-full text-left text-lg font-bold"
+                  >
+                    {t("pages.home.categories")}
+                  </motion.h2>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-sm text-white/50"
+                    onClick={() => {
+                      setSelectedClass("");
+                      handleClose();
+                    }}
+                  >
+                    {t("common.clearFilter")}
+                  </Button>
+                </div>
                 <motion.div
                   className="scrollbar-hide mt-8 grid max-h-[60vh] w-full grid-cols-2 gap-4 overflow-y-scroll px-6"
                   initial="hidden"

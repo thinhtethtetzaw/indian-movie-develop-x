@@ -1,11 +1,12 @@
 import { useGetPopularSearch } from "@/apis/app/queryGetPopularSearch";
-import Loading from "@/components/common/Loading";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import { Button } from "@/components/ui/button";
 import type { VideoResponse } from "@/types/api-schema/response";
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronDownIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+
+const PER_PAGE = 15;
 
 function PopularSearch() {
   const { t } = useTranslation();
@@ -14,10 +15,13 @@ function PopularSearch() {
   const {
     videoList,
     isLoading,
+    currentPage,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useGetPopularSearch({});
+  } = useGetPopularSearch({
+    per_page: PER_PAGE,
+  });
 
   function onVideoClick(video: VideoResponse) {
     navigate({
@@ -26,7 +30,11 @@ function PopularSearch() {
   }
 
   if (isLoading) {
-    return <PopularSearchSkeleton />;
+    return (
+      <div className="px-4">
+        <PopularSearchSkeleton />
+      </div>
+    );
   }
 
   return (
@@ -43,7 +51,11 @@ function PopularSearch() {
                 <VideoCard
                   video={video}
                   onClick={onVideoClick}
-                  index={index}
+                  index={
+                    currentPage && currentPage > 1
+                      ? index - (currentPage - 1) * PER_PAGE
+                      : index
+                  }
                   className="w-full"
                 />
               )}
@@ -51,9 +63,7 @@ function PopularSearch() {
           ))}
       </div>
       {isFetchingNextPage ? (
-        <div className="py-10">
-          <Loading />
-        </div>
+        <PopularSearchSkeleton />
       ) : (
         <Button
           variant="default"
@@ -73,8 +83,8 @@ function PopularSearch() {
 }
 
 const PopularSearchSkeleton = () => (
-  <div className="grid grid-cols-3 gap-x-3 gap-y-6 px-4">
-    {Array.from({ length: 4 }).map((_, index) => (
+  <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+    {Array.from({ length: 3 }).map((_, index) => (
       <div key={index} className="flex-shrink-0">
         <VideoCardSkeleton index={index} />
       </div>

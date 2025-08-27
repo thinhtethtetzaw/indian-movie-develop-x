@@ -5,7 +5,8 @@
     "noData": "暫無數據",
     "continueWatching": "繼續觀看",
     "popularApps": "熱門應用",
-    "popularSearches": "熱門搜索"
+    "popularSearches": "熱門搜索",
+    "clearFilter": "清除篩選"
   },
   "layout": {
     "navbar": {

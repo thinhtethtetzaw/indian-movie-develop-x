@@ -21,7 +21,7 @@ interface VideoCardProps {
 // Constants
 const PLACEHOLDER_IMAGE =
   "https://placehold.co/300x450/2B2B2B/FFF?text=No+Preview";
-export const VIDEO_CARD_ANIMATION_DELAY_MULTIPLIER = 0.02;
+export const VIDEO_CARD_ANIMATION_DELAY_MULTIPLIER = 0.05;
 
 const VideoCard: React.FC<VideoCardProps> = ({
   video,

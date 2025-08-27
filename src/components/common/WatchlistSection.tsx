@@ -70,7 +70,7 @@ function WatchListSection({
                   ...COMMON_ANIMATION_CONFIG.videoCard.transition,
                   delay: index * WISHLIST_ANIMATION_DELAY_MULTIPLIER,
                 }}
-                className="space-y-1"
+                className="w-44 space-y-1"
               >
                 <div className="relative aspect-video w-44 overflow-hidden rounded-lg">
                   <img

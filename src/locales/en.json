@@ -5,7 +5,8 @@
     "noData": "No data",
     "continueWatching": "Continue Watching",
     "popularApps": "Popular Apps",
-    "popularSearches": "Popular Searches"
+    "popularSearches": "Popular Searches",
+    "clearFilter": "Clear Filter"
   },
   "layout": {
     "navbar": {

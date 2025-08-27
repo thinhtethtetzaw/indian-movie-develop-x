@@ -5,7 +5,8 @@
     "noData": "暂无数据",
     "continueWatching": "继续观看",
     "popularApps": "热门应用",
-    "popularSearches": "热门搜索"
+    "popularSearches": "热门搜索",
+    "clearFilter": "清除筛选"
   },
   "layout": {
     "navbar": {

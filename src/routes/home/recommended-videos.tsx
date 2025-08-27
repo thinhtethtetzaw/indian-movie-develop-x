@@ -11,6 +11,8 @@ export const Route = createFileRoute("/home/recommended-videos")({
   component: RouteComponent,
 });
 
+const PER_PAGE = 15;
+
 function RouteComponent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -18,11 +20,12 @@ function RouteComponent() {
   const {
     videoList,
     isLoading,
+    currentPage,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
   } = useGetRecommendVideos({
-    per_page: 48,
+    per_page: PER_PAGE,
   });
 
   const { scrollRooms, viewportRef } = useInfiniteScroll({
@@ -71,12 +74,19 @@ function RouteComponent() {
             {videoList &&
               videoList.length > 0 &&
               videoList.map((video, index) => (
-                <div key={video?.vod_id} className="flex-shrink-0">
+                <div
+                  key={`${video?.vod_id}-${index}`}
+                  className="flex-shrink-0"
+                >
                   {video && (
                     <VideoCard
                       video={video}
                       onClick={onVideoClick}
-                      index={index}
+                      index={
+                        currentPage && currentPage > 1
+                          ? index - (currentPage - 1) * PER_PAGE
+                          : index
+                      }
                       className="w-full"
                     />
                   )}

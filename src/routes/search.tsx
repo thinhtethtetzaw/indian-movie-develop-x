@@ -31,6 +31,8 @@ export const Route = createFileRoute("/search")({
   },
 });
 
+export const SEARCH_PER_PAGE = 15;
+
 function RouteComponent() {
   const [searchTerm, setSearchTerm] = useQueryState(
     "q",
@@ -75,16 +77,29 @@ function RouteComponent() {
     setSearchTerm(suggestionText);
     setSubmittedSearchTerm(suggestionText);
 
-    const recentSearchCount = db.recentSearch.count();
     try {
-      if ((await recentSearchCount) < 10) {
-        await db.recentSearch.add({
-          search: suggestionText,
-          updated_at: new Date(),
-        });
+      const recentSearchCount = await db.recentSearch.count();
+
+      if (recentSearchCount >= 10) {
+        // Get all recent searches and delete the oldest one
+        const allSearches = await db.recentSearch.toArray();
+        const oldestSearch = allSearches.sort(
+          (a, b) =>
+            new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime(),
+        )[0];
+
+        if (oldestSearch) {
+          await db.recentSearch.delete(oldestSearch.search);
+        }
       }
+
+      // Add the new search term
+      await db.recentSearch.put({
+        search: suggestionText,
+        updated_at: new Date(),
+      });
     } catch (error) {
-      console.error("Failed to toggle bookmark:", error);
+      console.error("Failed to handle recent search:", error);
     }
   };
 
@@ -109,6 +124,7 @@ function RouteComponent() {
       class: filters.class,
       type_id: filters.type ? parseInt(filters.type) : undefined,
     },
+    per_page: SEARCH_PER_PAGE,
   });
 
   const { scrollRooms, viewportRef } = useInfiniteScroll({
@@ -193,6 +209,7 @@ function RouteComponent() {
             <SearchResults
               key="search-results"
               searchResults={searchResults}
+              currentPage={currentPage ?? 1}
               isFetchingNextPage={isFetchingNextPage}
             />
           )}

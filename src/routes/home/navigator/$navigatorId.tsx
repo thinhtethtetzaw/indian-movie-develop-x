@@ -4,24 +4,30 @@ import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import type { VideoResponse } from "@/types/api-schema/response";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 
 export const Route = createFileRoute("/home/navigator/$navigatorId")({
   component: RouteComponent,
 });
 
+const PER_PAGE = 15;
+
 function RouteComponent() {
   const { navigatorId } = Route.useParams();
+  const navigate = useNavigate();
+
   const {
     pageTitle,
     videoList,
     isLoading,
+    currentPage,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
   } = useGetVideoListByNavigatorId({
     navigatorId,
+    per_page: PER_PAGE,
   });
 
   const { scrollRooms, viewportRef } = useInfiniteScroll({
@@ -37,7 +43,9 @@ function RouteComponent() {
   );
 
   function handleVideoClick(video: VideoResponse) {
-    console.log("Video clicked:", video);
+    navigate({
+      to: `/videos/${video.vod_id}`,
+    });
   }
 
   if (isLoading)
@@ -76,7 +84,11 @@ function RouteComponent() {
                   <VideoCard
                     video={video}
                     onClick={handleVideoClick}
-                    index={index}
+                    index={
+                      currentPage && currentPage > 1
+                        ? index - (currentPage - 1) * PER_PAGE
+                        : index
+                    }
                     className="w-full"
                   />
                 </div>

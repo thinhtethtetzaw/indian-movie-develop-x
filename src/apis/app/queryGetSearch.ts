@@ -94,7 +94,9 @@ export const useGetSearchInfinite = ({
       .flatMap((page) => page.data?.data ?? [])
       .filter((item): item is NonNullable<typeof item> => item !== undefined);
 
-  const currentPage = data.data?.pages[0]?.data?.pagination?.current_page;
+  const currentPage =
+    data.data?.pages[data.data.pages.length - 1]?.data?.pagination
+      ?.current_page;
 
   return {
     ...data,

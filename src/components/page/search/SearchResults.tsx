@@ -4,6 +4,7 @@ import { EmptyState } from "@/components/common/EmptyState";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import { cn } from "@/lib/utils";
+import { SEARCH_PER_PAGE } from "@/routes/search";
 import type {
   SearchResultResponse,
   VideoResponse,
@@ -16,17 +17,17 @@ import { Filter } from "./Filter";
 interface SearchResultsProps {
   isHomePage?: boolean;
   searchResults: SearchResultResponse["data"] | undefined;
+  currentPage: number;
   isFetchingNextPage: boolean;
 }
 
 export function SearchResults({
   isHomePage = false,
   searchResults,
+  currentPage,
   isFetchingNextPage,
 }: SearchResultsProps) {
   const navigate = useNavigate();
-
-  console.log("searchResults", searchResults);
 
   const [searchState, setSearchState] = useQueryStates({
     type: parseAsString.withDefault("0"),
@@ -110,7 +111,11 @@ export function SearchResults({
                 <VideoCard
                   video={video}
                   onClick={handleVideoClick}
-                  index={index}
+                  index={
+                    currentPage && currentPage > 1
+                      ? index - (currentPage - 1) * SEARCH_PER_PAGE
+                      : index
+                  }
                   className="w-full"
                 />
               </div>

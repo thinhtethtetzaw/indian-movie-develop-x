@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -94,8 +95,34 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
     };
 
     // Handle search input key press
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && inputValue.trim()) {
+        try {
+          const recentSearchCount = await db.recentSearch.count();
+
+          if (recentSearchCount >= 10) {
+            // Get all recent searches and delete the oldest one
+            const allSearches = await db.recentSearch.toArray();
+            const oldestSearch = allSearches.sort(
+              (a, b) =>
+                new Date(a.updated_at).getTime() -
+                new Date(b.updated_at).getTime(),
+            )[0];
+
+            if (oldestSearch) {
+              await db.recentSearch.delete(oldestSearch.search);
+            }
+          }
+
+          // Add the new search term
+          await db.recentSearch.put({
+            search: inputValue.trim(),
+            updated_at: new Date(),
+          });
+        } catch (error) {
+          console.error("Failed to handle recent search:", error);
+        }
+
         onSubmit?.(inputValue.trim());
       }
     };

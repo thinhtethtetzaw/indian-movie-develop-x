@@ -57,6 +57,9 @@ export const useGetRecommendVideos = ({
   return {
     ...data,
     videoList,
+    currentPage:
+      data.data?.pages[data.data.pages.length - 1]?.data?.pagination
+        ?.current_page,
     totalItems: data.data?.pages[0]?.data?.pagination?.total,
   };
 };

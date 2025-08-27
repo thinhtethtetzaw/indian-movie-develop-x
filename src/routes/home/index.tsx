@@ -289,6 +289,9 @@ function RouteComponent() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [searchState, setSearchState] = useQueryStates({
+    sort_order: parseAsString.withDefault("asc"),
+    year: parseAsString.withDefault(""),
+    class: parseAsString.withDefault(""),
     type: parseAsString.withDefault("0"),
   });
 
@@ -442,6 +445,9 @@ function RouteComponent() {
   } = useGetSearchInfinite({
     params: {
       q: "",
+      year: searchState.year,
+      sort_order: searchState.sort_order,
+      class: searchState.class,
       type_id: searchState.type ? parseInt(searchState.type) : undefined,
     },
     isHomePage: true,
@@ -454,6 +460,22 @@ function RouteComponent() {
     checkPosition: "bottom",
   });
 
+  // Create a stable key for SearchResults that handles empty values properly
+  const searchResultsKey = useMemo(() => {
+    const params = [
+      searchState.type || "0",
+      searchState.sort_order || "asc",
+      searchState.year || "",
+      searchState.class || "",
+    ];
+    return `search-results-${params.join("-")}`;
+  }, [
+    searchState.type,
+    searchState.sort_order,
+    searchState.year,
+    searchState.class,
+  ]);
+
   return (
     <>
       <SearchHeader
@@ -461,7 +483,7 @@ function RouteComponent() {
         isClickable={true}
         onClick={handleSearchClick}
       />
-      <div className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-var(--bottom-nav-height))] space-y-6 overflow-y-auto pb-5">
+      <div className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-var(--bottom-nav-height))] space-y-5 overflow-y-auto pb-5">
         {isCategoryListLoading ||
         isRecommendListLoading ||
         isVideoListLoading ||
@@ -494,10 +516,10 @@ function RouteComponent() {
               <section
                 ref={viewportRef}
                 onScroll={scrollRooms}
-                className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-200px)] overflow-y-auto pb-5"
+                className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-160px)] overflow-y-auto pb-5"
               >
                 <FilterSection searchState={searchState} />
-                <AnimatePresence key={currentPage ?? 1} mode="popLayout">
+                <AnimatePresence key={searchResultsKey} mode="popLayout">
                   {isLoadingSearch && (
                     <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
                       <Loading />
@@ -506,10 +528,11 @@ function RouteComponent() {
                   {!!searchResults && searchResults.length > 0 ? (
                     <div className="mt-5">
                       <SearchResults
-                        key="search-results"
+                        key={searchResultsKey}
                         searchResults={searchResults}
                         isFetchingNextPage={isFetchingNextPage}
                         isHomePage={true}
+                        currentPage={currentPage ?? 1}
                       />
                     </div>
                   ) : (
