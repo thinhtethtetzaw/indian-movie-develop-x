@@ -9,7 +9,7 @@ interface OverviewProps {
 const Overview: React.FC<OverviewProps> = ({ vod_content }) => {
   const [expanded, setExpanded] = useState(false);
   const { t } = useTranslation();
-  const wordLimit = 100;
+  const wordLimit = 30;
 
   const hasMoreThanLimit = useMemo(() => {
     if (!vod_content) return false;

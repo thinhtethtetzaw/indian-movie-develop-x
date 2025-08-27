@@ -99,8 +99,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
           () => (art.currentTime = Math.max(0, art.currentTime - 10)),
         );
 
-        const { playPauseBtn, playPauseRoot, updatePlayPauseButton } =
-          createPlayPauseButton(art);
+        const { playPauseBtn, playPauseRoot } = createPlayPauseButton(art);
 
         const { button: forwardBtn, root: forwardRoot } = createControlButton(
           "art-forward-btn",
@@ -116,11 +115,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
         art.template.$player.appendChild(centerControls);
 
         // Setup hover controls
-        const { hideTimeout, cleanup } = setupHoverControls(
-          art,
-          centerControls,
-        );
-
+        const { cleanup } = setupHoverControls(art, centerControls);
         // Cleanup on destroy
         art.on("destroy", async () => {
           const currentTime = art.currentTime || 0;
@@ -186,20 +181,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ id, url, poster }) => {
 
     const root = createRoot(button);
     const updatePlayPauseButton = () => {
+      const isPlaying = !art.video.paused && !art.video.ended;
       root.render(
-        art.playing ? (
+        isPlaying ? (
           <Pause style={{ width: 33, height: 33, color: "white" }} />
         ) : (
           <Play style={{ width: 33, height: 33, fill: "white" }} />
         ),
       );
     };
-
     updatePlayPauseButton();
     button.addEventListener("click", () => art.toggle());
     art.on("play", updatePlayPauseButton);
     art.on("pause", updatePlayPauseButton);
-
     return { playPauseBtn: button, playPauseRoot: root, updatePlayPauseButton };
   };
 
