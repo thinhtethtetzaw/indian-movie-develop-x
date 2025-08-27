@@ -48,6 +48,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         if (!isExistingBookmark) {
           await db.bookmarks.add({
             id: video.vod_id || "",
+            updated_at: new Date(),
           });
         } else {
           await db.bookmarks.delete(video.vod_id || "");

@@ -88,10 +88,14 @@ function RouteComponent() {
   // Data fetching
   const allBookmarks =
     useLiveQuery(() =>
-      db.bookmarks.toArray().catch((err) => {
-        console.error("Dexie query error:", err);
-        return [];
-      }),
+      db.bookmarks
+        .orderBy("updated_at")
+        .reverse()
+        .toArray()
+        .catch((err) => {
+          console.error("Dexie query error:", err);
+          return [];
+        }),
     ) ?? [];
 
   const { videoList, isLoading: isVideoListLoading } = useGetVideoListByIds({
