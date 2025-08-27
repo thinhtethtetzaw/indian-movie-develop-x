@@ -123,8 +123,9 @@ function RouteComponent() {
     !isLoadingSuggestions &&
     searchTerm &&
     searchTerm.length >= 2 &&
-    ((shouldShowSearchResults && searchResults?.length === 0) ||
-      (!shouldShowSearchResults && suggestions && suggestions.length === 0));
+    !shouldShowSearchResults &&
+    suggestions &&
+    suggestions.length === 0;
 
   return (
     <>
