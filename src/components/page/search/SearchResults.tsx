@@ -14,15 +14,19 @@ import { useCallback } from "react";
 import { Filter } from "./Filter";
 
 interface SearchResultsProps {
+  isHomePage?: boolean;
   searchResults: SearchResultResponse["data"] | undefined;
   isFetchingNextPage: boolean;
 }
 
 export function SearchResults({
+  isHomePage = false,
   searchResults,
   isFetchingNextPage,
 }: SearchResultsProps) {
   const navigate = useNavigate();
+
+  console.log("searchResults", searchResults);
 
   const [searchState, setSearchState] = useQueryStates({
     type: parseAsString.withDefault("0"),
@@ -46,7 +50,7 @@ export function SearchResults({
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
 
   // Don't render anything if there's no search term
-  if (!searchTerm) return null;
+  if (!searchTerm && !isHomePage) return null;
 
   // Event handlers
   const handleVideoClick = (video: VideoResponse) => {
@@ -61,39 +65,43 @@ export function SearchResults({
   return (
     <>
       <section className="space-y-5">
-        <div className="scrollbar-hide mt-2 flex items-center gap-x-1.5 overflow-auto">
-          {isCategoryListLoading
-            ? renderTagSkeletons()
-            : allTypes?.map((category, index) => (
-                <Tag
-                  key={category.type_id}
-                  index={category.type_id}
-                  size="lg"
-                  className={cn("cursor-pointer", {
-                    "ml-4": index === 0,
-                    "mr-4": index === allTypes.length - 1,
-                  })}
-                  variant={
-                    searchState.type === category.type_id?.toString()
-                      ? "active"
-                      : "default"
-                  }
-                  onClick={() =>
-                    setSearchState({
-                      type: category.type_id?.toString() ?? "0",
-                    })
-                  }
-                >
-                  {category.type_name}
-                </Tag>
-              ))}
-        </div>
-        <div className="px-4">
-          <Filter />
-        </div>
-
-        <h2 className="text-forground px-4 font-semibold">Search results</h2>
-
+        {!isHomePage && (
+          <>
+            <div className="scrollbar-hide mt-2 flex items-center gap-x-1.5 overflow-auto">
+              {isCategoryListLoading
+                ? renderTagSkeletons()
+                : allTypes?.map((category, index) => (
+                    <Tag
+                      key={category.type_id}
+                      index={category.type_id}
+                      size="lg"
+                      className={cn("cursor-pointer", {
+                        "ml-4": index === 0,
+                        "mr-4": index === allTypes.length - 1,
+                      })}
+                      variant={
+                        searchState.type === category.type_id?.toString()
+                          ? "active"
+                          : "default"
+                      }
+                      onClick={() =>
+                        setSearchState({
+                          type: category.type_id?.toString() ?? "0",
+                        })
+                      }
+                    >
+                      {category.type_name}
+                    </Tag>
+                  ))}
+            </div>
+            <div className="px-4">
+              <Filter />
+            </div>
+            <h2 className="text-forground px-4 font-semibold">
+              Search results
+            </h2>
+          </>
+        )}
         {/* Show results if available, otherwise show empty state */}
         {searchResults && searchResults.length > 0 ? (
           <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6 px-4">
