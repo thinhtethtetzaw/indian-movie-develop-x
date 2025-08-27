@@ -5,8 +5,7 @@ import type { SearchResultResponse } from "@/types/api-schema/response";
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { QueryConfig } from "..";
 
-// Query options for fetching search results
-export const getSearchQueryOptions = (
+export const getSearchInfiniteQueryOptions = (
   params: {
     q: string;
     year?: string;
@@ -20,7 +19,7 @@ export const getSearchQueryOptions = (
   const selectedLanguage = i18n.language;
 
   return infiniteQueryOptions({
-    queryKey: ["search", params, per_page],
+    queryKey: ["search-infinite", params, per_page],
     queryFn: ({ pageParam }) =>
       API_CLIENT.GET("/api/v1/videos/search", {
         params: {
@@ -64,7 +63,7 @@ export const getSearchQueryOptions = (
   });
 };
 
-type UseGetSearchOptions = {
+type UseGetSearchInfiniteOptions = {
   params: {
     q: string;
     year?: string;
@@ -74,17 +73,18 @@ type UseGetSearchOptions = {
     type_id?: number;
   };
   per_page?: number;
-  queryConfig?: QueryConfig<typeof getSearchQueryOptions>;
+  queryConfig?: QueryConfig<typeof getSearchInfiniteQueryOptions>;
 };
 
-export const useGetSearch = ({
+export const useGetSearchInfinite = ({
   params,
   per_page = 10,
   queryConfig,
-}: UseGetSearchOptions) => {
+}: UseGetSearchInfiniteOptions) => {
   const data = useInfiniteQuery({
-    ...getSearchQueryOptions(params, per_page),
+    ...getSearchInfiniteQueryOptions(params, per_page),
     ...queryConfig,
+    enabled: !!params.q && params.q.length >= 1,
   });
 
   const searchResults: SearchResultResponse["data"] | undefined =

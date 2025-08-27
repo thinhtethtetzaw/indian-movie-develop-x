@@ -1,4 +1,4 @@
-import { useGetSearch } from "@/apis/app/queryGetSearch";
+import { useGetSearchInfinite } from "@/apis/app/queryGetSearch";
 import { useGetSearchSuggestion } from "@/apis/app/queryGetSearchSuggestion";
 import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
 import { EmptyState } from "@/components/common/EmptyState";
@@ -48,6 +48,7 @@ function RouteComponent() {
     sort_order: parseAsString.withDefault("asc"),
     year: parseAsString.withDefault(""),
     class: parseAsString.withDefault(""),
+    type: parseAsString.withDefault("0"),
   });
 
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
@@ -96,12 +97,13 @@ function RouteComponent() {
     fetchNextPage,
     currentPage,
     isFetchingNextPage,
-  } = useGetSearch({
+  } = useGetSearchInfinite({
     params: {
       q: submittedSearchTerm,
       year: filters.year,
       sort_order: filters.sort_order,
       class: filters.class,
+      type_id: filters.type ? parseInt(filters.type) : undefined,
     },
   });
 
@@ -141,6 +143,7 @@ function RouteComponent() {
           {/* Recent Search */}
           {!searchTerm && (
             <RecentSearch
+              key="recent-search"
               recentlySearched={recentlySearched}
               onItemClick={handleRecentItemClick}
               onClearRecent={handleClearRecent}
@@ -154,6 +157,7 @@ function RouteComponent() {
             suggestions &&
             suggestions.length > 0 && (
               <SearchSuggestions
+                key="search-suggestions"
                 suggestions={suggestions}
                 searchTerm={searchTerm}
                 onSuggestionClick={handleSuggestionClick}
@@ -163,6 +167,7 @@ function RouteComponent() {
           {/* Search Results */}
           {shouldShowSearchResults && (
             <SearchResults
+              key="search-results"
               searchResults={searchResults}
               isFetchingNextPage={isFetchingNextPage}
             />

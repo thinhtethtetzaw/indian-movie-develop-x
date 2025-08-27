@@ -162,7 +162,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
             readOnly={isClickable}
           />
           <SearchIcon className="absolute top-1/2 left-4 size-5 -translate-y-1/2" />
-          {inputValue && !isResultLoading && !isClickable && (
+          {searchTerm && !isClickable && (
             <div className="absolute top-1/2 right-3 flex -translate-y-1/2 items-center gap-2.5">
               <div
                 className="flex cursor-pointer items-center justify-center rounded-full bg-white/10 p-1"

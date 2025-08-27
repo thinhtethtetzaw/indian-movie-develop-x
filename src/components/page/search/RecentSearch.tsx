@@ -20,10 +20,6 @@ export function RecentSearch({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{
-        opacity: 0,
-        transition: { duration: 0.3, delay: 0.5 },
-      }}
       transition={{ duration: 0.3, delay: 0.1 }}
     >
       <div>
@@ -47,17 +43,8 @@ export function RecentSearch({
                   duration: 0.3,
                   delay: Number(index) * 0.07,
                 }}
-                exit={{
-                  opacity: 0,
-                  y: -10,
-                  rotateX: -5,
-                  transition: {
-                    duration: 0.3,
-                    delay: (recentlySearched.length - 1 - index) * 0.07,
-                  },
-                }}
                 layout
-                key={item}
+                key={item || index}
                 className="flex-shrink-0 cursor-pointer rounded-md bg-white/10 px-4 py-2.5 text-sm font-medium whitespace-nowrap text-gray-300 transition-colors hover:bg-white/20"
                 onClick={() => onItemClick(item)}
               >
