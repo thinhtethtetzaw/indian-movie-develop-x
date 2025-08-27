@@ -1,8 +1,12 @@
 import { useGetAds } from "@/apis/app/queryGetAds";
 import { useGetAllTypes } from "@/apis/app/queryGetAllTypes";
 import { useGetHomeRecommendList } from "@/apis/app/queryGetHomeRecommendList";
+import { useGetSearchInfinite } from "@/apis/app/queryGetSearch";
 import { useGetVideoListByIds } from "@/apis/app/queryGetVideoListByIds";
+import SearchEmptyImage from "@/assets/svgs/no-result.svg?react";
+import { EmptyState } from "@/components/common/EmptyState";
 import SearchHeader from "@/components/common/layouts/SearchHeader";
+import Loading from "@/components/common/Loading";
 import { Tag, TagSkeleton } from "@/components/common/Tag";
 import VideoCard, { VideoCardSkeleton } from "@/components/common/VideoCard";
 import {
@@ -10,9 +14,10 @@ import {
   WatchListSectionSkeleton,
 } from "@/components/common/WatchlistSection";
 import SliderCarousel from "@/components/page/home/SliderCarousel";
-import { Filter } from "@/components/page/search";
+import { Filter, SearchResults } from "@/components/page/search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import type {
@@ -257,14 +262,14 @@ const FilterSection = ({ searchState }: { searchState: { type: string } }) => (
     {searchState.type !== "0" && (
       <motion.div
         className="px-4"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{
-          duration: 0.2,
-          ease: [0.4, 0.0, 0.2, 1],
-          opacity: { duration: 0.15 },
-        }}
+        // initial={{ opacity: 0, y: -20 }}
+        // animate={{ opacity: 1, y: 0 }}
+        // exit={{ opacity: 0, y: -20 }}
+        // transition={{
+        //   duration: 0.2,
+        //   ease: [0.4, 0.0, 0.2, 1],
+        //   opacity: { duration: 0.15 },
+        // }}
       >
         <Filter />
       </motion.div>
@@ -413,6 +418,28 @@ function RouteComponent() {
     ],
   );
 
+  const {
+    searchResults,
+    isLoading: isLoadingSearch,
+    hasNextPage,
+    fetchNextPage,
+    currentPage,
+    isFetchingNextPage,
+  } = useGetSearchInfinite({
+    params: {
+      q: "",
+      type_id: searchState.type ? parseInt(searchState.type) : undefined,
+    },
+    isHomePage: true,
+  });
+
+  const { scrollRooms, viewportRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage,
+    isFetchingNextPage: isFetchingNextPage,
+    fetchNextPage: fetchNextPage,
+    checkPosition: "bottom",
+  });
+
   return (
     <>
       <SearchHeader
@@ -438,7 +465,37 @@ function RouteComponent() {
             )}
           </div>
         ) : (
-          <FilterSection searchState={searchState} />
+          <section
+            ref={viewportRef}
+            onScroll={scrollRooms}
+            className="lighter-scrollbar h-[calc(100vh-var(--search-header-height)-200px)] overflow-y-auto pb-5"
+          >
+            <FilterSection searchState={searchState} />
+            <AnimatePresence key={currentPage ?? 1} mode="popLayout">
+              {isLoadingSearch && (
+                <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
+                  <Loading />
+                </div>
+              )}
+              {!!searchResults && searchResults.length > 0 ? (
+                <div className="mt-5">
+                  <SearchResults
+                    key="search-results"
+                    searchResults={searchResults}
+                    isFetchingNextPage={isFetchingNextPage}
+                    isHomePage={true}
+                  />
+                </div>
+              ) : (
+                <div className="m-auto h-[calc(100vh-var(--search-header-height)-300px)]">
+                  <EmptyState
+                    imageSrc={<SearchEmptyImage />}
+                    title="Search Result Not Found!"
+                  />
+                </div>
+              )}
+            </AnimatePresence>
+          </section>
         )}
       </div>
     </>

@@ -15,6 +15,7 @@ export const getSearchInfiniteQueryOptions = (
     type_id?: number;
   },
   per_page: number = 10,
+  isHomePage: boolean = false,
 ) => {
   const selectedLanguage = i18n.language;
 
@@ -41,7 +42,7 @@ export const getSearchInfiniteQueryOptions = (
           },
         },
       }),
-    enabled: !!params.q && params.q.length >= 1, // Enable for queries with 1+ characters
+    enabled: isHomePage ? !!params.type_id : !!params.q && params.q.length >= 1, // Home page: type_id required, Non-home: q required
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     retry: 1, // Only retry once
@@ -73,18 +74,19 @@ type UseGetSearchInfiniteOptions = {
     type_id?: number;
   };
   per_page?: number;
+  isHomePage?: boolean;
   queryConfig?: QueryConfig<typeof getSearchInfiniteQueryOptions>;
 };
 
 export const useGetSearchInfinite = ({
   params,
   per_page = 10,
+  isHomePage = false,
   queryConfig,
 }: UseGetSearchInfiniteOptions) => {
   const data = useInfiniteQuery({
-    ...getSearchInfiniteQueryOptions(params, per_page),
+    ...getSearchInfiniteQueryOptions(params, per_page, isHomePage),
     ...queryConfig,
-    enabled: !!params.q && params.q.length >= 1,
   });
 
   const searchResults: SearchResultResponse["data"] | undefined =
