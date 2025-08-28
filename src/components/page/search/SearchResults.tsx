@@ -105,7 +105,7 @@ export function SearchResults({
         )}
         {/* Show results if available, otherwise show empty state */}
         {searchResults && searchResults.length > 0 ? (
-          <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6 px-4">
+          <div className="scrollbar-hide grid grid-cols-2 gap-x-3 gap-y-6 px-4 sm:grid-cols-3">
             {searchResults.map((video: VideoResponse, index) => (
               <div key={`${video.vod_id}-${index}`} className="flex-shrink-0">
                 <VideoCard

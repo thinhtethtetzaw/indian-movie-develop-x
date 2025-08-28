@@ -22,7 +22,7 @@ import { cva } from "class-variance-authority";
 import type { ReactNode } from "react";
 
 const classes = cva(
-  "fixed z-[var(--z-dialog)] bg-popover w-full rounded-xl max-h-[80vh] overflow-auto backdrop-blur-md sm:max-w-sm text-popover-foreground",
+  "fixed z-[var(--z-dialog)] bg-popover w-[95%] sm:w-full rounded-xl max-h-[80vh] overflow-auto backdrop-blur-md sm:max-w-sm text-popover-foreground",
   {
     variants: {
       size: {
@@ -67,7 +67,7 @@ const Dialog = () => {
 
   const renderDialogFooter = () => {
     return (
-      <div className="flex justify-end space-x-2">
+      <div className="flex justify-end space-x-1 sm:space-x-2">
         {cancel && (
           <Button
             variant={cancel.variant ?? "outline"}

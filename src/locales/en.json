@@ -6,7 +6,9 @@
     "continueWatching": "Continue Watching",
     "popularApps": "Popular Apps",
     "popularSearches": "Popular Searches",
-    "clearFilter": "Clear Filter"
+    "clearFilter": "Clear Filter",
+    "sortBy": "Sort By",
+    "year": "Year"
   },
   "layout": {
     "navbar": {
