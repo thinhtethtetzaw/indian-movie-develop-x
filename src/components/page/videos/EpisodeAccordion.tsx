@@ -1,5 +1,5 @@
 import EpisodeIcon from "@/assets/svgs/icon-episode.svg?react";
-import { ChevronUp } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 import React, { useState } from "react";
 
 import { Tag } from "@/components/common/Tag";
@@ -69,7 +69,7 @@ const EpisodeAccordion: React.FC<EpisodeAccordionProps> = ({
             {episodes.length} Episodes
           </span>
         </div>
-        <ChevronUp
+        <ChevronDownIcon
           className={`h-5 w-5 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}

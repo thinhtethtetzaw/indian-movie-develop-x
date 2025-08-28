@@ -168,7 +168,9 @@ function RouteComponent() {
       dialog: {
         isAlert: true,
         title: t("pages.bookmarks.removeDialogTitle"),
+        titleClassName: "text-left",
         description: t("pages.bookmarks.removeDialogDescription"),
+        descriptionClassName: "text-left",
         action: {
           label: t("pages.bookmarks.confirm"),
           variant: "ghost",
@@ -267,6 +269,7 @@ function RouteComponent() {
                 });
           }}
           index={index}
+          className="w-full"
         />
       </motion.div>
     ),
@@ -407,7 +410,7 @@ function RouteComponent() {
         ) : (
           <>
             {bookmarkedVideos && bookmarkedVideos.length > 0 ? (
-              <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
                 <AnimatePresence mode="popLayout">
                   {bookmarkedVideos?.map((video, index) =>
                     renderVideoCard(video, index),
