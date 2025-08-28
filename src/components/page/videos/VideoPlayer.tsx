@@ -30,6 +30,40 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const artRef = useRef<Artplayer | null>(null);
   const hlsRef = useRef<Hls | null>(null);
 
+  // Helper function to stop all media and audio in the browser
+  const stopAllMedia = () => {
+    // Stop all video elements on the page
+    const allVideos = document.querySelectorAll("video");
+    allVideos.forEach((video) => {
+      video.pause();
+      video.currentTime = 0;
+      video.muted = true;
+      // Clear src to fully stop the media
+      video.src = "";
+      video.load();
+    });
+
+    // Stop all audio elements on the page
+    const allAudios = document.querySelectorAll("audio");
+    allAudios.forEach((audio) => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.muted = true;
+      audio.src = "";
+      audio.load();
+    });
+
+    // Stop any Web Audio API contexts
+    if (window.AudioContext || (window as any).webkitAudioContext) {
+      const audioContexts = (window as any).audioContexts || [];
+      audioContexts.forEach((ctx: AudioContext) => {
+        if (ctx.state !== "closed") {
+          ctx.close();
+        }
+      });
+    }
+  };
+
   // Helper function to create HLS configuration
   const createHLSConfig = (baseConfig: any) => ({
     ...baseConfig,
@@ -125,6 +159,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
         // Setup hover controls
         const { cleanup } = setupHoverControls(art, centerControls);
+
         // Cleanup on destroy
         art.on("destroy", async () => {
           setTimeout(() => {
@@ -226,11 +261,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     return { hideTimeout, cleanup };
   };
 
-  // Force destroy existing player and clean up all resources
+  // Enhanced destroy function with complete media cleanup
   const destroyPlayer = async () => {
     const currentTime = artRef.current?.currentTime || 0;
     const duration = artRef.current?.duration || 0;
 
+    // Save playback progress
     if (currentTime > 0) {
       await db.watchList
         .put({
@@ -245,20 +281,28 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         });
     }
 
-    // Stop and pause the video element directly
+    // Stop all media first to ensure no audio continues
+    stopAllMedia();
+
+    // Stop and clean up the video element specifically
     if (playerRef.current) {
       const videoElement = playerRef.current.querySelector("video");
       if (videoElement) {
         videoElement.pause();
+        videoElement.muted = true;
+        videoElement.currentTime = 0;
         videoElement.src = "";
+        videoElement.srcObject = null;
         videoElement.load();
         videoElement.remove();
       }
     }
 
-    // Destroy HLS instance
+    // Destroy HLS instance with additional cleanup
     if (hlsRef.current) {
       console.log("Destroying HLS instance");
+      hlsRef.current.stopLoad();
+      hlsRef.current.detachMedia();
       hlsRef.current.destroy();
       hlsRef.current = null;
     }
@@ -266,6 +310,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     // Destroy Artplayer instance
     if (artRef.current) {
       console.log("Destroying Artplayer instance");
+      // Pause and mute before destroying
+      if (artRef.current.video) {
+        artRef.current.video.pause();
+        artRef.current.video.muted = true;
+      }
       artRef.current.destroy();
       artRef.current = null;
     }
@@ -274,18 +323,21 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     if (playerRef.current) {
       playerRef.current.innerHTML = "";
     }
+
+    // Force garbage collection hint
+    if (window.gc) {
+      window.gc();
+    }
   };
 
-  // Destroy existing player when URL changes
   useEffect(() => {
+    stopAllMedia();
     destroyPlayer();
   }, [url]);
 
-  // Create new player
   useEffect(() => {
     if (!playerRef.current || !url) return;
-
-    console.log("Creating new player with URL:", url);
+    stopAllMedia();
 
     const isHLS = url.toLowerCase().endsWith(".m3u8");
 
@@ -293,7 +345,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       container: playerRef.current,
       url,
       poster,
-      autoplay: false,
+      autoplay: true,
+      muted: false,
       setting: false,
       fullscreen: true,
       playbackRate: true,
@@ -309,10 +362,65 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       plugins: [createCenterControlsPlugin()],
     });
 
+    // Handle autoplay policies - try to play after a short delay
+    artRef.current.on("ready", () => {
+      if (artRef.current) {
+        // Try to autoplay, handle potential browser restrictions
+        artRef.current.play().catch((error) => {
+          console.log("Autoplay was prevented:", error);
+          // If autoplay fails, try with muted first
+          if (artRef.current?.video) {
+            artRef.current.video.muted = true;
+            artRef.current
+              .play()
+              .then(() => {
+                // After starting muted, try to unmute
+                setTimeout(() => {
+                  if (artRef.current?.video) {
+                    artRef.current.video.muted = false;
+                  }
+                }, 1000);
+              })
+              .catch(() => {
+                console.log(
+                  "Even muted autoplay failed - user interaction required",
+                );
+              });
+          }
+        });
+      }
+    });
+
     return () => {
       destroyPlayer();
     };
   }, [url, poster, id]);
+
+  // Handle page visibility changes to pause video when tab is not active
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Page is hidden, pause the video
+        if (artRef.current?.video) {
+          artRef.current.video.pause();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      stopAllMedia();
+      destroyPlayer();
+    };
+  }, []);
 
   return (
     <div
