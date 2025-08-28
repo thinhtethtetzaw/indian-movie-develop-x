@@ -17,7 +17,7 @@ import { groupEpisodes } from "@/lib/processEpisodes";
 import type { VideoResponse } from "@/types/api-schema/response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
-import { HeartIcon } from "lucide-react";
+import { HeartIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { parseAsString, useQueryState } from "nuqs";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -212,15 +212,38 @@ function RouteComponent() {
     </Button>
   );
 
+  const renderHomeExitButton = () => (
+    <Button
+      variant="ghost"
+      size="icon"
+      className="size-8 rounded-full bg-white/20 backdrop-blur-sm transition-all hover:bg-black/40"
+      onClick={() => navigate({ to: "/home" })}
+    >
+      <motion.div
+        animate={{
+          scale: isExistingBookmark ? [1, 1.2, 1] : 1,
+        }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }}
+      >
+        <XIcon className="size-4" />
+      </motion.div>
+    </Button>
+  );
+
   const renderVideoContent = () => {
     if (!videoDetail) return null;
 
     return (
       <div className="space-y-6 px-4">
-        <VideoInfo videoDetail={videoDetail} />
+        <div className="flex justify-between">
+          <VideoInfo videoDetail={videoDetail} />
+          {renderFavoriteButton()}
+        </div>
         <GenresList vod_class={(videoDetail?.vod_class ?? "").split(",")} />
         <Overview vod_content={videoDetail?.vod_content} />
-
         {groupedEpisodes.flatMap((season) => season.episodes).length > 1 && (
           <div className="space-y-2">
             {groupedEpisodes.map((season) => (
@@ -233,11 +256,12 @@ function RouteComponent() {
             ))}
           </div>
         )}
-
         <section className="space-y-4">
-          <h2 className="font-semibold text-white">
-            {t("pages.movies.movieDetails.relatedMovies")}
-          </h2>
+          <div>
+            <h2 className="font-semibold text-white">
+              {t("pages.movies.movieDetails.relatedMovies")}
+            </h2>
+          </div>
           <RelatedMovies
             movies={videoRecommendList ?? []}
             onMovieClick={handleVideoClick}
@@ -282,9 +306,8 @@ function RouteComponent() {
       <NavHeader
         backRoute="back"
         title={t("pages.movies.movieDetails.title")}
-        rightNode={renderFavoriteButton()}
+        rightNode={renderHomeExitButton()}
       />
-
       <div className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height))] space-y-6 overflow-y-auto">
         <VideoPlayer
           key={`${videoDetail?.vod_id}-${currentEpURL}`}
