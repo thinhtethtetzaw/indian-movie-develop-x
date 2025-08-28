@@ -6,7 +6,9 @@
     "continueWatching": "계속 시청",
     "popularApps": "인기 앱",
     "popularSearches": "인기 검색",
-    "clearFilter": "필터 지우기"
+    "clearFilter": "필터 지우기",
+    "sortBy": "정렬",
+    "year": "년"
   },
   "layout": {
     "navbar": {

@@ -6,7 +6,9 @@
     "continueWatching": "繼續觀看",
     "popularApps": "熱門應用",
     "popularSearches": "熱門搜索",
-    "clearFilter": "清除篩選"
+    "clearFilter": "清除篩選",
+    "sortBy": "排序",
+    "year": "年"
   },
   "layout": {
     "navbar": {

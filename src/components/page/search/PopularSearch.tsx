@@ -42,7 +42,7 @@ function PopularSearch() {
       <h2 className="text-forground font-semibold">
         {t("common.popularSearches")}
       </h2>
-      <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+      <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
         {videoList &&
           videoList.length > 0 &&
           videoList.map((video, index) => (

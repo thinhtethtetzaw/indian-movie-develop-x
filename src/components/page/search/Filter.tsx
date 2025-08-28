@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDownIcon } from "lucide-react";
 import { parseAsString, useQueryState } from "nuqs";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Dropdown Trigger Button Component
 interface DropdownTriggerProps {
@@ -88,6 +89,7 @@ const years = [
 ];
 
 export function Filter() {
+  const { t } = useTranslation();
   const [sortOrder, setSortOrder] = useQueryState(
     "sort_order",
     parseAsString.withDefault("asc"),
@@ -133,10 +135,12 @@ export function Filter() {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex w-full items-center justify-between gap-3">
-        <span className="text-base font-medium text-[#CCCCCC]">Sort by</span>
-        <div className="h-4 w-px bg-white/20"></div>
-        <div className="flex items-center gap-x-3">
+      <div className="flex w-full flex-col items-start justify-between sm:flex-row sm:items-center sm:gap-x-3">
+        <span className="text-sm font-medium text-nowrap text-[#CCCCCC] sm:text-base">
+          {t("common.sortBy")}
+        </span>
+        <div className="hidden h-4 w-px bg-white/20 sm:block"></div>
+        <div className="mt-3 flex items-center gap-x-3 sm:mt-0">
           {/* Sort Dropdown */}
           <div className="relative" ref={sortDropdownRef}>
             <DropdownTrigger
@@ -166,7 +170,7 @@ export function Filter() {
           {/* Year Dropdown */}
           <div className="relative" ref={yearDropdownRef}>
             <DropdownTrigger
-              label={year || "Year"}
+              label={year ? year : t("common.year")}
               onClick={() => {
                 setIsDropdownOpen((prev) => ({ ...prev, year: !prev.year }));
               }}
@@ -181,7 +185,7 @@ export function Filter() {
                   className="mb-4 flex w-full items-end justify-end text-sm font-medium text-white/60"
                   disabled={!year}
                 >
-                  Clear Filter
+                  {t("common.clearFilter")}
                 </Button>
                 <div className="grid grid-cols-2 gap-2">
                   {years.map((yearValue) => (

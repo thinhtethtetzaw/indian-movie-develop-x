@@ -6,7 +6,9 @@
     "continueWatching": "視聴を続ける",
     "popularApps": "人気アプリ",
     "popularSearches": "人気の検索",
-    "clearFilter": "フィルターをクリア"
+    "clearFilter": "フィルターをクリア",
+    "sortBy": "並び替え",
+    "year": "年"
   },
   "layout": {
     "navbar": {
