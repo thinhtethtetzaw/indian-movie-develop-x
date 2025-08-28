@@ -160,4 +160,21 @@ code {
   .lighter-scrollbar::-webkit-scrollbar-corner {
     background: transparent;
   }
+  /* video player custom  */
+  .art-bottom {
+    position: relative !important;
+  }
+  .art-bottom .art-controls {
+    position: absolute !important;
+    bottom: 10px !important;
+    left: 0 !important;
+    width: 100% !important;
+  }
+  .art-control-playAndPause {
+    display: none !important;
+  }
+  .art-control-volume {
+    position: absolute !important;
+    right: 40px !important;
+  }
 }
