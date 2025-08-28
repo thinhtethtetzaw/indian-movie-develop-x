@@ -4,6 +4,7 @@ import type { SingleAds } from "@/types/api-schema/response";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "../ui/skeleton";
+import SmartImage from "./SmartImage";
 
 export const ADS_ANIMATION_DELAY_MULTIPLIER = 0.03;
 
@@ -39,7 +40,7 @@ function AdsSection({
             onClick={() => handleAdClick(ad)}
             className="flex flex-shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 overflow-hidden rounded-lg"
           >
-            <img
+            <SmartImage
               src={ad.image ?? PLACEHOLDER_IMAGE_SQUARE}
               alt={ad.title}
               className="aspect-square rounded-lg object-contain"

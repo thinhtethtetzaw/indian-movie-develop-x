@@ -63,7 +63,7 @@ function RouteComponent() {
     <>
       <NavHeader title={t("pages.settings.title")} />
 
-      <section className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] overflow-y-auto py-5 text-white">
+      <section className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height)-var(--bottom-nav-height))] overflow-y-auto py-5 text-white">
         {!isConfigListLoading &&
         !isAdsLoading &&
         !isVideoListLoading &&

@@ -126,7 +126,7 @@ export function SearchResults({
               ))}
           </div>
         ) : (
-          <div className="m-auto h-[calc(100vh-var(--search-header-height)-200px)]">
+          <div className="m-auto h-[calc(100dvh-var(--search-header-height)-200px)]">
             <EmptyState
               imageSrc={<SearchEmptyImage />}
               title="Search Result Not Found!"

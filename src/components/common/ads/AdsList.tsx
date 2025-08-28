@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import React, { useCallback, useMemo } from "react";
+import SmartImage from "../SmartImage";
 
 interface CommonAds {
   id: string;
@@ -120,7 +121,7 @@ const AdsList: React.FC<AdsListProps> = ({ currentPage }) => {
             onClick={() => handleAdClick(ad)}
           >
             <div className="bg-glass mb-2 flex h-18 w-18 flex-shrink-0 items-center justify-center rounded-lg">
-              <img
+              <SmartImage
                 src={ad.image}
                 alt={ad.name}
                 className="h-13 w-13 object-contain"

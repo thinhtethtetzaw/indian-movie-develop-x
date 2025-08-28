@@ -8,6 +8,7 @@ import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { Progress } from "../ui/progress";
 import { Skeleton } from "../ui/skeleton";
+import SmartImage from "./SmartImage";
 
 export const WISHLIST_ANIMATION_DELAY_MULTIPLIER = 0.05;
 
@@ -73,14 +74,11 @@ function WatchListSection({
                 className="w-44 space-y-1"
               >
                 <div className="relative aspect-video w-44 overflow-hidden rounded-lg">
-                  <img
+                  <SmartImage
                     src={video?.vod_pic}
                     alt={video?.vod_name}
                     className="h-full w-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = PLACEHOLDER_IMAGE_HORIZONTAL;
-                    }}
+                    fallback={PLACEHOLDER_IMAGE_HORIZONTAL}
                   />
                   <Progress
                     className="absolute bottom-0 h-1 rounded-none"

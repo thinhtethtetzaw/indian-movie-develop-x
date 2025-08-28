@@ -259,7 +259,7 @@ function RouteComponent() {
     isAdsLoading
   ) {
     return (
-      <div className="h-[calc(100vh-var(--nav-header-height))]">
+      <div className="h-[calc(100dvh-var(--nav-header-height))]">
         <Loading />
       </div>
     );
@@ -285,7 +285,7 @@ function RouteComponent() {
         rightNode={renderFavoriteButton()}
       />
 
-      <div className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height))] space-y-6 overflow-y-auto">
+      <div className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height))] space-y-6 overflow-y-auto">
         <VideoPlayer
           key={`${videoDetail?.vod_id}-${currentEpURL}`}
           id={videoDetail?.vod_id ?? ""}

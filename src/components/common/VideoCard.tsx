@@ -9,6 +9,7 @@ import { HeartIcon, Star } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import SmartImage from "./SmartImage";
 
 interface VideoCardProps {
   video: VideoResponse;
@@ -63,13 +64,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const handleCardClick = useCallback(() => {
     onClick?.(video);
   }, [onClick, video]);
-
-  const handleImageError = useCallback(
-    (e: React.SyntheticEvent<HTMLImageElement>) => {
-      e.currentTarget.src = PLACEHOLDER_IMAGE;
-    },
-    [],
-  );
 
   // Memoized computed values
   const animationDelay = useMemo(
@@ -179,11 +173,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
       }}
     >
       <div className="relative overflow-hidden rounded-sm">
-        <img
+        <SmartImage
           src={video.vod_pic || PLACEHOLDER_IMAGE}
           alt={video.vod_name || "Video"}
           className="h-40 w-full object-cover"
-          onError={handleImageError}
+          fallback={PLACEHOLDER_IMAGE}
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 from-10% via-black/20 via-30% to-transparent to-50%" />

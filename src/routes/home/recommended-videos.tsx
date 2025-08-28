@@ -67,7 +67,7 @@ function RouteComponent() {
       <section
         onScroll={scrollRooms}
         ref={viewportRef}
-        className="lighter-scrollbar h-[calc(100vh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto px-4 pb-5"
+        className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto px-4 pb-5"
       >
         <div className="space-y-4">
           <div className="grid grid-cols-3 gap-x-3 gap-y-6">

@@ -1,3 +1,4 @@
+import SmartImage from "@/components/common/SmartImage";
 import {
   Carousel,
   CarouselContent,
@@ -60,16 +61,13 @@ const SliderCarousel = ({ videos, onVideoClick }: SliderCarouselProps) => {
                 }`}
                 onClick={() => handleVideoClick(video)}
               >
-                <img
+                <SmartImage
                   src={video.vod_pic}
                   alt={video.vod_name}
                   className={`h-[157px] w-full transform rounded-xl border border-[#222222] object-cover transition-all duration-500 ease-in-out ${
                     index === current - 1 ? "scale-100" : "scale-90"
                   }`}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = PLACEHOLDER_IMAGE_HORIZONTAL;
-                  }}
+                  fallback={PLACEHOLDER_IMAGE_HORIZONTAL}
                 />
               </div>
             </CarouselItem>
