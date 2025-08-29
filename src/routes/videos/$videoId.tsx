@@ -309,13 +309,15 @@ function RouteComponent() {
         rightNode={renderHomeExitButton()}
       />
       <div className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height))] space-y-6 overflow-y-auto">
-        <VideoPlayer
-          key={`${videoDetail?.vod_id}-${currentEpURL}`}
-          id={videoDetail?.vod_id ?? ""}
-          url={currentEpURL}
-          currentPlayhead={currentPlayhead}
-          poster={videoDetail?.vod_pic ?? PLACEHOLDER_IMAGE_HORIZONTAL}
-        />
+        <div className="sticky top-[0px] z-20 bg-black">
+          <VideoPlayer
+            key={`${videoDetail?.vod_id}-${currentEpURL}`}
+            id={videoDetail?.vod_id ?? ""}
+            url={currentEpURL}
+            currentPlayhead={currentPlayhead}
+            poster={videoDetail?.vod_pic ?? PLACEHOLDER_IMAGE_HORIZONTAL}
+          />
+        </div>
         {allAds.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}

@@ -40,11 +40,7 @@ const BOOKMARKS_ANIMATION_CONFIG = {
     initial: { scale: 0, opacity: 0 },
     animate: { scale: 1, opacity: 1 },
     exit: { scale: 0, opacity: 0 },
-    transition: {
-      type: "spring" as const,
-      stiffness: 300,
-      damping: 20,
-    },
+    transition: { type: "spring" as const, stiffness: 300, damping: 20 },
     hover: { scale: 1.1 },
     tap: { scale: 0.95 },
   },
@@ -52,21 +48,13 @@ const BOOKMARKS_ANIMATION_CONFIG = {
     initial: { scale: 0, rotate: -180 },
     animate: { scale: 1, rotate: 0 },
     exit: { scale: 0, rotate: 180 },
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 25,
-    },
+    transition: { type: "spring", stiffness: 400, damping: 25 },
   },
   bottomDrawer: {
     initial: { y: "100%" },
     animate: { y: 0 },
     exit: { y: "100%" },
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 30,
-    },
+    transition: { type: "spring", stiffness: 300, damping: 30 },
   },
 } as const;
 
@@ -101,14 +89,10 @@ function RouteComponent() {
   const { videoList, isLoading: isVideoListLoading } = useGetVideoListByIds({
     videoIds: allBookmarks.map((bookmark) => bookmark.id ?? ""),
     typeId: Number(searchState.category),
-    queryConfig: {
-      enabled: allBookmarks.length > 0,
-    },
+    queryConfig: { enabled: allBookmarks.length > 0 },
   });
 
   const { allTypes, isLoading: isCategoryListLoading } = useGetAllTypes({});
-
-  // Ads list
   const { allAds, isLoading: isAdsLoading } = useGetAds({
     uniqueLabel: "bookmark_page_ads",
   });
@@ -139,14 +123,9 @@ function RouteComponent() {
   const handleItemSelect = useCallback(
     (videoId: string) => {
       if (mode !== "edit") return;
-
       setSelectedItems((prev) => {
         const newSet = new Set(prev);
-        if (newSet.has(videoId)) {
-          newSet.delete(videoId);
-        } else {
-          newSet.add(videoId);
-        }
+        newSet.has(videoId) ? newSet.delete(videoId) : newSet.add(videoId);
         return newSet;
       });
     },
@@ -154,13 +133,9 @@ function RouteComponent() {
   );
 
   const handleSelectAll = useCallback(() => {
-    if (isAllSelected) {
-      setSelectedItems(new Set());
-    } else {
-      setSelectedItems(
-        new Set(bookmarkedVideos?.map((video) => video.vod_id ?? "")),
-      );
-    }
+    if (isAllSelected) setSelectedItems(new Set());
+    else
+      setSelectedItems(new Set(bookmarkedVideos?.map((v) => v.vod_id ?? "")));
   }, [isAllSelected, bookmarkedVideos]);
 
   const handleRemoveSelected = useCallback(async () => {
@@ -176,17 +151,13 @@ function RouteComponent() {
           variant: "ghost",
           className: "text-red-600 hover:text-red-500",
           onClick: async () => {
-            if (selectedItems.size > 0) {
+            if (selectedItems.size > 0)
               await db.bookmarks.bulkDelete(Array.from(selectedItems));
-            }
             setSelectedItems(new Set());
             setMode("list");
           },
         },
-        cancel: {
-          label: t("pages.bookmarks.goBack"),
-          variant: "ghost",
-        },
+        cancel: { label: t("pages.bookmarks.goBack"), variant: "ghost" },
       },
     });
   }, [selectedItems, setMode, showDialog, t]);
@@ -201,7 +172,7 @@ function RouteComponent() {
     setSelectedItems(new Set());
   }, [mode, setMode]);
 
-  // Render functions
+  // Render helpers
   const renderSelectionIndicator = useCallback(
     (videoId: string) => (
       <AnimatePresence>
@@ -263,9 +234,7 @@ function RouteComponent() {
               ? handleItemSelect(video.vod_id ?? "")
               : navigate({
                   to: "/videos/$videoId",
-                  params: {
-                    videoId: video.vod_id ?? "",
-                  },
+                  params: { videoId: video.vod_id ?? "" },
                 });
           }}
           index={index}
@@ -293,10 +262,9 @@ function RouteComponent() {
             transition={BOOKMARKS_ANIMATION_CONFIG.bottomDrawer.transition}
           >
             <div className="flex flex-col gap-4 px-5 py-4">
-              {/* Header */}
               <div className="flex items-center justify-between py-2">
                 <span className="text-foreground text-lg font-semibold">
-                  {selectedItems.size} Selected
+                  {selectedItems.size} {t("pages.bookmarks.selected")}
                 </span>
                 <Button
                   variant="ghost"
@@ -307,8 +275,6 @@ function RouteComponent() {
                   <X />
                 </Button>
               </div>
-
-              {/* Action buttons */}
               <div className="mb-4 flex gap-3">
                 <Button
                   variant="secondary"
@@ -384,18 +350,26 @@ function RouteComponent() {
                   })
                 }
               >
-                {category.type_name}
+                {t(`categories.${category.type_id}`, {
+                  defaultValue: category.type_name,
+                })}
               </Tag>
             ))}
       </div>
     ),
-    [searchState.category, isCategoryListLoading, renderTagSkeletons],
+    [
+      searchState.category,
+      isCategoryListLoading,
+      renderTagSkeletons,
+      allTypes,
+      t,
+    ],
   );
 
   const renderVideoSkeletons = useCallback(
     () =>
-      Array.from({ length: SKELETON_COUNT.videos }).map((_, index) =>
-        renderVideoCardSkeleton(index),
+      Array.from({ length: SKELETON_COUNT.videos }).map((_, i) =>
+        renderVideoCardSkeleton(i),
       ),
     [renderVideoCardSkeleton],
   );
@@ -407,24 +381,20 @@ function RouteComponent() {
           <div className="grid grid-cols-3 gap-x-3 gap-y-6">
             {renderVideoSkeletons()}
           </div>
+        ) : bookmarkedVideos && bookmarkedVideos.length > 0 ? (
+          <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {bookmarkedVideos.map((video, index) =>
+                renderVideoCard(video, index),
+              )}
+            </AnimatePresence>
+          </div>
         ) : (
-          <>
-            {bookmarkedVideos && bookmarkedVideos.length > 0 ? (
-              <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
-                <AnimatePresence mode="popLayout">
-                  {bookmarkedVideos?.map((video, index) =>
-                    renderVideoCard(video, index),
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <EmptyState
-                imageSrc={<BookmarksEmptyImage className="size-33" />}
-                title={t("pages.bookmarks.emptyTitle")}
-                description={t("pages.bookmarks.emptyDescription")}
-              />
-            )}
-          </>
+          <EmptyState
+            imageSrc={<BookmarksEmptyImage className="size-33" />}
+            title={t("pages.bookmarks.emptyTitle")}
+            description={t("pages.bookmarks.emptyDescription")}
+          />
         )}
       </div>
     ),
@@ -433,6 +403,7 @@ function RouteComponent() {
       renderVideoCard,
       renderVideoSkeletons,
       isVideoListLoading,
+      t,
     ],
   );
 
@@ -460,9 +431,7 @@ function RouteComponent() {
       <div className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-6 overflow-y-auto py-5">
         {renderTags()}
         {isAdsLoading ? (
-          <>
-            <AdsSectionSkeleton />
-          </>
+          <AdsSectionSkeleton />
         ) : (
           allAds.length > 0 && (
             <div className="px-4">

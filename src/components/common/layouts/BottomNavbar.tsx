@@ -44,8 +44,8 @@ function BottomNavbar() {
     },
   ];
   return (
-    <div className="z-[var(--z-nav-layer)] h-[var(--bottom-nav-height)] bg-linear-to-t from-[#141416] to-[#1F1F1F] px-10 pt-2.5 pb-4">
-      <div className="grid grid-cols-3 items-center gap-x-12">
+    <div className="z-[var(--z-nav-layer)] h-[var(--bottom-nav-height)] bg-linear-to-t from-[#141416] to-[#1F1F1F] px-5 pt-2.5 pb-4">
+      <div className="grid grid-cols-3 items-center gap-x-10">
         {navItems.map((item) => {
           const isActive = checkRouteActive(item.path);
           return (
