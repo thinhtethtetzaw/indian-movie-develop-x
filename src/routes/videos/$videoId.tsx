@@ -283,7 +283,7 @@ function RouteComponent() {
     isAdsLoading
   ) {
     return (
-      <div className="h-[calc(100dvh-var(--nav-header-height))]">
+      <div className="h-[calc(100svh-var(--nav-header-height))]">
         <Loading />
       </div>
     );
@@ -308,7 +308,7 @@ function RouteComponent() {
         title={t("pages.movies.movieDetails.title")}
         rightNode={renderHomeExitButton()}
       />
-      <div className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height))] space-y-6 overflow-y-auto">
+      <div className="lighter-scrollbar h-[calc(100svh-var(--nav-header-height))] space-y-6 overflow-y-auto">
         <div className="sticky top-[0px] z-20 bg-black">
           <VideoPlayer
             key={`${videoDetail?.vod_id}-${currentEpURL}`}

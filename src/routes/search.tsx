@@ -163,7 +163,7 @@ function RouteComponent() {
       <section
         ref={viewportRef}
         onScroll={scrollRooms}
-        className="lighter-scrollbar h-[calc(100dvh-var(--search-header-height))] overflow-y-auto pb-5"
+        className="lighter-scrollbar h-[calc(100svh-var(--search-header-height))] overflow-y-auto pb-5"
       >
         <AnimatePresence key={currentPage ?? 1} mode="popLayout">
           {/* Recent Search */}
@@ -216,14 +216,14 @@ function RouteComponent() {
 
           {/* Shared Loading State */}
           {shouldShowLoading && (
-            <div className="m-auto h-[calc(100dvh-var(--search-header-height)-40px)]">
+            <div className="m-auto h-[calc(100svh-var(--search-header-height)-40px)]">
               <Loading />
             </div>
           )}
 
           {/* Shared Empty State */}
           {shouldShowEmptyState && (
-            <div className="m-auto h-[calc(100dvh-var(--search-header-height)-40px)]">
+            <div className="m-auto h-[calc(100svh-var(--search-header-height)-40px)]">
               <EmptyState
                 imageSrc={<SearchEmptyImage />}
                 title="Search Result Not Found!"
