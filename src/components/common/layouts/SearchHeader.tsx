@@ -175,7 +175,7 @@ const SearchHeader = forwardRef<SearchHeaderRef, Props>(
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
             className={cn(
-              "bg-glass h-13 rounded-full border border-white/20 pl-12 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
+              "bg-glass h-13 rounded-full border border-white/20 px-12 text-base text-white placeholder:text-base focus-visible:ring-1 focus-visible:ring-white/40",
               isClickable && "cursor-pointer",
             )}
             readOnly={isClickable}
