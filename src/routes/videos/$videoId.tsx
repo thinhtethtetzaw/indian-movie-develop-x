@@ -305,7 +305,7 @@ function RouteComponent() {
     >
       <NavHeader
         backRoute="back"
-        title={t("pages.movies.movieDetails.title")}
+        title={t("fldkfskl")}
         rightNode={renderHomeExitButton()}
       />
       <div className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height))] space-y-6 overflow-y-auto">
