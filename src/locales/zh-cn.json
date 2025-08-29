@@ -1,0 +1,79 @@
+{
+  "common": {
+    "viewAll": "查看全部",
+    "viewMore": "查看更多",
+    "noData": "暂无数据",
+    "continueWatching": "继续观看",
+    "popularApps": "热门应用",
+    "popularSearches": "热门搜索",
+    "clearFilter": "清除筛选",
+    "sortBy": "排序",
+    "year": "年"
+  },
+  "layout": {
+    "navbar": {
+      "home": "首页",
+      "bookmarks": "书签",
+      "settings": "设置"
+    }
+  },
+  "pages": {
+    "home": {
+      "categories": "分类",
+      "popularMovies": "热门电影",
+      "popularTVSeries": "热门电视剧",
+      "youMayLike": "你可能喜欢"
+    },
+    "bookmarks": {
+      "title": "书签",
+      "edit": "编辑",
+      "cancel": "取消",
+      "selected": "已选择",
+      "selectAll": "全选",
+      "deselectAll": "取消全选",
+      "remove": "移除",
+      "removeDialogTitle": "从书签中移除？",
+      "removeDialogDescription": "确定要从书签中移除选中的项目吗？",
+      "goBack": "返回",
+      "confirm": "是的，移除",
+      "emptyTitle": "保存您喜爱的电影和剧集",
+      "emptyDescription": "浏览并保存您喜爱的电影和电视剧"
+    },
+    "settings": {
+      "title": "设置",
+      "notifications": {
+        "title": "通知",
+        "emptyTitle": "您已经查看了所有内容",
+        "emptyDescription": "目前没有通知"
+      },
+      "language": {
+        "title": "语言"
+      },
+      "shareApp": {
+        "title": "分享我们的应用",
+        "shareToSocialMedia": "分享到社交媒体"
+      },
+      "version": {
+        "title": "版本"
+      }
+    },
+    "search": {
+      "placeholder": "搜索电影和电视剧...",
+      "recent": "最近搜索",
+      "popularSearches": "热门搜索"
+    },
+    "movies": {
+      "movieDetails": {
+        "title": "电影详情",
+        "subtitle": "剧情简介",
+        "director": "导演",
+        "actors": "演员",
+        "releaseDate": "上映日期",
+        "overview": "简介",
+        "expand": "展开",
+        "collapse": "收起",
+        "relatedMovies": "相关电影"
+      }
+    }
+  }
+}

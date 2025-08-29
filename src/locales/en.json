@@ -1,0 +1,78 @@
+{
+  "common": {
+    "viewAll": "View All",
+    "viewMore": "View More",
+    "noData": "No data",
+    "continueWatching": "Continue Watching",
+    "popularApps": "Popular Apps",
+    "popularSearches": "Popular Searches",
+    "clearFilter": "Clear Filter",
+    "sortBy": "Sort By",
+    "year": "Year"
+  },
+  "layout": {
+    "navbar": {
+      "home": "Home",
+      "bookmarks": "Bookmarks",
+      "settings": "Settings"
+    }
+  },
+  "pages": {
+    "home": {
+      "categories": "Categories",
+      "youMayLike": "You May Like"
+    },
+    "bookmarks": {
+      "title": "Bookmarks",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "selected": "Selected",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all",
+      "remove": "Remove",
+      "removeDialogTitle": "Remove from Bookmark?",
+      "removeDialogDescription": "Are sure you want to remove selected items to remove from bookmark?",
+      "goBack": "Go back",
+      "confirm": "Yes, Remove",
+      "emptyTitle": "Save Your Favorite Movies and Series",
+      "emptyDescription": "Browse and saved your favourite movies and tv series"
+    },
+
+    "settings": {
+      "title": "Settings",
+      "notifications": {
+        "title": "Notifications",
+        "emptyTitle": "You've caught up with everything",
+        "emptyDescription": "No notification at this time"
+      },
+      "language": {
+        "title": "Language"
+      },
+      "shareApp": {
+        "title": "Share our app",
+        "shareToSocialMedia": "Share To Social Media"
+      },
+      "version": {
+        "title": "Version"
+      }
+    },
+    "search": {
+      "placeholder": "Search movies and series...",
+      "recent": "Recent",
+      "popularSearches": "Popular Searches"
+    },
+    "movies": {
+      "movieDetails": {
+        "title": "Details",
+        "subtitle": "Subtitle",
+        "director": "Director",
+        "actors": "Actors",
+        "releaseDate": "Release",
+        "overview": "Overview",
+        "expand": "expands",
+        "collapse": "collapse",
+        "relatedMovies": "Related Movies"
+      }
+    }
+  }
+}

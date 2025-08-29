@@ -1,0 +1,79 @@
+{
+  "common": {
+    "viewAll": "전체 보기",
+    "viewMore": "더 보기",
+    "noData": "데이터 없음",
+    "continueWatching": "계속 시청",
+    "popularApps": "인기 앱",
+    "popularSearches": "인기 검색",
+    "clearFilter": "필터 지우기",
+    "sortBy": "정렬",
+    "year": "년"
+  },
+  "layout": {
+    "navbar": {
+      "home": "홈",
+      "bookmarks": "북마크",
+      "settings": "설정"
+    }
+  },
+  "pages": {
+    "home": {
+      "categories": "카테고리",
+      "popularMovies": "인기 영화",
+      "popularTVSeries": "인기 TV 시리즈",
+      "youMayLike": "추천"
+    },
+    "bookmarks": {
+      "title": "북마크",
+      "edit": "편집",
+      "cancel": "취소",
+      "selected": "선택됨",
+      "selectAll": "전체 선택",
+      "deselectAll": "전체 해제",
+      "remove": "제거",
+      "removeDialogTitle": "북마크에서 제거하시겠습니까?",
+      "removeDialogDescription": "선택한 항목을 북마크에서 제거하시겠습니까?",
+      "goBack": "돌아가기",
+      "confirm": "네, 제거합니다",
+      "emptyTitle": "좋아하는 영화와 시리즈를 저장하세요",
+      "emptyDescription": "좋아하는 영화와 TV 시리즈를 찾아서 저장하세요"
+    },
+    "settings": {
+      "title": "설정",
+      "notifications": {
+        "title": "알림",
+        "emptyTitle": "모든 것을 확인했습니다",
+        "emptyDescription": "현재 알림이 없습니다"
+      },
+      "language": {
+        "title": "언어"
+      },
+      "shareApp": {
+        "title": "앱 공유하기",
+        "shareToSocialMedia": "소셜 미디어에서 공유"
+      },
+      "version": {
+        "title": "버전"
+      }
+    },
+    "search": {
+      "placeholder": "영화와 시리즈 검색...",
+      "recent": "최근 검색",
+      "popularSearches": "인기 검색"
+    },
+    "movies": {
+      "movieDetails": {
+        "title": "영화 정보",
+        "subtitle": "영화 정보",
+        "director": "감독",
+        "actors": "출연진",
+        "releaseDate": "개봉일",
+        "overview": "개요",
+        "expand": "더보기",
+        "collapse": "접기",
+        "relatedMovies": "관련 영화"
+      }
+    }
+  }
+}

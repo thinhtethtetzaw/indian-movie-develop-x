@@ -1,0 +1,79 @@
+{
+  "common": {
+    "viewAll": "查看全部",
+    "viewMore": "查看更多",
+    "noData": "暫無數據",
+    "continueWatching": "繼續觀看",
+    "popularApps": "熱門應用",
+    "popularSearches": "熱門搜索",
+    "clearFilter": "清除篩選",
+    "sortBy": "排序",
+    "year": "年"
+  },
+  "layout": {
+    "navbar": {
+      "home": "首頁",
+      "bookmarks": "書籤",
+      "settings": "設定"
+    }
+  },
+  "pages": {
+    "home": {
+      "categories": "分類",
+      "popularMovies": "熱門電影",
+      "popularTVSeries": "熱門電視劇",
+      "youMayLike": "你可能喜歡"
+    },
+    "bookmarks": {
+      "title": "書籤",
+      "edit": "編輯",
+      "cancel": "取消",
+      "selected": "已選擇",
+      "selectAll": "全選",
+      "deselectAll": "取消全選",
+      "remove": "移除",
+      "removeDialogTitle": "從書籤中移除？",
+      "removeDialogDescription": "確定要從書籤中移除選中的項目嗎？",
+      "goBack": "返回",
+      "confirm": "是的，移除",
+      "emptyTitle": "保存您喜愛的電影和劇集",
+      "emptyDescription": "瀏覽並保存您喜愛的電影和電視劇"
+    },
+    "settings": {
+      "title": "設定",
+      "notifications": {
+        "title": "通知",
+        "emptyTitle": "您已經查看了所有內容",
+        "emptyDescription": "目前沒有通知"
+      },
+      "language": {
+        "title": "語言"
+      },
+      "shareApp": {
+        "title": "分享我們的應用",
+        "shareToSocialMedia": "分享到社交媒體"
+      },
+      "version": {
+        "title": "版本"
+      }
+    },
+    "search": {
+      "placeholder": "搜索電影和電視劇...",
+      "recent": "最近搜索",
+      "popularSearches": "熱門搜索"
+    },
+    "movies": {
+      "movieDetails": {
+        "title": "電影詳情",
+        "subtitle": "電影詳情",
+        "director": "導演",
+        "actors": "演員",
+        "releaseDate": "上映日期",
+        "overview": "簡介",
+        "expand": "展開",
+        "collapse": "收起",
+        "relatedMovies": "相關電影"
+      }
+    }
+  }
+}
