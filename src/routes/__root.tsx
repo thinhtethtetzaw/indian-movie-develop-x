@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         <NuqsAdapter>
           <div className="bg-background relative mx-auto flex h-svh w-screen max-w-md flex-col overflow-hidden">
             <div className="pointer-events-none absolute z-[var(--z-popover)] size-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-2xl"></div>
-            <div className="flex-1">
+            <div className="flex-1 pb-[var(--bottom-nav-height)]">
               <AnimatePresence mode="wait" initial={false}>
                 <Outlet key={routerState.location.pathname} />
               </AnimatePresence>
