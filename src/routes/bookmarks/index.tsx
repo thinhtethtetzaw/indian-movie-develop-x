@@ -378,11 +378,11 @@ function RouteComponent() {
     () => (
       <div className="px-4">
         {isVideoListLoading ? (
-          <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+          <div className="2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
             {renderVideoSkeletons()}
           </div>
         ) : bookmarkedVideos && bookmarkedVideos.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
+          <div className="2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
             <AnimatePresence mode="popLayout">
               {bookmarkedVideos.map((video, index) =>
                 renderVideoCard(video, index),

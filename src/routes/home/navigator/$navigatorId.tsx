@@ -52,7 +52,7 @@ function RouteComponent() {
     return (
       <>
         <Skeleton className="h-[var(--nav-header-height)] w-full rounded-none" />
-        <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-6 px-4">
+        <div className="2xs:grid-cols-3 mt-5 grid grid-cols-2 gap-x-3 gap-y-6 px-4">
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="flex-shrink-0">
               {renderVideoCardSkeleton(index)}
@@ -76,7 +76,7 @@ function RouteComponent() {
         ref={viewportRef}
         className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height)-var(--bottom-nav-height))] space-y-4 overflow-y-auto px-4 pb-5"
       >
-        <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+        <div className="2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
           {videoList?.map(
             (video, index) =>
               !!video && (

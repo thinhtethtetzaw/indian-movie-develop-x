@@ -104,7 +104,7 @@ const TopicSectionSkeleton = ({
 }) => (
   <section className="space-y-4 px-4">
     <Skeleton className="h-6 w-32" />
-    <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+    <div className="2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
       {Array.from({ length: SKELETON_COUNTS.TOPIC_ITEMS }).map((_, index) => (
         <div key={index} className="flex-shrink-0">
           {renderVideoCardSkeleton(index)}
@@ -233,7 +233,7 @@ const TopicSection = ({
 }) => (
   <section className="space-y-4 px-4">
     <h2 className="text-forground font-semibold">{item.title}</h2>
-    <div className="scrollbar-hide grid grid-cols-3 gap-x-3 gap-y-6">
+    <div className="scrollbar-hide 2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
       {item.list.map((video: VideoResponse, index: number) => (
         <div key={video.vod_id} className="flex-shrink-0">
           <VideoCard
