@@ -172,12 +172,16 @@ code {
     bottom: 10px !important;
     left: 0 !important;
     width: 100% !important;
+    padding: 0 10px !important;
   }
   .art-control-playAndPause {
     display: none !important;
   }
   .art-control-volume {
     position: absolute !important;
-    right: 40px !important;
+    right: 30px !important;
+  }
+  .art-notice {
+    display: none !important;
   }
 }

@@ -87,6 +87,18 @@ const VideoCard: React.FC<VideoCardProps> = ({
     [isExistingBookmark],
   );
 
+  // Updated favorite button className with consistent background
+  const favoriteButtonClassName = useMemo(
+    () =>
+      cn(
+        "absolute top-1 right-1 size-8 rounded-full backdrop-blur-sm transition-all duration-200",
+        isExistingBookmark
+          ? "bg-black-500/20 hover:bg-black-500/30"
+          : "bg-white/20 hover:bg-white/30",
+      ),
+    [isExistingBookmark],
+  );
+
   // Render functions
   const renderRating = () => {
     if (!hasRatingOrEpisode) return null;
@@ -128,7 +140,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-1 right-1 size-8 rounded-full bg-white/20 backdrop-blur-sm transition-all hover:bg-black/40"
+          className={favoriteButtonClassName}
           onClick={handleFavoriteClick}
           aria-label={
             isExistingBookmark ? "Remove from favorites" : "Add to favorites"
