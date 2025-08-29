@@ -188,7 +188,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <SmartImage
           src={video.vod_pic || PLACEHOLDER_IMAGE}
           alt={video.vod_name || "Video"}
-          className="h-40 w-full object-cover"
+          className="2xs:h-40 h-58 w-full object-cover"
           fallback={PLACEHOLDER_IMAGE}
           loading="lazy"
         />
@@ -222,7 +222,7 @@ const VideoCardSkeleton = ({
     }}
     className={cn("min-h-46 w-full min-w-31", className)}
   >
-    <Skeleton className="h-40 w-full" />
+    <Skeleton className="2xs:h-40 h-58 w-full" />
     <Skeleton className="mt-1.5 h-6 w-3/4" />
   </motion.div>
 );

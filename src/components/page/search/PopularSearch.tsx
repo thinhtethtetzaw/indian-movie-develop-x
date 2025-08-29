@@ -42,7 +42,7 @@ function PopularSearch() {
       <h2 className="text-forground font-semibold">
         {t("common.popularSearches")}
       </h2>
-      <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
+      <div className="2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
         {videoList &&
           videoList.length > 0 &&
           videoList.map((video, index) => (
@@ -83,7 +83,7 @@ function PopularSearch() {
 }
 
 const PopularSearchSkeleton = () => (
-  <div className="grid grid-cols-3 gap-x-3 gap-y-6">
+  <div className="2xs:grid-cols-3 grid grid-cols-2 gap-x-3 gap-y-6">
     {Array.from({ length: 3 }).map((_, index) => (
       <div key={index} className="flex-shrink-0">
         <VideoCardSkeleton index={index} />
