@@ -37,8 +37,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     allVideos.forEach((video) => {
       video.pause();
       video.currentTime = 0;
-      video.muted = true;
-      // Clear src to fully stop the media
       video.src = "";
       video.load();
     });
@@ -250,12 +248,28 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       }, 2000);
     };
 
+    // Desktop mouse events
     art.template.$player.addEventListener("mouseenter", showControls);
     art.template.$player.addEventListener("mousemove", showControls);
     art.template.$player.addEventListener("mouseleave", hideControls);
 
+    // Mobile touch events
+    art.template.$player.addEventListener("touchstart", () => {
+      showControls();
+      hideControls(); // start hide timer after showing
+    });
+
+    art.template.$player.addEventListener("touchmove", showControls);
+    art.template.$player.addEventListener("touchend", hideControls);
+
     const cleanup = () => {
       if (hideTimeout) clearTimeout(hideTimeout);
+      art.template.$player.removeEventListener("mouseenter", showControls);
+      art.template.$player.removeEventListener("mousemove", showControls);
+      art.template.$player.removeEventListener("mouseleave", hideControls);
+      art.template.$player.removeEventListener("touchstart", showControls);
+      art.template.$player.removeEventListener("touchmove", showControls);
+      art.template.$player.removeEventListener("touchend", hideControls);
     };
 
     return { hideTimeout, cleanup };
