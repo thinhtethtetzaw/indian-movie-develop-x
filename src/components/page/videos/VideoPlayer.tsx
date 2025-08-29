@@ -266,19 +266,33 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const currentTime = artRef.current?.currentTime || 0;
     const duration = artRef.current?.duration || 0;
 
-    // Save playback progress
+    // Check if video is completed (watched 90% or more of the duration)
+    const isCompleted = duration > 0 && currentTime / duration >= 0.9;
+
     if (currentTime > 0) {
-      await db.watchList
-        .put({
-          id: id,
-          ep_id: activeEpisode,
-          play_head_in_sec: Math.floor(currentTime),
-          duration: Math.floor(duration),
-          updated_at: new Date(),
-        })
-        .catch((error) => {
-          console.error("Failed to update watchlist:", error);
-        });
+      if (isCompleted) {
+        // Remove from watchlist if video is completed
+        await db.watchList
+          .where("[id+ep_id]")
+          .equals([id, activeEpisode])
+          .delete()
+          .catch((error) => {
+            console.error("Failed to remove from watchlist:", error);
+          });
+      } else {
+        // Save playback progress if video is not completed
+        await db.watchList
+          .put({
+            id: id,
+            ep_id: activeEpisode,
+            play_head_in_sec: Math.floor(currentTime),
+            duration: Math.floor(duration),
+            updated_at: new Date(),
+          })
+          .catch((error) => {
+            console.error("Failed to update watchlist:", error);
+          });
+      }
     }
 
     // Stop all media first to ensure no audio continues
