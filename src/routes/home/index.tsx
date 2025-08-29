@@ -483,7 +483,7 @@ function RouteComponent() {
         isClickable={true}
         onClick={handleSearchClick}
       />
-      <div className="lighter-scrollbar h-[calc(100dvh-var(--search-header-height)-var(--bottom-nav-height))] space-y-5 overflow-y-auto pb-5">
+      <div className="lighter-scrollbar h-[calc(100svh-var(--search-header-height)-var(--bottom-nav-height))] space-y-5 overflow-y-auto pb-5">
         {isCategoryListLoading ||
         isRecommendListLoading ||
         isVideoListLoading ||
