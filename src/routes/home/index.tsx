@@ -196,8 +196,8 @@ const ListSection = ({
     <div className="flex items-center justify-between px-4">
       <h2 className="text-forground font-semibold">{item.title}</h2>
       <Button
-        variant="link"
-        className="text-forground text-sm font-medium"
+        variant="ghost"
+        className="text-forground text-sm font-medium hover:bg-transparent"
         onClick={() => {
           if ("navigator" in item && item.navigator) {
             navigate({

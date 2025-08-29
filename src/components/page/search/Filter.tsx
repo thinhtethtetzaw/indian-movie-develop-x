@@ -15,7 +15,7 @@ function DropdownTrigger({ label, onClick }: DropdownTriggerProps) {
   return (
     <Button
       variant="ghost"
-      className="bg-glass h-10 rounded-full !px-6"
+      className="bg-glass xs:!px-6 2xs:!px-6 h-10 rounded-full px-3"
       onClick={onClick}
     >
       {label}
@@ -135,12 +135,12 @@ export function Filter() {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex w-full flex-col items-start justify-between sm:flex-row sm:items-center sm:gap-x-3">
+      <div className="flex w-full items-center justify-between sm:items-center sm:gap-x-3">
         <span className="text-sm font-medium text-nowrap text-[#CCCCCC] sm:text-base">
           {t("common.sortBy")}
         </span>
-        <div className="hidden h-4 w-px bg-white/20 sm:block"></div>
-        <div className="mt-3 flex items-center gap-x-3 sm:mt-0">
+        <div className="h-4 w-px bg-white/20"></div>
+        <div className="flex items-center gap-x-3 sm:mt-0">
           {/* Sort Dropdown */}
           <div className="relative" ref={sortDropdownRef}>
             <DropdownTrigger
@@ -178,15 +178,20 @@ export function Filter() {
 
             {isDropdownOpen.year && (
               <div className="absolute top-full right-0 z-50 mt-1 flex w-48 flex-col rounded-[20px] border border-white/16 bg-white/16 p-3 backdrop-blur-xl">
-                <Button
-                  variant="link"
-                  size="sm"
-                  onClick={() => setYear("")}
-                  className="mb-4 flex w-full items-end justify-end text-sm font-medium text-white/60"
-                  disabled={!year}
-                >
-                  {t("common.clearFilter")}
-                </Button>
+                <div className="mb-2 flex justify-end">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setYear("");
+                      setIsDropdownOpen((prev) => ({ ...prev, year: false }));
+                    }}
+                    className="w-fit text-sm font-medium hover:bg-transparent"
+                    disabled={!year}
+                  >
+                    {t("common.clearFilter")}
+                  </Button>
+                </div>
                 <div className="grid grid-cols-2 gap-2">
                   {years.map((yearValue) => (
                     <YearOptionButton

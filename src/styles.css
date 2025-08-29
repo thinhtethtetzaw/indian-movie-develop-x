@@ -115,6 +115,9 @@ code {
   --color-sidebar-ring: var(--sidebar-ring);
 
   --color-brand-red: var(--brand-red);
+
+  --breakpoint-xs: 30rem; /* 480px */
+  --breakpoint-2xs: 26rem; /* 416px */
 }
 
 @layer base {
