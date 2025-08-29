@@ -24,7 +24,7 @@ export const Route = createFileRoute("/settings/notifications")({
           }}
           title={t("pages.settings.notifications.title")}
         />
-        <section className="lighter-scrollbar h-[calc(100dvh-var(--nav-header-height))] pt-5">
+        <section className="lighter-scrollbar h-[calc(100svh-var(--nav-header-height))] pt-5">
           {isAdsLoading ? (
             <>
               <AdsSectionSkeleton />
